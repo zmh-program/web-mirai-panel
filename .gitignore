@@ -1,0 +1,7 @@
+*.pyc
+
+.idea
+.vs
+.vscode
+uploads/*
+!uploads/.gitkeep
