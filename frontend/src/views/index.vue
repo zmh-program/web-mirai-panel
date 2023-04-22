@@ -43,9 +43,8 @@ const chatgpt = reactive({
   auto_remove_old_conversations: false,
   title_pattern: "",
   proxy: "",
-  plus: true,
-  model: "",
-
+  // plus: true,
+  // model: "",
   api_key: "",
   api_endpoint: "https://api.openai.com/v1"  // outside account
 })
@@ -122,6 +121,11 @@ const chatgpt = reactive({
                 <el-form-item label='会话标题'><el-input placeholder='qq-{session_id}' v-model='chatgpt.title_pattern' /></el-form-item>
                 <el-form-item label='对话记录自动删除'><el-switch v-model='chatgpt.auto_remove_old_conversations' /></el-form-item>
               </template>
+              <template v-else>
+                <el-form-item label='API Key'><el-input placeholder='sk-*****' v-model='chatgpt.api_key' /></el-form-item>
+                <el-form-item label='接入点'><el-input placeholder='API版 ChatGPT 接入点' v-model='chatgpt.api_endpoint' /></el-form-item>
+              </template>
+              <el-form-item label='Proxy'><el-input placeholder='可选, 留空默认系统设置' v-model='chatgpt.proxy' /></el-form-item>
               <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/jie-ru-ai-ping-tai/jie-ru-openai-de-chatgpt' target='_blank'>
                 <el-link type='primary'>chatGPT 文档</el-link>
               </a>
