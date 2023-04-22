@@ -7,7 +7,6 @@ import cli
 import file_transfer
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '1145141918191810'
 socketio = SocketIO(app, async_mode='gevent')
 
 '''接收需要执行的命令'''
