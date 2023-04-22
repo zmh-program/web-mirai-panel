@@ -2,3 +2,4 @@ Flask==2.1.1
 Flask-SocketIO==5.1.1
 gevent==21.8.0
 gevent-websocket==0.10.1
+toml==0.10.2
