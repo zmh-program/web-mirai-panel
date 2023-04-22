@@ -48,7 +48,6 @@ const chatgpt = reactive({
   api_key: "",
   api_endpoint: "https://api.openai.com/v1"  // outside account
 })
-
 const bing = reactive({
   cookie_content: '',  // 注意单引号
   wss_link: "wss://chatgpt-qq.lss233.com/sydney/ChatHub",
@@ -57,7 +56,15 @@ const bing = reactive({
   show_suggestions: false,
   show_references: false,
   show_remaining_count: false,
-  use_drawing: false,
+  use_drawing: false
+})
+const bard = reactive({
+  cookie_content: '',
+  proxy: ""
+})
+const yiyan = reactive({
+  BDUSS: '',
+  BAIDUID: ''
 })
 </script>
 
@@ -65,7 +72,7 @@ const bing = reactive({
   <main>
     <el-card class='card'>
       <el-collapse v-model='collapse' id='collapse'>
-        <el-collapse-item name='chat' title='聊天平台'>
+        <el-collapse-item name='chat' title='📫 接入聊天平台'>
           <el-radio-group v-model='chatModel'>
             <el-radio label='cqhttp'>OneBot (CQHttp)</el-radio>
             <el-radio label='mirai'>Mirai</el-radio>
@@ -108,7 +115,7 @@ const bing = reactive({
             </el-form>
           </div>
         </el-collapse-item>
-        <el-collapse-item name='ai' title='AI平台'>
+        <el-collapse-item name='ai' title='✨ 接入AI平台'>
           <el-radio-group v-model='aiModel'>
             <el-radio label='chatgpt'>chatGPT</el-radio>
             <el-radio label='bing'>New Bing</el-radio>
@@ -153,18 +160,18 @@ const bing = reactive({
                 <el-link type='primary'>Bing 文档</el-link>
               </a>
             </el-form>
-            <el-form :model='telegram' v-else-if='chatModel == "telegram"'>
-              <el-form-item label='Bot Token'><el-input placeholder='你的 Bot token' v-model='telegram.token' /></el-form-item>
-              <el-form-item label='Proxy'><el-input placeholder='可选, 留空默认系统设置' v-model='telegram.proxy' /></el-form-item>
-              <el-form-item label='Chat ID'><el-input placeholder='管理员的 chat id' v-model='telegram.manager_chat' /></el-form-item>
-              <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/dui-jie-liao-tian-ping-tai/dui-jie-telegram' target='_blank'>
-                <el-link type='primary'>Telegram 文档</el-link>
+            <el-form :model='bard' v-else-if='aiModel == "bard"'>
+              <el-form-item label='Cookie'><el-input placeholder='Bard Cookie' v-model='bing.cookie_content' /></el-form-item>
+              <el-form-item label='Proxy'><el-input placeholder='可选, 留空默认系统设置' v-model='bing.proxy' /></el-form-item>
+              <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/jie-ru-ai-ping-tai/jie-ru-google-bard' target='_blank'>
+                <el-link type='primary'>Bard 文档</el-link>
               </a>
             </el-form>
-            <el-form :model='discord' v-else-if='chatModel == "discord"'>
-              <el-form-item label='Bot Token'><el-input placeholder='Discord 机器人的 token' v-model='discord.token' /></el-form-item>
-              <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/dui-jie-liao-tian-ping-tai/dui-jie-discord' target='_blank'>
-                <el-link type='primary'>Discord 文档</el-link>
+            <el-form :model='yiyan' v-else-if='aiModel == "yiyan"'>
+              <el-form-item label='BDUSS'><el-input placeholder='Baidu USS' v-model='yiyan.BDUSS' /></el-form-item>
+              <el-form-item label='BAIDUID'><el-input placeholder='Baidu ID' v-model='yiyan.BAIDUID' /></el-form-item>
+              <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/jie-ru-ai-ping-tai/jie-ru-wen-xin-yi-yan' target='_blank'>
+                <el-link type='primary'>文心一言 文档</el-link>
               </a>
             </el-form>
           </div>
