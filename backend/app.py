@@ -25,7 +25,7 @@ def handle_command_input_socket(command):
         emit('command_output', output)
 
 '''处理上传文件命令'''
-@app.route('configeditor/api/upload', methods=['POST'])
+@app.route('/configeditor/api/upload', methods=['POST'])
 def handle_upload():
     file = request.files['file']
     file_transfer.handle_upload(file)
