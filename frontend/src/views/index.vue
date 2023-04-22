@@ -88,7 +88,12 @@ const poe = reactive({
             <el-radio label='mirai'>Mirai</el-radio>
             <el-radio label='telegram'>Telegram</el-radio>
             <el-radio label='discord'>Discord</el-radio>
-          </el-radio-group><br><br>
+          </el-radio-group>
+          <br><br>
+          <el-alert type='info' v-if='chatModel == "mirai"' :closable='false' show-icon>
+            推荐使用&nbsp;<el-link class='link' type='primary' @click='chatModel = "cqhttp"'>CQHttp</el-link>
+          </el-alert>
+          <br>
           <div>
             <el-form :model='cqhttp' v-if='chatModel == "cqhttp"'>
               <el-form-item label='机器人QQ号'><el-input placeholder='请修改为你机器人的QQ号' v-model='cqhttp.qq' /></el-form-item>
@@ -135,6 +140,8 @@ const poe = reactive({
             <el-radio label='poe'>Poe</el-radio>
           </el-radio-group><br><br>
           <div>
+            <template v-if='aiModel == "bard"'><el-alert type='warning' :closable='false' show-icon>Bard 目前仅允许美国的 IP 访问，所以你很有可能需要设置代理。</el-alert><br></template>
+            <template v-else-if='aiModel == "yiyan"'><el-alert type='warning' :closable='false' show-icon>请注意：该方法有封号风险(但是过一段时间就会解封)，具体原因未知，请自行取舍。</el-alert><br></template>
             <el-form :model='chatgpt' v-if='aiModel == "chatgpt"'>
               <el-form-item label='接入模式'>
                 <el-radio-group v-model='chatgpt.mode'>
@@ -213,5 +220,9 @@ const poe = reactive({
     min-width: 280px;
     height: max-content;
     min-height: 120px;
+}
+
+.link {
+    transform: translateY(-3px);
 }
 </style>
