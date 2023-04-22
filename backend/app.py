@@ -16,7 +16,7 @@ socketio = SocketIO(app, async_mode='gevent')
 def handle_command_input():
     command = request.json['command']
     socketio.emit('command_input', command)
-    return jsonify({'执行状态': '成功'})
+    return jsonify({'执行命令状态': '成功'})
 
 '''使用cli.py运行命令'''
 @socketio.on('command_input')
@@ -65,9 +65,9 @@ def save_config():
         
         with open(config_file_path, 'w') as file:
             toml.dump(config_data, file)
-        return jsonify({'保存状态': '成功'})
+        return jsonify({'保存配置文件状态': '成功'})
     else:
-        return jsonify({'保存状态': '异常'})
+        return jsonify({'保存配置文件状态': '异常'})
         
 '''辅助函数 寻找有没有docker-compose.yaml文件'''
 def find_docker_compose_file():
