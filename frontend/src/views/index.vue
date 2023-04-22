@@ -18,6 +18,14 @@ const mirai = reactive({
   reverse_host: "0.0.0.0",
   reverse_port: 8566,
 })
+const telegram = reactive({
+  token: "",
+  proxy: "",
+  manager_chat: ""
+})
+const discord = reactive({
+  token: ""
+})
 
 </script>
 
@@ -39,12 +47,20 @@ const mirai = reactive({
               <el-form-item label='CQHttp 主机'><el-input v-model='cqhttp.host' /></el-form-item>
               <el-form-item label='CQHttp 端口'><el-input v-model='cqhttp.port' /></el-form-item>
             </el-form>
-            <el-form :model='cqhttp' v-else-if='chatModel == "mirai"'>
+            <el-form :model='mirai' v-else-if='chatModel == "mirai"'>
               <el-form-item label='机器人QQ号'><el-input placeholder='请修改为你机器人的QQ号' v-model='mirai.qq' /></el-form-item>
               <el-form-item label='管理员QQ号'><el-input placeholder='请修改为机器人管理员的QQ号' v-model='mirai.manager_qq' /></el-form-item>
               <el-form-item label='Mirai API Key'><el-input placeholder='verifyKey' v-model='mirai.key' /></el-form-item>
               <el-form-item label='Mirai 主机'><el-input v-model='mirai.reverse_host' /></el-form-item>
               <el-form-item label='Mirai 端口'><el-input v-model='mirai.reverse_port' /></el-form-item>
+            </el-form>
+            <el-form :model='telegram' v-else-if='chatModel == "telegram"'>
+              <el-form-item label='Bot Token'><el-input placeholder='你的 Bot token' v-model='telegram.token' /></el-form-item>
+              <el-form-item label='Proxy'><el-input placeholder='可选, 留空默认系统设置' v-model='telegram.proxy' /></el-form-item>
+              <el-form-item label='Chat ID'><el-input placeholder='管理员的 chat id' v-model='telegram.manager_chat' /></el-form-item>
+            </el-form>
+            <el-form :model='discord' v-else-if='chatModel == "discord"'>
+              <el-form-item label='Bot Token'><el-input placeholder='你的 Discord 机器人的 token' v-model='discord.token' /></el-form-item>
             </el-form>
           </div>
         </el-collapse-item>
