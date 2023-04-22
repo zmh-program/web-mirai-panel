@@ -32,7 +32,7 @@ const discord = reactive({
 <template>
   <main>
     <el-card class='card'>
-      <el-collapse v-model='collapse'>
+      <el-collapse v-model='collapse' id='collapse'>
         <el-collapse-item name='chat' title='聊天平台'>
           <el-radio-group v-model='chatModel'>
             <el-radio label='cqhttp'>OneBot (CQHttp)</el-radio>
@@ -46,6 +46,9 @@ const discord = reactive({
               <el-form-item label='管理员QQ号'><el-input placeholder='请修改为机器人管理员的QQ号' v-model='cqhttp.manager_qq' /></el-form-item>
               <el-form-item label='CQHttp 主机'><el-input v-model='cqhttp.host' /></el-form-item>
               <el-form-item label='CQHttp 端口'><el-input v-model='cqhttp.port' /></el-form-item>
+              <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/dui-jie-liao-tian-ping-tai/dui-jie-onebot-gocqhttp' target='_blank'>
+                <el-link type='primary'>OneBot 文档</el-link>
+              </a>
             </el-form>
             <el-form :model='mirai' v-else-if='chatModel == "mirai"'>
               <el-form-item label='机器人QQ号'><el-input placeholder='请修改为你机器人的QQ号' v-model='mirai.qq' /></el-form-item>
@@ -53,14 +56,23 @@ const discord = reactive({
               <el-form-item label='Mirai API Key'><el-input placeholder='verifyKey' v-model='mirai.key' /></el-form-item>
               <el-form-item label='Mirai 主机'><el-input v-model='mirai.reverse_host' /></el-form-item>
               <el-form-item label='Mirai 端口'><el-input v-model='mirai.reverse_port' /></el-form-item>
+              <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/dui-jie-liao-tian-ping-tai/dui-jie-mirai' target='_blank'>
+                <el-link type='primary'>Mirai 文档</el-link>
+              </a>
             </el-form>
             <el-form :model='telegram' v-else-if='chatModel == "telegram"'>
               <el-form-item label='Bot Token'><el-input placeholder='你的 Bot token' v-model='telegram.token' /></el-form-item>
               <el-form-item label='Proxy'><el-input placeholder='可选, 留空默认系统设置' v-model='telegram.proxy' /></el-form-item>
               <el-form-item label='Chat ID'><el-input placeholder='管理员的 chat id' v-model='telegram.manager_chat' /></el-form-item>
+              <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/dui-jie-liao-tian-ping-tai/dui-jie-telegram' target='_blank'>
+                <el-link type='primary'>Telegram 文档</el-link>
+              </a>
             </el-form>
             <el-form :model='discord' v-else-if='chatModel == "discord"'>
               <el-form-item label='Bot Token'><el-input placeholder='Discord 机器人的 token' v-model='discord.token' /></el-form-item>
+              <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/dui-jie-liao-tian-ping-tai/dui-jie-discord' target='_blank'>
+                <el-link type='primary'>Discord 文档</el-link>
+              </a>
             </el-form>
           </div>
         </el-collapse-item>
