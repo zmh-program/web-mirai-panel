@@ -21,7 +21,7 @@ const mirai = reactive({
 const telegram = reactive({
   token: "",
   proxy: "",
-  manager_chat: ""
+  manager_chat: "1234567890"
 })
 const discord = reactive({
   token: ""
@@ -60,7 +60,7 @@ const discord = reactive({
               <el-form-item label='Chat ID'><el-input placeholder='管理员的 chat id' v-model='telegram.manager_chat' /></el-form-item>
             </el-form>
             <el-form :model='discord' v-else-if='chatModel == "discord"'>
-              <el-form-item label='Bot Token'><el-input placeholder='你的 Discord 机器人的 token' v-model='discord.token' /></el-form-item>
+              <el-form-item label='Bot Token'><el-input placeholder='Discord 机器人的 token' v-model='discord.token' /></el-form-item>
             </el-form>
           </div>
         </el-collapse-item>
