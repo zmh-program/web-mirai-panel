@@ -49,6 +49,16 @@ const chatgpt = reactive({
   api_endpoint: "https://api.openai.com/v1"  // outside account
 })
 
+const bing = reactive({
+  cookie_content: '',  // 注意单引号
+  wss_link: "wss://chatgpt-qq.lss233.com/sydney/ChatHub",
+  bing_endpoint: "https://chatgpt-qq.lss233.com/edgesvc/turing/conversation/create",
+  proxy: "",
+  show_suggestions: false,
+  show_references: false,
+  show_remaining_count: false,
+  use_drawing: false,
+})
 </script>
 
 <template>
@@ -130,14 +140,17 @@ const chatgpt = reactive({
                 <el-link type='primary'>chatGPT 文档</el-link>
               </a>
             </el-form>
-            <el-form :model='mirai' v-else-if='chatModel == "mirai"'>
-              <el-form-item label='机器人QQ号'><el-input placeholder='请修改为你机器人的QQ号' v-model='mirai.qq' /></el-form-item>
-              <el-form-item label='管理员QQ号'><el-input placeholder='请修改为机器人管理员的QQ号' v-model='mirai.manager_qq' /></el-form-item>
-              <el-form-item label='Mirai API Key'><el-input placeholder='verifyKey' v-model='mirai.key' /></el-form-item>
-              <el-form-item label='Mirai 主机'><el-input v-model='mirai.reverse_host' /></el-form-item>
-              <el-form-item label='Mirai 端口'><el-input v-model='mirai.reverse_port' /></el-form-item>
-              <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/dui-jie-liao-tian-ping-tai/dui-jie-mirai' target='_blank'>
-                <el-link type='primary'>Mirai 文档</el-link>
+            <el-form :model='bing' v-else-if='aiModel == "bing"'>
+              <el-form-item label='Cookie'><el-input placeholder='[{"domain": ".bing.com", ...}]' v-model='bing.cookie_content' /></el-form-item>
+              <el-form-item label='Proxy'><el-input placeholder='可选, 留空默认系统设置或者使用接入点' v-model='bing.proxy' /></el-form-item>
+              <el-form-item label='WebSocket 接入点'><el-input placeholder='https://' v-model='bing.wss_link' /></el-form-item>
+              <el-form-item label='会话创建接入点'><el-input placeholder='wss://' v-model='bing.bing_endpoint' /></el-form-item>
+              <el-form-item label='显示建议'><el-switch v-model='bing.show_suggestions' /></el-form-item>
+              <el-form-item label='显示引用资料'><el-switch v-model='bing.show_references' /></el-form-item>
+              <el-form-item label='显示剩余次数'><el-switch v-model='bing.show_remaining_count' /></el-form-item>
+              <el-form-item label='Bing 绘图'><el-switch v-model='bing.use_drawing' /></el-form-item>
+              <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/jie-ru-ai-ping-tai/jie-ru-new-bing-sydney' target='_blank'>
+                <el-link type='primary'>Bing 文档</el-link>
               </a>
             </el-form>
             <el-form :model='telegram' v-else-if='chatModel == "telegram"'>
