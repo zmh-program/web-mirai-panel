@@ -29,7 +29,7 @@ def handle_command_input_socket(command):
 def handle_upload():
     file = request.files['file']
     file_transfer.handle_upload(file)
-    return 'File uploaded and saved.'
+    return '文件上传成功'
 
 if __name__ == '__main__':
     socketio.run(app)
