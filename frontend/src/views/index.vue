@@ -64,7 +64,17 @@ const bard = reactive({
 })
 const yiyan = reactive({
   BDUSS: '',
-  BAIDUID: ''
+  BAIDUID: '',
+  proxy: ""
+})
+const chatglm = reactive({
+  api_endpoint: "http://127.0.0.1:8000",
+  max_turns: 10,
+  timeout: 360
+})
+const poe = reactive({
+  p_b: "",
+  proxy: ""
 })
 </script>
 
@@ -161,8 +171,8 @@ const yiyan = reactive({
               </a>
             </el-form>
             <el-form :model='bard' v-else-if='aiModel == "bard"'>
-              <el-form-item label='Cookie'><el-input placeholder='Bard Cookie' v-model='bing.cookie_content' /></el-form-item>
-              <el-form-item label='Proxy'><el-input placeholder='可选, 留空默认系统设置' v-model='bing.proxy' /></el-form-item>
+              <el-form-item label='Cookie'><el-input placeholder='Bard Cookie' v-model='bard.cookie_content' /></el-form-item>
+              <el-form-item label='Proxy'><el-input placeholder='可选, 留空默认系统设置' v-model='bard.proxy' /></el-form-item>
               <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/jie-ru-ai-ping-tai/jie-ru-google-bard' target='_blank'>
                 <el-link type='primary'>Bard 文档</el-link>
               </a>
@@ -170,8 +180,24 @@ const yiyan = reactive({
             <el-form :model='yiyan' v-else-if='aiModel == "yiyan"'>
               <el-form-item label='BDUSS'><el-input placeholder='Baidu USS' v-model='yiyan.BDUSS' /></el-form-item>
               <el-form-item label='BAIDUID'><el-input placeholder='Baidu ID' v-model='yiyan.BAIDUID' /></el-form-item>
+              <el-form-item label='Proxy'><el-input placeholder='可选' v-model='yiyan.proxy' /></el-form-item>
               <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/jie-ru-ai-ping-tai/jie-ru-wen-xin-yi-yan' target='_blank'>
                 <el-link type='primary'>文心一言 文档</el-link>
+              </a>
+            </el-form>
+            <el-form :model='chatglm' v-else-if='aiModel == "chatglm"'>
+              <el-form-item label='接入点'><el-input placeholder='ChatGLM 接口地址' v-model='chatglm.api_endpoint' /></el-form-item>
+              <el-form-item label='单会话最大轮数'><el-input placeholder='最大记忆的对话轮数 (类似于ReplayBuffer大小)' v-model='chatglm.max_turns' /></el-form-item>
+              <el-form-item label='请求超时时间 (s)'><el-input placeholder='可选' v-model='chatglm.timeout' /></el-form-item>
+              <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/jie-ru-ai-ping-tai/jie-ru-chatglm' target='_blank'>
+                <el-link type='primary'>ChatGLM 文档</el-link>
+              </a>
+            </el-form>
+            <el-form :model='poe' v-else-if='aiModel == "poe"'>
+              <el-form-item label='p_b'><el-input placeholder='Cookie中的 p_b 字段' v-model='poe.p_b' /></el-form-item>
+              <el-form-item label='Proxy'><el-input placeholder='可选, 留空默认系统设置' v-model='poe.proxy' /></el-form-item>
+              <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/jie-ru-ai-ping-tai/jie-ru-poe.com' target='_blank'>
+                <el-link type='primary'>Poe 文档</el-link>
               </a>
             </el-form>
           </div>
