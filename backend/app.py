@@ -11,7 +11,7 @@ app.config['SECRET_KEY'] = '1145141918191810'
 socketio = SocketIO(app, async_mode='gevent')
 
 '''接收需要执行的命令'''
-@app.route('/configeditor/api/command', methods=['POST'])
+@app.route('/api/command', methods=['POST'])
 def handle_command_input():
     command = request.json['command']
     socketio.emit('command_input', command)
@@ -25,7 +25,7 @@ def handle_command_input_socket(command):
         emit('command_output', output)
 
 '''处理上传文件命令'''
-@app.route('/configeditor/api/upload', methods=['POST'])
+@app.route('/api/upload', methods=['POST'])
 def handle_upload():
     file = request.files['file']
     file_transfer.handle_upload(file)
