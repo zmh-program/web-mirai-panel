@@ -41,7 +41,7 @@ def load_config():
             config_data = toml.load(file)
         return jsonify(config_data)
     else:
-        return jsonify({'读取配置文件状态': '找不到文件'})
+        return jsonify({'读取配置文件状态': '异常'})
 
 '''辅助函数 寻找有没有config.cfg文件'''
 def find_config_file():
