@@ -1,5 +1,6 @@
 Flask==2.1.1
-Flask-SocketIO==5.1.1
-gevent==21.8.0
+Flask-SocketIO==6.1.1
+gevent==21.12.0
 gevent-websocket==0.10.1
+docker==5.1.3
 toml==0.10.2
