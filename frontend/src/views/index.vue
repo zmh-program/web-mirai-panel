@@ -111,6 +111,15 @@ const vits = reactive({
   lang: "zh",
   timeout: 30,
 })
+
+const sdwebui = reactive({
+  api_url: '',
+  prompt_prefix: '',
+  negative_prompt: '',
+  sampler_index: '',
+  filter_nsfw: true,
+  timeout: 10.0
+})
 </script>
 
 <template>
@@ -132,7 +141,7 @@ const vits = reactive({
           </el-alert>
           <el-alert type='info' v-else-if='chatModel == "wechat"' :closable='false' show-icon>
             我们建议将本项目部署在国外服务器上，减少网络错误发生的概率。<br>
-            Docker 用户别忘了将此处配置中的<strong style='font-weight: bold'>端口号</strong>映射出来，以便被访问到。
+            Docker 用户别忘了将此处配置中的<span class='bold'>端口号</span>映射出来，以便被访问到。
           </el-alert>
           <br>
           <div>
@@ -319,6 +328,26 @@ const vits = reactive({
                 <el-link type='primary'>Edge TTS 文档</el-link>
               </a>
             </el-form>
+          </el-card><br>
+          <el-card>
+            <h3>🍒 AI 画图 (Stable Diffusion)</h3><br>
+            <el-alert type='info' :closable='false' show-icon>
+              Stable Diffusion (如下配置) <br>
+              Bing 画图 (请跳转<span class='bold'>Bing</span>开启<span class='bold'>Bing 绘图</span>) <br>
+              OpenAI 画图 (请跳转<span class='bold'>ChatGPT</span>) <br>
+              文心一言 (请跳转<span class='bold'>文心一言</span>)
+            </el-alert><br>
+            <el-form :model='sdwebui'>
+              <el-form-item label='接口'><el-input placeholder='sd-webui 的接口地址' v-model='sdwebui.api_url' /></el-form-item>
+              <el-form-item label='内置提示词'><el-input placeholder='所有的画图内容都会加上这些提示词, 如 ‘masterpiece, best quality,’' v-model='sdwebui.prompt_prefix' /></el-form-item>
+              <el-form-item label='负面提示词'><el-input placeholder='如‘missing fingers,’' v-model='sdwebui.negative_prompt' /></el-form-item>
+              <el-form-item label='取样器索引'><el-input placeholder='Sampler Index, 如‘DPM++ SDE Karras’' v-model='sdwebui.sampler_index' /></el-form-item>
+              <el-form-item label='超时时间'><el-input-number v-model='sdwebui.timeout' /></el-form-item>
+              <el-form-item label='Filter NSFW'><el-switch v-model='sdwebui.filter_nsfw' /></el-form-item>
+              <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/ai-hua-tu' target='_blank'>
+                <el-link type='primary'>AI 画图 文档</el-link>
+              </a>
+            </el-form>
           </el-card>
           <div>
           </div>
@@ -338,5 +367,9 @@ const vits = reactive({
 
 .link {
     transform: translateY(-3px);
+}
+
+.bold {
+    font-weight: bold;
 }
 </style>
