@@ -313,6 +313,12 @@ const vits = reactive({
                 <el-link type='primary'>VITS 文档</el-link>
               </a>
             </el-form>
+            <el-form :model='text_to_speech' v-if='text_to_speech.engine == "edge"'>
+              <el-form-item label='音色'><el-input placeholder='zh-CN-XiaoxiaoNeural' v-model='text_to_speech.default' /></el-form-item>
+              <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/wen-zi-zhuan-yu-yin/edge-tts-yu-yin-jie-ru-jiao-cheng' target='_blank'>
+                <el-link type='primary'>Edge TTS 文档</el-link>
+              </a>
+            </el-form>
           </el-card>
           <div>
           </div>
