@@ -13,15 +13,14 @@ def execute_command(command):
 
 def save_config_commond():
     config_data = request.json
-    config_path = 'config.cfg'
-
-    if os.path.exists(config_path):
-        backup_path = 'config.cfg.bak.{}'.format(int(time.time()))
-        os.rename(config_path, backup_path)
+    current_time = int(time.time())
+    config_path = f'static/config-{current_time}.cfg'
 
     with open(config_path, 'w') as file:
         toml.dump(config_data, file)
-    return jsonify({'status': True})
+
+    download_url = url_for('static', filename=f'config-{current_time}.cfg')
+    return jsonify({'status': True, 'download_url': download_url})
     
 UPLOADS_FOLDER = 'uploads'
 
