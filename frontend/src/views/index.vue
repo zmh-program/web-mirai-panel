@@ -91,6 +91,11 @@ const poe = reactive({
   p_b: "",
   proxy: ""
 })
+const claude = reactive({
+  channel_id: "",
+  access_token: "",
+  proxy: ""
+})
 
 const text_to_speech = reactive({
   engine: "",
@@ -195,6 +200,7 @@ const vits = reactive({
             <el-radio label='yiyan'>文心一言</el-radio>
             <el-radio label='chatglm'>chatGLM</el-radio>
             <el-radio label='poe'>Poe</el-radio>
+            <el-radio label='claude'>Claude</el-radio>
           </el-radio-group><br><br>
           <div>
             <template v-if='aiModel == "bard"'><el-alert type='warning' :closable='false' show-icon>Bard 目前仅允许美国的 IP 访问，所以你很有可能需要设置代理。</el-alert><br></template>
@@ -262,6 +268,14 @@ const vits = reactive({
               <el-form-item label='Proxy'><el-input placeholder='可选, 留空默认系统设置' v-model='poe.proxy' /></el-form-item>
               <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/jie-ru-ai-ping-tai/jie-ru-poe.com' target='_blank'>
                 <el-link type='primary'>Poe 文档</el-link>
+              </a>
+            </el-form>
+            <el-form :model='claude' v-else-if='aiModel == "claude"'>
+              <el-form-item label='Channel ID'><el-input placeholder='C0XXXXXX' v-model='claude.channel_id' /></el-form-item>
+              <el-form-item label='Access Token'><el-input placeholder='XXXX' v-model='claude.access_token' /></el-form-item>
+              <el-form-item label='Proxy'><el-input placeholder='可选, 留空默认系统设置' v-model='claude.proxy' /></el-form-item>
+              <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/jie-ru-ai-ping-tai/jie-ru-claude' target='_blank'>
+                <el-link type='primary'>Claude 文档</el-link>
               </a>
             </el-form>
           </div>
