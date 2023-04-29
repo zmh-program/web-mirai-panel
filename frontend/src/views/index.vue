@@ -280,7 +280,7 @@ const vits = reactive({
             </el-form>
           </div>
         </el-collapse-item>
-        <el-collapse-item name='ai' title='🎃 其他功能'>
+        <el-collapse-item name='other' title='🎃 其他功能'>
           <el-card>
             <h3>🔊 文字转语音</h3><br>
             <el-radio-group v-model='text_to_speech.engine'>
@@ -288,44 +288,17 @@ const vits = reactive({
               <el-radio label='vits'>VITS</el-radio>
               <el-radio label='edge'>Edge TTS</el-radio>
             </el-radio-group><br><br>
+            <el-form :model='azure' v-if='text_to_speech.engine == "azure"'>
+              <el-form-item label='音色'><el-input placeholder='zh-CN-XiaoyouNeural' v-model='text_to_speech.default' /></el-form-item>
+              <el-form-item label='Key'><el-input placeholder='你的秘钥 (TTS Speech Key)' v-model='azure.tts_speech_key' /></el-form-item>
+              <el-form-item label='地域'><el-input placeholder='你的服务地域 (TTS Speech Service Region)' v-model='azure.tts_speech_service_region' /></el-form-item>
+              <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/wen-zi-zhuan-yu-yin/azure-tts-yu-yin-jie-ru-jiao-cheng' target='_blank'>
+                <el-link type='primary'>Azure TTS 文档</el-link>
+              </a>
+            </el-form>
           </el-card>
           <div>
-            <el-form :model='chatgpt' v-if='aiModel == "chatgpt"'>
-              <el-form-item label='接入模式'>
-                <el-radio-group v-model='chatgpt.mode'>
-                  <el-radio-button label='web'>网页版</el-radio-button>
-                  <el-radio-button label='api'>API版</el-radio-button>
-                </el-radio-group>
-              </el-form-item>
-              <template v-if='chatgpt.mode == "web"'>
-                <el-form-item label='Token'><el-input placeholder='ey********' v-model='chatgpt.access_token' /></el-form-item>
-                <el-form-item label='接入点'><el-input placeholder='网页版 ChatGPT 接入点' v-model='chatgpt.browserless_endpoint' /></el-form-item>
-                <el-form-item label='会话标题'><el-input placeholder='qq-{session_id}' v-model='chatgpt.title_pattern' /></el-form-item>
-                <el-form-item label='对话记录自动删除'><el-switch v-model='chatgpt.auto_remove_old_conversations' /></el-form-item>
-              </template>
-              <template v-else>
-                <el-form-item label='API Key'><el-input placeholder='sk-*****' v-model='chatgpt.api_key' /></el-form-item>
-                <el-form-item label='接入点'><el-input placeholder='API版 ChatGPT 接入点' v-model='chatgpt.api_endpoint' /></el-form-item>
-              </template>
-              <el-form-item label='Proxy'><el-input placeholder='可选, 留空默认系统设置' v-model='chatgpt.proxy' /></el-form-item>
-              <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/jie-ru-ai-ping-tai/jie-ru-openai-de-chatgpt' target='_blank'>
-                <el-link type='primary'>chatGPT 文档</el-link>
-              </a>
-            </el-form>
-            <el-form :model='bing' v-else-if='aiModel == "bing"'>
-              <el-form-item label='Cookie'><el-input placeholder='[{"domain": ".bing.com", ...}]' v-model='bing.cookie_content' /></el-form-item>
-              <el-form-item label='Proxy'><el-input placeholder='可选, 留空默认系统设置或者使用接入点' v-model='bing.proxy' /></el-form-item>
-              <el-form-item label='WebSocket 接入点'><el-input placeholder='https://' v-model='bing.wss_link' /></el-form-item>
-              <el-form-item label='会话创建接入点'><el-input placeholder='wss://' v-model='bing.bing_endpoint' /></el-form-item>
-              <el-form-item label='显示建议'><el-switch v-model='bing.show_suggestions' /></el-form-item>
-              <el-form-item label='显示引用资料'><el-switch v-model='bing.show_references' /></el-form-item>
-              <el-form-item label='显示剩余次数'><el-switch v-model='bing.show_remaining_count' /></el-form-item>
-              <el-form-item label='Bing 绘图'><el-switch v-model='bing.use_drawing' /></el-form-item>
-              <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/jie-ru-ai-ping-tai/jie-ru-new-bing-sydney' target='_blank'>
-                <el-link type='primary'>Bing 文档</el-link>
-              </a>
-            </el-form>
-            <el-form :model='bard' v-else-if='aiModel == "bard"'>
+            <el-form :model='bard' v-if='aiModel == "bard"'>
               <el-form-item label='Cookie'><el-input placeholder='Bard Cookie' v-model='bard.cookie_content' /></el-form-item>
               <el-form-item label='Proxy'><el-input placeholder='可选, 留空默认系统设置' v-model='bard.proxy' /></el-form-item>
               <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/jie-ru-ai-ping-tai/jie-ru-google-bard' target='_blank'>
