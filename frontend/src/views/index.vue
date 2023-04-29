@@ -2,7 +2,7 @@
 import { reactive, ref } from 'vue'
 import type { Ref } from 'vue'
 
-const collapse: Ref<string[]> = ref(['chat', 'ai', 'other']);
+const collapse: Ref<string[]> = ref(['chat', 'ai']);
 const chatModel: Ref<string> = ref('cqhttp');
 const aiModel: Ref<string> = ref('chatgpt');
 
@@ -119,6 +119,15 @@ const sdwebui = reactive({
   sampler_index: '',
   filter_nsfw: true,
   timeout: 10.0
+})
+
+const text_to_image = reactive({
+  always: true,
+  font_size: 30,
+  width: 700,
+  font_path: "fonts/sarasa-mono-sc-regular.ttf",
+  offset_x: 50,
+  offset_y: 50
 })
 </script>
 
@@ -290,6 +299,23 @@ const sdwebui = reactive({
           </div>
         </el-collapse-item>
         <el-collapse-item name='other' title='🎃 其他功能'>
+          <el-card>
+            <h3>📝 文字转图片</h3><br>
+            <el-alert type='success' :closable='false' show-icon>
+              机器人可以把文字转成图片，这样可以避免消息发到 QQ 群中被腾讯拦截，或者公式直接输出导致可读性太低的问题。
+            </el-alert><br>
+            <el-form :model='text_to_image'>
+              <el-form-item label='强制开启'><el-switch v-model='text_to_image.always' /></el-form-item>
+              <el-form-item label='字体大小'><el-input-number v-model='text_to_image.font_size' /></el-form-item>
+              <el-form-item label='图片宽度'><el-input-number v-model='text_to_image.width' /></el-form-item>
+              <el-form-item label='字体'><el-input v-model='text_to_image.font_path' /></el-form-item>
+              <el-form-item label='X坐标 起始点'><el-input-number v-model='text_to_image.offset_x' /></el-form-item>
+              <el-form-item label='Y坐标 起始点'><el-input-number v-model='text_to_image.offset_y' /></el-form-item>
+              <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/wen-zi-zhuan-tu-pian' target='_blank'>
+                <el-link type='primary'>文字转图片 文档</el-link>
+              </a>
+            </el-form>
+          </el-card><br>
           <el-card>
             <h3>🔊 文字转语音</h3><br>
             <el-radio-group v-model='text_to_speech.engine'>
