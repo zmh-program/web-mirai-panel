@@ -27,6 +27,21 @@ const telegram = reactive({
 const discord = reactive({
   token: ""
 })
+const wechat = reactive({
+  host: "0.0.0.0",
+  port: 8234,
+  debug: false
+})
+const wecom = reactive({
+  host: "0.0.0.0",
+  port: 8234,
+  debug: false,
+  corp_id: "",
+  agent_id: "",
+  secret: "",
+  token: "",
+  encoding_aes_key: ""
+})
 
 const chatSelector = {
   cqhttp,
@@ -103,10 +118,16 @@ const vits = reactive({
             <el-radio label='mirai'>Mirai</el-radio>
             <el-radio label='telegram'>Telegram</el-radio>
             <el-radio label='discord'>Discord</el-radio>
+            <el-radio label='wechat'>个人微信</el-radio>
+            <el-radio label='wecom'>企业微信</el-radio>
           </el-radio-group>
           <br><br>
           <el-alert type='info' v-if='chatModel == "mirai"' :closable='false' show-icon>
             推荐使用&nbsp;<el-link class='link' type='primary' @click='chatModel = "cqhttp"'>CQHttp</el-link>
+          </el-alert>
+          <el-alert type='info' v-else-if='chatModel == "wechat"' :closable='false' show-icon>
+            我们建议将本项目部署在国外服务器上，减少网络错误发生的概率。<br>
+            Docker 用户别忘了将此处配置中的<strong style='font-weight: bold'>端口号</strong>映射出来，以便被访问到。
           </el-alert>
           <br>
           <div>
@@ -141,6 +162,27 @@ const vits = reactive({
               <el-form-item label='Bot Token'><el-input placeholder='Discord 机器人的 token' v-model='discord.token' /></el-form-item>
               <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/dui-jie-liao-tian-ping-tai/dui-jie-discord' target='_blank'>
                 <el-link type='primary'>Discord 文档</el-link>
+              </a>
+            </el-form>
+            <el-form :model='wechat' v-else-if='chatModel == "wechat"'>
+              <el-form-item label='主机名'><el-input placeholder='服务端开放的主机名' v-model='wechat.host' /></el-form-item>
+              <el-form-item label='端口'><el-input placeholder='服务端开放的端口' v-model='wechat.port' /></el-form-item>
+              <el-form-item label='开启调试'><el-switch v-model='wechat.debug' /></el-form-item>
+              <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/dui-jie-liao-tian-ping-tai/dui-jie-ge-ren-wei-xin' target='_blank'>
+                <el-link type='primary'>微信 文档</el-link>
+              </a>
+            </el-form>
+            <el-form :model='wecom' v-else-if='chatModel == "wecom"'>
+              <el-form-item label='主机名'><el-input placeholder='服务端开放的主机名, 企业微信的回调地址, 需要能够被公网访问' v-model='wecom.host' /></el-form-item>
+              <el-form-item label='端口'><el-input placeholder='服务端开放的端口' v-model='wecom.port' /></el-form-item>
+              <el-form-item label='开启调试'><el-switch v-model='wecom.debug' /></el-form-item>
+              <el-form-item label='企业 ID'><el-input placeholder='ww****' v-model='wecom.corp_id' /></el-form-item>
+              <el-form-item label='Agent ID'><el-input placeholder='1000001' v-model='wecom.agent_id' /></el-form-item>
+              <el-form-item label='Secret'><el-input placeholder='abc***' v-model='wecom.secret' /></el-form-item>
+              <el-form-item label='Token'><el-input placeholder='abc***' v-model='wecom.token' /></el-form-item>
+              <el-form-item label='Encoding AES Key'><el-input placeholder='abc***' v-model='wecom.encoding_aes_key' /></el-form-item>
+              <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/dui-jie-liao-tian-ping-tai/dui-jie-qi-ye-wei-xin' target='_blank'>
+                <el-link type='primary'>企业微信 文档</el-link>
               </a>
             </el-form>
           </div>
