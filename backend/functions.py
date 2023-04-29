@@ -11,17 +11,22 @@ def execute_command(command):
     process.stdout.close()
     process.wait()
 
-def save_config_commond():
-    config_data = request.json
-    current_time = int(time.time())
-    config_path = f'static/config-{current_time}.cfg'
+'''文件读取函数'''
+def read_config_file(filename):
+    config_path = f"config/{filename}"
+    if os.path.isfile(config_path):
+        with open(config_path, "r") as file:
+            return file.read()
+    return ""
 
-    with open(config_path, 'w') as file:
-        toml.dump(config_data, file)
+'''拼接文件函数'''
+def join_files_and_save(filenames, final_filename):
+    content = "".join([read_config_file(filename) for filename in filenames])
+    config_path = f"config/{final_filename}"
+    with open(config_path, "w") as file:
+        file.write(content)
+    return config_path
 
-    download_url = url_for('static', filename=f'config-{current_time}.cfg')
-    return jsonify({'status': True, 'download_url': download_url})
-    
 UPLOADS_FOLDER = 'uploads'
 
 def handle_upload(file):
