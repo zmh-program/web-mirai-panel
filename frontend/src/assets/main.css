@@ -1,7 +1,6 @@
 @import './base.css';
 
 #app {
-  padding: 2rem;
   font-weight: normal;
 }
 
@@ -24,4 +23,16 @@
 
 .bold {
   font-weight: bold;
+}
+
+.el-menu {
+  border-radius: 0 0 2px 2px;
+}
+
+.el-header {
+  --el-header-padding: 0 2px;
+}
+
+.el-main {
+  --el-main-padding: 2px;
 }
