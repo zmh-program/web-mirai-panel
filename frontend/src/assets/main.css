@@ -10,3 +10,18 @@
   color: hsla(160, 100%, 37%, 1);
   transition: 0.4s;
 }
+
+.card {
+  width: 100%;
+  min-width: 280px;
+  height: max-content;
+  min-height: 120px;
+}
+
+.link {
+  transform: translateY(-3px);
+}
+
+.bold {
+  font-weight: bold;
+}
