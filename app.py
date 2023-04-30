@@ -2,7 +2,7 @@ import toml
 from gevent.pywsgi import WSGIServer
 from gevent import monkey
 from geventwebsocket.handler import WebSocketHandler
-from flask import Flask, request, jsonify, url_for
+from flask import Flask, request, jsonify, url_for, render_template
 from flask_socketio import SocketIO, emit
 from utils import (
     GLOBAL_CONFIG,
@@ -15,7 +15,7 @@ from docker import DockerClient
 
 monkey.patch_all()
 
-app = Flask(__name__, template_folder='dist')
+app = Flask(__name__, template_folder='dist', static_folder='dist', static_url_path='')
 socketio = SocketIO(app, async_mode='gevent')
 
 client = DockerClient(base_url='unix://var/run/docker.sock')
@@ -32,6 +32,11 @@ def handle_command_input():
 def handle_command_input_socket(command):
     for output in execute_command(command):
         emit('command_output', output)
+
+
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 
 @app.route('/api/upload', methods=['POST'])
@@ -58,7 +63,7 @@ def save_chat():
     path = save_conf(request.json, "chat.bak.cfg")
     return jsonify({
         "status": True,
-        "download_url":  url_for("static", filename=path),
+        "download_url": url_for("static", filename=path),
     })
 
 
@@ -68,7 +73,7 @@ def save_ai():
     path = save_conf(request.json, "ai.bak.cfg")
     return jsonify({
         "status": True,
-        "download_url":  url_for("static", filename=path),
+        "download_url": url_for("static", filename=path),
     })
 
 
@@ -78,7 +83,7 @@ def save_other():
     path = save_conf(request.json, "other.bak.cfg")
     return jsonify({
         "status": True,
-        "download_url":  url_for("static", filename=path),
+        "download_url": url_for("static", filename=path),
     })
 
 
