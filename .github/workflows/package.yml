@@ -38,7 +38,7 @@ jobs:
               upload_url: releases[0].upload_url,
             }
 
-      - run: echo ${{ steps.latest_release.outputs.upload_url }}
+      - run: echo ${{ steps.latest.outputs.upload_url }}
 
       - name: Upload Package
         uses: actions/upload-release-asset@v1.0.2
