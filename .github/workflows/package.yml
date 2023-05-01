@@ -34,8 +34,10 @@ jobs:
               repo: context.repo.repo,
               per_page: 1,
             });
+            const upload_url = releases[0].upload_url;
+            console.log(`Get url of the latest release: ${upload_url}.`);
             return {
-              upload_url: releases[0].upload_url,
+              upload_url,
             }
 
       - name: Upload Package
