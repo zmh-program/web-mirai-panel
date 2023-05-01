@@ -1,6 +1,7 @@
 <script setup lang='ts'>
 import { reactive, ref } from 'vue'
 import type { Ref } from 'vue'
+import axios from 'axios'
 
 const type: Ref<string> = ref('chatgpt');
 
@@ -58,6 +59,32 @@ const selector: Record<string, Record<string, string | number | boolean | undefi
   chatglm,
   poe,
   claude
+}
+
+
+const loader = ref(false);
+function submit() {
+  loader.value = true;
+  const data = selector[type.value];
+  axios.post('/api/save/ai', data)
+    .then(() => {
+      loader.value = false;
+      // @ts-ignore
+      // eslint-disable-next-line no-undef
+      ElMessage({
+        type: 'success',
+        message: `保存成功！`,
+      });
+    })
+    .catch(() => {
+      loader.value = false;
+      // @ts-ignore
+      // eslint-disable-next-line no-undef
+      ElMessage({
+        type: 'error',
+        message: `保存时出错！`,
+      });
+    })
 }
 </script>
 
@@ -147,5 +174,10 @@ const selector: Record<string, Record<string, string | number | boolean | undefi
         <el-link type='primary'>Claude 文档</el-link>
       </a>
     </el-form>
+    <el-button type='primary' plain class='save-button' @click='submit' :disabled='loader'>保存</el-button>
   </div>
 </template>
+
+<style>
+@import "@/assets/style/main.css";
+</style>

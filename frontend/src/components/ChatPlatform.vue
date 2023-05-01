@@ -1,7 +1,6 @@
 <script setup lang='ts'>
 import { reactive, ref } from 'vue'
 import type { Ref } from 'vue'
-import { Loader, Message } from '@/assets/script/utils'
 import axios from 'axios'
 
 const type: Ref<string> = ref('cqhttp');
@@ -52,19 +51,28 @@ const selector: Record<string, Record<string, string | number | boolean>> = {
   wecom
 }
 
-const loader = new Loader(), loading = loader.ref;
+const loader = ref(false);
 function submit() {
-  loader.trigger();
+  loader.value = true;
   const data = selector[type.value];
-  console.log(data);
   axios.post('/api/save/chat', data)
-    .then(response => {
-      loader.close();
-      Message('success', `保存时出错！ (status: ${error.response.status})`);
+    .then(() => {
+      loader.value = false;
+      // @ts-ignore
+      // eslint-disable-next-line no-undef
+      ElMessage({
+        type: 'success',
+        message: `保存成功！`,
+      });
     })
-    .catch(error => {
-      loader.close();
-      Message('error', `保存时出错！ (status: ${error.response.status})`);
+    .catch(() => {
+      loader.value = false;
+      // @ts-ignore
+      // eslint-disable-next-line no-undef
+      ElMessage({
+        type: 'error',
+        message: `保存时出错！`,
+      });
     })
 }
 </script>
@@ -142,10 +150,7 @@ function submit() {
        <el-link type='primary'>企业微信 文档</el-link>
      </a>
    </el-form>
-   <el-button type='primary' plain class='save-button' @click='submit'>
-     <template v-if='loading'><el-icon class='is-loading'><loader /></el-icon>&nbsp;</template>
-     保存
-   </el-button>
+   <el-button type='primary' plain class='save-button' @click='submit' :disabled='loader'>保存</el-button>
  </div>
 </template>
 
