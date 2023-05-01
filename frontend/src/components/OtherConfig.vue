@@ -130,7 +130,7 @@ function submit() {
         <el-link type='primary'>Edge TTS 文档</el-link>
       </a>
     </el-form>
-    <el-button type='primary' plain class='save-button' @click='submit' :disabled='loader && features.text_to_speech'>保存</el-button>
+    <el-button type='primary' plain class='save-button' @click='submit' :disabled='!features.text_to_speech'>保存</el-button>
   </el-card><br>
   <el-card>
     <h3><el-checkbox v-model='features.sdwebui' />&nbsp;&nbsp;🍒 AI 画图 (Stable Diffusion)</h3><br>
