@@ -3,17 +3,17 @@ import { reactive, ref } from 'vue'
 import type { Ref } from 'vue'
 import axios from 'axios'
 
-const type: Ref<string> = ref('cqhttp');
+const type: Ref<string> = ref('onebot');
 
-const cqhttp = reactive({
-  qq: "",
-  manager_qq: "",
+const onebot = reactive({
+  qq: 0,
+  manager_qq: 0,
   host: "0.0.0.0",
   port: 8566
 })
 const mirai = reactive({
-  qq: "",
-  manager_qq: "",
+  qq: 0,
+  manager_qq: 0,
   key: "1234567890",
   reverse_host: "0.0.0.0",
   reverse_port: 8566,
@@ -43,7 +43,7 @@ const wecom = reactive({
 })
 
 const selector: Record<string, Record<string, string | number | boolean>> = {
-  cqhttp,
+  onebot,
   mirai,
   telegram,
   discord,
@@ -80,7 +80,7 @@ function submit() {
 
 <template>
  <el-radio-group v-model='type'>
-   <el-radio label='cqhttp'>OneBot (CQHttp)</el-radio>
+   <el-radio label='onebot'>OneBot (CQHttp)</el-radio>
    <el-radio label='mirai'>Mirai</el-radio>
    <el-radio label='telegram'>Telegram</el-radio>
    <el-radio label='discord'>Discord</el-radio>
@@ -89,7 +89,7 @@ function submit() {
  </el-radio-group>
  <br><br>
  <el-alert type='info' v-if='type == "mirai"' :closable='false' show-icon>
-   推荐使用&nbsp;<el-link class='link' type='primary' @click='type = "cqhttp"'>CQHttp</el-link>
+   推荐使用&nbsp;<el-link class='link' type='primary' @click='type = "onebot"'>CQHttp</el-link>
  </el-alert>
  <el-alert type='info' v-else-if='type == "wechat"' :closable='false' show-icon>
    我们建议将本项目部署在国外服务器上，减少网络错误发生的概率。<br>
@@ -97,11 +97,11 @@ function submit() {
  </el-alert>
  <br>
  <div>
-   <el-form :model='cqhttp' v-if='type == "cqhttp"'>
-     <el-form-item label='机器人QQ号'><el-input placeholder='请修改为你机器人的QQ号' v-model='cqhttp.qq' /></el-form-item>
-     <el-form-item label='管理员QQ号'><el-input placeholder='请修改为机器人管理员的QQ号' v-model='cqhttp.manager_qq' /></el-form-item>
-     <el-form-item label='CQHttp 主机'><el-input v-model='cqhttp.host' /></el-form-item>
-     <el-form-item label='CQHttp 端口'><el-input v-model='cqhttp.port' /></el-form-item>
+   <el-form :model='onebot' v-if='type == "onebot"'>
+     <el-form-item label='机器人QQ号'><el-input placeholder='请修改为你机器人的QQ号' v-model='onebot.qq' /></el-form-item>
+     <el-form-item label='管理员QQ号'><el-input placeholder='请修改为机器人管理员的QQ号' v-model='onebot.manager_qq' /></el-form-item>
+     <el-form-item label='CQHttp 主机'><el-input v-model='onebot.host' /></el-form-item>
+     <el-form-item label='CQHttp 端口'><el-input v-model='onebot.port' /></el-form-item>
      <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/dui-jie-liao-tian-ping-tai/dui-jie-onebot-gocqhttp' target='_blank'>
        <el-link type='primary'>OneBot 文档</el-link>
      </a>
