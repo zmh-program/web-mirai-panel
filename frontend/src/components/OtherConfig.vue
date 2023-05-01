@@ -47,8 +47,14 @@ function submit() {
   loader.value = true;
   const data: Record<string, Record<string, any>> = {};
   if (features.text_to_image) data['text_to_image'] = text_to_image;
-  if (features.text_to_speech) data['text_to_speech'] = text_to_speech;
   if (features.sdwebui) data['sdwebui'] = sdwebui;
+  if (features.text_to_speech) {
+    data['text_to_speech'] = text_to_speech;
+    switch (text_to_speech.engine) {
+      case 'azure': data['azure'] = azure; break;
+      case 'vits': data['vits'] = vits; break;
+    }
+  }
 
 
   axios.post('/api/save/other', data)
