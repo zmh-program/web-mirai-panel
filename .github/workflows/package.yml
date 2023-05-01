@@ -34,3 +34,5 @@ jobs:
           asset_path: ./package.zip
           asset_name: package.zip
           asset_content_type: application/zip
+        env:
+            GITHUB_TOKEN: ${{ secrets.TOKEN }}
