@@ -25,7 +25,7 @@ jobs:
 
       - name: Zip
         run: |
-          zip package.zip ./* -x "frontend/*"
+          zip -r package.zip ./* -x "frontend/*"
 
       - name: Upload Package
         uses: actions/upload-release-asset@v1.0.2
