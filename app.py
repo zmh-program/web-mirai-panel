@@ -5,6 +5,7 @@ from flask import Flask, request, jsonify, url_for, render_template
 from flask_socketio import SocketIO, emit
 from utils import (
     GLOBAL_CONFIG,
+    clean_config,
     execute_command,
     handle_upload,
     read_conf,
@@ -56,7 +57,7 @@ def load_config():
 @app.route("/api/save/chat", methods=["POST"])
 def save_chat():
     """保存 chat 配置"""
-    path = save_conf("chat.bak.cfg", request.json)
+    path = save_conf("chat.bak.cfg", clean_config(request.json))
     return jsonify({
         "status": True,
         "download_url": url_for("static", filename=path),
@@ -66,7 +67,7 @@ def save_chat():
 @app.route("/api/save/ai", methods=["POST"])
 def save_ai():
     """保存 ai 配置"""
-    path = save_conf("ai.bak.cfg", request.json)
+    path = save_conf("ai.bak.cfg", clean_config(request.json))
     return jsonify({
         "status": True,
         "download_url": url_for("static", filename=path),
@@ -76,7 +77,7 @@ def save_ai():
 @app.route("/api/save/other", methods=["POST"])
 def save_other():
     """保存其他配置"""
-    path = save_conf("other.bak.cfg", request.json)
+    path = save_conf("other.bak.cfg", clean_config(request.json))
     return jsonify({
         "status": True,
         "download_url": url_for("static", filename=path),

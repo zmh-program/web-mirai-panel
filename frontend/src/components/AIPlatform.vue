@@ -3,10 +3,10 @@ import { reactive, ref } from 'vue'
 import type { Ref } from 'vue'
 import axios from 'axios'
 
-const type: Ref<string> = ref('chatgpt');
+const type: Ref<string> = ref('openai');
 
 
-const chatgpt = reactive({
+const openai = reactive({
   mode: "web",
   access_token: "",
   browserless_endpoint: "https://chatgpt-proxy.lss233.com/api/",  // outside account
@@ -15,8 +15,6 @@ const chatgpt = reactive({
   proxy: "",
   api_key: "",
   api_endpoint: "https://api.openai.com/v1"  // outside account
-  // plus: true,
-  // model: "",
 })
 const bing = reactive({
   cookie_content: '',  // 注意单引号
@@ -53,7 +51,7 @@ const claude = reactive({
 })
 
 const selector: Record<string, Record<string, string | number | boolean | undefined>> = {
-  chatgpt,
+  openai,
   bing,
   bard,
   chatglm,
@@ -91,7 +89,7 @@ function submit() {
 
 <template>
   <el-radio-group v-model='type'>
-    <el-radio label='chatgpt'>chatGPT</el-radio>
+    <el-radio label='openai'>chatGPT</el-radio>
     <el-radio label='bing'>New Bing</el-radio>
     <el-radio label='bard'>Google Bard</el-radio>
     <el-radio label='yiyan'>文心一言</el-radio>
@@ -102,24 +100,24 @@ function submit() {
   <div>
     <template v-if='type == "bard"'><el-alert type='warning' :closable='false' show-icon>Bard 目前仅允许美国的 IP 访问，所以你很有可能需要设置代理。</el-alert><br></template>
     <template v-else-if='type == "yiyan"'><el-alert type='warning' :closable='false' show-icon>请注意：该方法有封号风险(但是过一段时间就会解封)，具体原因未知，请自行取舍。</el-alert><br></template>
-    <el-form :model='chatgpt' v-if='type == "chatgpt"'>
+    <el-form :model='openai' v-if='type == "openai"'>
       <el-form-item label='接入模式'>
-        <el-radio-group v-model='chatgpt.mode'>
+        <el-radio-group v-model='openai.mode'>
           <el-radio-button label='web'>网页版</el-radio-button>
           <el-radio-button label='api'>API版</el-radio-button>
         </el-radio-group>
       </el-form-item>
-      <template v-if='chatgpt.mode == "web"'>
-        <el-form-item label='Token'><el-input placeholder='ey********' v-model='chatgpt.access_token' /></el-form-item>
-        <el-form-item label='接入点'><el-input placeholder='网页版 ChatGPT 接入点' v-model='chatgpt.browserless_endpoint' /></el-form-item>
-        <el-form-item label='会话标题'><el-input placeholder='qq-{session_id}' v-model='chatgpt.title_pattern' /></el-form-item>
-        <el-form-item label='对话记录自动删除'><el-switch v-model='chatgpt.auto_remove_old_conversations' /></el-form-item>
+      <template v-if='openai.mode == "web"'>
+        <el-form-item label='Token'><el-input placeholder='ey********' v-model='openai.access_token' /></el-form-item>
+        <el-form-item label='接入点'><el-input placeholder='网页版 ChatGPT 接入点' v-model='openai.browserless_endpoint' /></el-form-item>
+        <el-form-item label='会话标题'><el-input placeholder='qq-{session_id}' v-model='openai.title_pattern' /></el-form-item>
+        <el-form-item label='对话记录自动删除'><el-switch v-model='openai.auto_remove_old_conversations' /></el-form-item>
       </template>
       <template v-else>
-        <el-form-item label='API Key'><el-input placeholder='sk-*****' v-model='chatgpt.api_key' /></el-form-item>
-        <el-form-item label='接入点'><el-input placeholder='API版 ChatGPT 接入点' v-model='chatgpt.api_endpoint' /></el-form-item>
+        <el-form-item label='API Key'><el-input placeholder='sk-*****' v-model='openai.api_key' /></el-form-item>
+        <el-form-item label='接入点'><el-input placeholder='API版 ChatGPT 接入点' v-model='openai.api_endpoint' /></el-form-item>
       </template>
-      <el-form-item label='Proxy'><el-input placeholder='可选, 留空默认系统设置' v-model='chatgpt.proxy' /></el-form-item>
+      <el-form-item label='Proxy'><el-input placeholder='可选, 留空默认系统设置' v-model='openai.proxy' /></el-form-item>
       <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/jie-ru-ai-ping-tai/jie-ru-openai-de-chatgpt' target='_blank'>
         <el-link type='primary'>chatGPT 文档</el-link>
       </a>

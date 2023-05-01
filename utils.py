@@ -13,6 +13,14 @@ PART_CONFIGS = [
 ]
 
 
+def clean_config(data: dict) -> dict:
+    for key, value in data.items():
+        condition = value.strip() if isinstance(value, str) else value
+        if not condition:
+            del data[key]
+    return data
+
+
 def execute_command(command: str) -> Generator[str, None, None]:
     process = Popen(command, stdout=PIPE, stderr=STDOUT, shell=True, text=True, bufsize=1)
     for line in process.stdout:
