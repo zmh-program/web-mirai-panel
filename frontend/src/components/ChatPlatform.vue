@@ -54,7 +54,8 @@ const selector: Record<string, Record<string, string | number | boolean>> = {
 const loader = ref(false);
 function submit() {
   loader.value = true;
-  const data = selector[type.value];
+  const data: Record<string, Record<string, any>> = {};
+  data[type.value] = selector[type.value];
   axios.post('/api/save/chat', data)
     .then(() => {
       loader.value = false;
