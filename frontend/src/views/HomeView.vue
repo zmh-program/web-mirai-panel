@@ -21,5 +21,5 @@ const collapse: Ref<string[]> = ref(['chat', 'ai']);
 </template>
 
 <style>
-@import "@/assets/main.css";
+@import "@/assets/style/main.css";
 </style>

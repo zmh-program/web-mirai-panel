@@ -1,7 +1,8 @@
-@import './base.css';
+@import 'base.css';
 
 #app {
   font-weight: normal;
+  padding: 0 2px;
 }
 
 .green {
@@ -35,4 +36,10 @@
 
 .el-main {
   --el-main-padding: 2px;
+}
+
+.save-button {
+  left: 50%;
+  right: 50%;
+  transform: translateX(-50%);
 }

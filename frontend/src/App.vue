@@ -3,7 +3,7 @@ import { RouterView } from 'vue-router'
 </script>
 
 <template>
-  <el-container>
+  <el-container class='container'>
     <el-header>
       <el-menu mode='horizontal'>
         <el-menu-item><img src='/favicon.ico' alt='' style='width: 24px'>&nbsp;ChatGPT for QQ</el-menu-item>
@@ -17,3 +17,11 @@ import { RouterView } from 'vue-router'
     </el-container>
   </el-container>
 </template>
+
+<style scoped>
+.container {
+    max-width: 864px;
+    margin: 0 auto;
+    gap: 2px;
+}
+</style>

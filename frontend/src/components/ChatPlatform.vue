@@ -1,6 +1,8 @@
 <script setup lang='ts'>
 import { reactive, ref } from 'vue'
 import type { Ref } from 'vue'
+import { Loader, Message } from '@/assets/script/utils'
+import axios from 'axios'
 
 const type: Ref<string> = ref('cqhttp');
 
@@ -48,6 +50,22 @@ const selector: Record<string, Record<string, string | number | boolean>> = {
   discord,
   wechat,
   wecom
+}
+
+const loader = new Loader(), loading = loader.ref;
+function submit() {
+  loader.trigger();
+  const data = selector[type.value];
+  console.log(data);
+  axios.post('/api/save/chat', data)
+    .then(response => {
+      loader.close();
+      Message('success', `保存时出错！ (status: ${error.response.status})`);
+    })
+    .catch(error => {
+      loader.close();
+      Message('error', `保存时出错！ (status: ${error.response.status})`);
+    })
 }
 </script>
 
@@ -124,9 +142,13 @@ const selector: Record<string, Record<string, string | number | boolean>> = {
        <el-link type='primary'>企业微信 文档</el-link>
      </a>
    </el-form>
+   <el-button type='primary' plain class='save-button' @click='submit'>
+     <template v-if='loading'><el-icon class='is-loading'><loader /></el-icon>&nbsp;</template>
+     保存
+   </el-button>
  </div>
 </template>
 
 <style>
-@import "@/assets/main.css";
+@import "@/assets/style/main.css";
 </style>

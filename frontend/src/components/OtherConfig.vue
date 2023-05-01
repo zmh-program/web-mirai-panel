@@ -115,5 +115,5 @@ const text_to_image = reactive({
 </template>
 
 <style>
-@import "@/assets/main.css";
+@import "@/assets/style/main.css";
 </style>

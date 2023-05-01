@@ -1,12 +1,16 @@
 import os
+import toml
 from typing import Generator
 from subprocess import Popen, PIPE, STDOUT
 
 UPLOADS_FOLDER = 'uploads'
 CONFIG_FOLDER = 'config'
 GLOBAL_CONFIG = 'config.cfg'
-PART_CONFIGS = ["ai", "chat", "other"]
-PART_CONFIGS_PATH = [conf + "bak.cfg" for conf in PART_CONFIGS]  # ["ai.bak.cfg", ...]
+PART_CONFIGS = [
+    "ai.bak.cfg",
+    "chat.bak.cfg",
+    "other.bak.cfg",
+]
 
 
 def execute_command(command: str) -> Generator[str, None, None]:
@@ -17,15 +21,15 @@ def execute_command(command: str) -> Generator[str, None, None]:
     process.wait()
 
 
-def read_conf(filename: str) -> str:
+def read_conf(filename: str) -> dict:
     path = os.path.join(CONFIG_FOLDER, filename)
     if os.path.isfile(path):
         with open(path, "r") as fp:
-            return fp.read()
-    return ""
+            return toml.load(fp)
+    return {}
 
 
-def save_conf(filename: str, data: str, override=True) -> str:
+def save_conf(filename: str, data: dict, override=True) -> str:
     """
     保存配置文件
     :param filename: 配置文件名
@@ -35,9 +39,9 @@ def save_conf(filename: str, data: str, override=True) -> str:
     """
 
     path = os.path.join(CONFIG_FOLDER, filename)
-    if os.path.isfile(path) and filename in [*PART_CONFIGS_PATH, GLOBAL_CONFIG]:
+    if filename in [*PART_CONFIGS, GLOBAL_CONFIG]:
         with open(path, "w") as fp:
-            fp.write(data)
+            toml.dump(data, fp)
         if override is True:
             save_global_conf()
     return path
@@ -47,7 +51,7 @@ def save_global_conf() -> str:
     """拼接文件并写入 config.cfg"""
     return save_conf(
         GLOBAL_CONFIG,
-        "".join(tuple(map(read_conf, PART_CONFIGS_PATH))),
+        {k: v for conf in PART_CONFIGS for k, v in read_conf(conf).items()},
         override=False,  # 防止递归
     )
 

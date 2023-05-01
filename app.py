@@ -1,4 +1,3 @@
-import toml
 from gevent.pywsgi import WSGIServer
 from gevent import monkey
 from geventwebsocket.handler import WebSocketHandler
@@ -51,16 +50,13 @@ def handle_uploaded_file():
 def load_config():
     """读取全局配置并加载toml数据"""
     data = read_conf(GLOBAL_CONFIG)
-    if data:
-        return jsonify({'status': True, 'data': toml.load(data)})
-    else:
-        return jsonify({'status': False})
+    return jsonify({'status': True, 'data': data} if data else {'status': False})
 
 
 @app.route("/api/save/chat", methods=["POST"])
 def save_chat():
     """保存 chat 配置"""
-    path = save_conf(request.json, "chat.bak.cfg")
+    path = save_conf("chat.bak.cfg", request.json)
     return jsonify({
         "status": True,
         "download_url": url_for("static", filename=path),
@@ -70,7 +66,7 @@ def save_chat():
 @app.route("/api/save/ai", methods=["POST"])
 def save_ai():
     """保存 ai 配置"""
-    path = save_conf(request.json, "ai.bak.cfg")
+    path = save_conf("ai.bak.cfg", request.json)
     return jsonify({
         "status": True,
         "download_url": url_for("static", filename=path),
@@ -80,7 +76,7 @@ def save_ai():
 @app.route("/api/save/other", methods=["POST"])
 def save_other():
     """保存其他配置"""
-    path = save_conf(request.json, "other.bak.cfg")
+    path = save_conf("other.bak.cfg", request.json)
     return jsonify({
         "status": True,
         "download_url": url_for("static", filename=path),
