@@ -23,12 +23,10 @@ jobs:
           npm install
           npm run release
 
-      - run: ls -R ./dist
-
       - name: Upload Package
         uses: actions/upload-release-asset@v1.0.2
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./dist/*
+          asset_path: ./dist/
           asset_name: package.zip
           asset_content_type: application/zip
