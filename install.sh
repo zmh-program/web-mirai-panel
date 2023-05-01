@@ -9,7 +9,7 @@ else
     exit 1
 fi
 
-# 安装 Python、pip、wget 和 tar
+# 安装 Python、pip、wget 和 unzip
 install_package() {
     package=$1
     if ! command -v $package &> /dev/null; then
@@ -30,12 +30,12 @@ install_package() {
 install_package "python3"
 install_package "python3-pip"
 install_package "wget"
-install_package "tar"
+install_package "zip"
 
-# 下载并解压 web-chatgpt-build.tar.gz
-wget -O web-chatgpt-build.tar.gz "https://example.com/tar.gz"
+# 下载并解压 web-chatgpt-build.zip
+wget -O web-chatgpt-build.zip "https://github.com/zmh-program/web-chatgpt-qq-bot/releases/download/0.1/package.zip"
 mkdir -p web-chatgpt
-tar -xzf web-chatgpt-build.tar.gz -C web-chatgpt
+unzip web-chatgpt-build.zip -d web-chatgpt
 
 # 安装 requirements.txt
 pip3 install -r web-chatgpt/requirements.txt
