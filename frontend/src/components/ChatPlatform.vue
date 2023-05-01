@@ -8,35 +8,35 @@ const type: Ref<string> = ref('onebot');
 const onebot = reactive({
   qq: 0,
   manager_qq: 0,
-  host: "0.0.0.0",
-  port: 8566
+  reverse_ws_host: "0.0.0.0",
+  reverse_ws_port: 8566
 })
 const mirai = reactive({
   qq: 0,
   manager_qq: 0,
   key: "1234567890",
-  reverse_host: "0.0.0.0",
-  reverse_port: 8566,
+  reverse_ws_host: "0.0.0.0",
+  reverse_ws_port: 8554,
 })
 const telegram = reactive({
-  token: "",
+  bot_token: "",
   proxy: "",
-  manager_chat: "1234567890"
+  manager_chat: 0
 })
 const discord = reactive({
-  token: ""
+  bot_token: ""
 })
-const wechat = reactive({
+const http = reactive({
   host: "0.0.0.0",
   port: 8234,
   debug: false
 })
 const wecom = reactive({
   host: "0.0.0.0",
-  port: 8234,
+  port: 5001,
   debug: false,
   corp_id: "",
-  agent_id: "",
+  agent_id: 0,
   secret: "",
   token: "",
   encoding_aes_key: ""
@@ -47,7 +47,7 @@ const selector: Record<string, Record<string, string | number | boolean>> = {
   mirai,
   telegram,
   discord,
-  wechat,
+  http,
   wecom
 }
 
@@ -84,14 +84,14 @@ function submit() {
    <el-radio label='mirai'>Mirai</el-radio>
    <el-radio label='telegram'>Telegram</el-radio>
    <el-radio label='discord'>Discord</el-radio>
-   <el-radio label='wechat'>个人微信</el-radio>
+   <el-radio label='http'>个人微信</el-radio>
    <el-radio label='wecom'>企业微信</el-radio>
  </el-radio-group>
  <br><br>
  <el-alert type='info' v-if='type == "mirai"' :closable='false' show-icon>
    推荐使用&nbsp;<el-link class='link' type='primary' @click='type = "onebot"'>CQHttp</el-link>
  </el-alert>
- <el-alert type='info' v-else-if='type == "wechat"' :closable='false' show-icon>
+ <el-alert type='info' v-else-if='type == "http"' :closable='false' show-icon>
    我们建议将本项目部署在国外服务器上，减少网络错误发生的概率。<br>
    Docker 用户别忘了将此处配置中的<span class='bold'>端口号</span>映射出来，以便被访问到。
  </el-alert>
@@ -100,8 +100,8 @@ function submit() {
    <el-form :model='onebot' v-if='type == "onebot"'>
      <el-form-item label='机器人QQ号'><el-input placeholder='请修改为你机器人的QQ号' v-model='onebot.qq' /></el-form-item>
      <el-form-item label='管理员QQ号'><el-input placeholder='请修改为机器人管理员的QQ号' v-model='onebot.manager_qq' /></el-form-item>
-     <el-form-item label='CQHttp 主机'><el-input v-model='onebot.host' /></el-form-item>
-     <el-form-item label='CQHttp 端口'><el-input v-model='onebot.port' /></el-form-item>
+     <el-form-item label='CQHttp 主机'><el-input v-model='onebot.reverse_ws_host' /></el-form-item>
+     <el-form-item label='CQHttp 端口'><el-input v-model='onebot.reverse_ws_port' /></el-form-item>
      <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/dui-jie-liao-tian-ping-tai/dui-jie-onebot-gocqhttp' target='_blank'>
        <el-link type='primary'>OneBot 文档</el-link>
      </a>
@@ -110,14 +110,14 @@ function submit() {
      <el-form-item label='机器人QQ号'><el-input placeholder='请修改为你机器人的QQ号' v-model='mirai.qq' /></el-form-item>
      <el-form-item label='管理员QQ号'><el-input placeholder='请修改为机器人管理员的QQ号' v-model='mirai.manager_qq' /></el-form-item>
      <el-form-item label='Mirai API Key'><el-input placeholder='verifyKey' v-model='mirai.key' /></el-form-item>
-     <el-form-item label='Mirai 主机'><el-input v-model='mirai.reverse_host' /></el-form-item>
-     <el-form-item label='Mirai 端口'><el-input v-model='mirai.reverse_port' /></el-form-item>
+     <el-form-item label='Mirai 主机'><el-input v-model='mirai.reverse_ws_host' /></el-form-item>
+     <el-form-item label='Mirai 端口'><el-input v-model='mirai.reverse_ws_port' /></el-form-item>
      <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/dui-jie-liao-tian-ping-tai/dui-jie-mirai' target='_blank'>
        <el-link type='primary'>Mirai 文档</el-link>
      </a>
    </el-form>
    <el-form :model='telegram' v-else-if='type == "telegram"'>
-     <el-form-item label='Bot Token'><el-input placeholder='你的 Bot token' v-model='telegram.token' /></el-form-item>
+     <el-form-item label='Bot Token'><el-input placeholder='你的 Bot token' v-model='telegram.bot_token' /></el-form-item>
      <el-form-item label='Proxy'><el-input placeholder='可选, 留空默认系统设置' v-model='telegram.proxy' /></el-form-item>
      <el-form-item label='Chat ID'><el-input placeholder='管理员的 chat id' v-model='telegram.manager_chat' /></el-form-item>
      <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/dui-jie-liao-tian-ping-tai/dui-jie-telegram' target='_blank'>
@@ -125,15 +125,15 @@ function submit() {
      </a>
    </el-form>
    <el-form :model='discord' v-else-if='type == "discord"'>
-     <el-form-item label='Bot Token'><el-input placeholder='Discord 机器人的 token' v-model='discord.token' /></el-form-item>
+     <el-form-item label='Bot Token'><el-input placeholder='Discord 机器人的 token' v-model='discord.bot_token' /></el-form-item>
      <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/dui-jie-liao-tian-ping-tai/dui-jie-discord' target='_blank'>
        <el-link type='primary'>Discord 文档</el-link>
      </a>
    </el-form>
-   <el-form :model='wechat' v-else-if='type == "wechat"'>
-     <el-form-item label='主机名'><el-input placeholder='服务端开放的主机名' v-model='wechat.host' /></el-form-item>
-     <el-form-item label='端口'><el-input placeholder='服务端开放的端口' v-model='wechat.port' /></el-form-item>
-     <el-form-item label='开启调试'><el-switch v-model='wechat.debug' /></el-form-item>
+   <el-form :model='http' v-else-if='type == "http"'>
+     <el-form-item label='主机名'><el-input placeholder='服务端开放的主机名' v-model='http.host' /></el-form-item>
+     <el-form-item label='端口'><el-input placeholder='服务端开放的端口' v-model='http.port' /></el-form-item>
+     <el-form-item label='开启调试'><el-switch v-model='http.debug' /></el-form-item>
      <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/dui-jie-liao-tian-ping-tai/dui-jie-ge-ren-wei-xin' target='_blank'>
        <el-link type='primary'>微信 文档</el-link>
      </a>
