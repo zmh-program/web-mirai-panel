@@ -23,6 +23,8 @@ jobs:
           npm install
           npm run release
 
+      - run: ls -R ./dist
+
       - name: Upload Package
         uses: actions/upload-release-asset@v1.0.2
         with:
