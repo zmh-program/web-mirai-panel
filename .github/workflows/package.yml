@@ -34,11 +34,11 @@ jobs:
               repo: context.repo.repo,
               per_page: 1,
             });
-            const upload_url = releases[0].upload_url;
-            console.log(`Get url of the latest release: ${upload_url}.`);
             return {
-              upload_url,
+              upload_url: releases[0].upload_url,
             }
+
+      - run: echo ${{ steps.latest_release.outputs.upload_url }}
 
       - name: Upload Package
         uses: actions/upload-release-asset@v1.0.2
