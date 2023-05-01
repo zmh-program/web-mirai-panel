@@ -9,6 +9,7 @@ jobs:
       matrix:
         node-version: [ 18.x ]
     steps:
+      - Checkout
       - uses: actions/checkout@v3
 
       - name: Use Node.js ${{ matrix.node-version }}
@@ -28,4 +29,3 @@ jobs:
           asset_path: ./*
           asset_name: package.zip
           asset_content_type: application/zip
-          release_id: ${{ github.event.release.id }}
