@@ -33,7 +33,7 @@ install_package "wget"
 install_package "zip"
 
 # 下载并解压 web-chatgpt-build.zip
-wget -O web-chatgpt-build.zip "https://github.com/zmh-program/web-chatgpt-qq-bot/releases/download/0.1/package.zip"
+wget -O web-chatgpt-build.zip "https://github.com/zmh-program/web-chatgpt-qq-bot/releases/download/1.0/package.zip"
 mkdir -p web-chatgpt
 unzip web-chatgpt-build.zip -d web-chatgpt
 
@@ -43,4 +43,6 @@ pip3 install -r web-chatgpt/requirements.txt
 # 在后台运行 Flask 应用
 cd web-chatgpt
 nohup python3 app.py >/dev/null 2>&1 &
-echo "Flask 应用正在后台运行"
+ip_address=$(hostname -I | awk '{print $1}')
+current_dir=$(pwd)
+echo -e "Flask 应用正在后台运行\n请前往\e[34m${ip_address}:5000\e[0m进行访问\n请自行开放\e[33m5000\e[0m端口\n生成的配置在${current_dir}/web-chatgpt/config/config.cfg"
