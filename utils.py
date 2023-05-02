@@ -1,6 +1,7 @@
 import os
 import toml
 from typing import Generator
+from copy import deepcopy
 from subprocess import Popen, PIPE, STDOUT
 
 UPLOADS_FOLDER = 'uploads'
@@ -13,10 +14,17 @@ PART_CONFIGS = [
 ]
 
 
+def empty_field(value) -> bool:
+    return not (value.strip() if isinstance(value, str) else value)
+
+
 def clean_config(data: dict) -> dict:
-    for key, value in data.items():
-        condition = value.strip() if isinstance(value, str) else value
-        if not condition:
+    for key, value in deepcopy(data).items():
+        if isinstance(value, dict):
+            data[key] = clean_config(value)
+        if isinstance(value, (list, tuple, set)):
+            data[key] = [clean_config(element) if isinstance(element, dict) else element for element in value]
+        elif empty_field(value):
             del data[key]
     return data
 
