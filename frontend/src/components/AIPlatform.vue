@@ -77,8 +77,9 @@ const selector: Record<string, Record<string, string | number | boolean | Record
 const loader = ref(false);
 function submit() {
   loader.value = true;
-  const data: Record<string, Record<string, any>> = {};
-  data[type.value] = selector[type.value];
+  const data: Record<string, Record<string, any>> = {}, q = selector[type.value];
+  if (q.accounts !== undefined) q.accounts = [q.accounts, ];
+  data[type.value] = q;
   axios.post('/api/save/ai', data)
     .then(() => {
       loader.value = false;

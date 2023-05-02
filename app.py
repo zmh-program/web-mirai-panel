@@ -1,5 +1,6 @@
 from gevent.pywsgi import WSGIServer
 from gevent import monkey
+import logging
 from geventwebsocket.handler import WebSocketHandler
 from flask import Flask, request, jsonify, url_for, render_template
 from flask_socketio import SocketIO, emit
@@ -11,14 +12,18 @@ from utils import (
     read_conf,
     save_conf,
 )
-from docker import DockerClient
+from docker import DockerClient, errors
+logging.basicConfig(format='[%(asctime)s %(levelname)s]: %(message)s')
 
 monkey.patch_all()
 
 app = Flask(__name__, template_folder='dist', static_folder='dist', static_url_path='')
 socketio = SocketIO(app, async_mode='gevent')
 
-client = DockerClient(base_url='unix://var/run/docker.sock')
+try:
+    client = DockerClient(base_url='unix://var/run/docker.sock')
+except errors.DockerException:
+    logging.error("不支持的系统！请使用类Unix系统！")
 
 
 @app.route('/api/command', methods=['POST'])
