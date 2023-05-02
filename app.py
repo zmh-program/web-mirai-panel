@@ -2,11 +2,10 @@ from gevent.pywsgi import WSGIServer
 from gevent import monkey
 import logging
 from geventwebsocket.handler import WebSocketHandler
-from flask import Flask, request, jsonify, url_for, render_template
+from flask import Flask, request, jsonify, render_template
 from flask_socketio import SocketIO, emit
 from utils import (
     GLOBAL_CONFIG,
-    clean_config,
     execute_command,
     handle_upload,
     read_conf,

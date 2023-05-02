@@ -33,7 +33,7 @@ install_package "wget"
 install_package "zip"
 
 # 下载并解压 web-chatgpt-build.zip
-wget -O web-chatgpt-build.zip "https://github.com/zmh-program/web-chatgpt-qq-bot/releases/download/1.0/package.zip"
+wget -O web-chatgpt-build.zip "https://github.com/zmh-program/web-chatgpt-qq-bot/releases/download/1.1/package.zip"
 mkdir -p web-chatgpt
 unzip web-chatgpt-build.zip -d web-chatgpt
 

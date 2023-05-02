@@ -15,7 +15,7 @@ PART_CONFIGS = [
 
 
 def empty_field(value) -> bool:
-    return not (value.strip() if isinstance(value, str) else value)
+    return not (value.strip() if isinstance(value, str) else (True if isinstance(value, bool) else value))
 
 
 def clean_config(data: dict) -> dict:
