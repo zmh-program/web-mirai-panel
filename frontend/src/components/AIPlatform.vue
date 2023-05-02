@@ -8,8 +8,8 @@ const type: Ref<string> = ref('openai');
 
 const openai = reactive({
   mode: "web",
-  browserless_endpoint: "",
-  api_endpoint: "",
+  browserless_endpoint: "https://chatgpt-proxy.lss233.com/api/",
+  api_endpoint: "https://api.openai.com/v1",
   accounts: {
     access_token: "",
     auto_remove_old_conversations: false,
@@ -79,6 +79,7 @@ function submit() {
   loader.value = true;
   const data: Record<string, Record<string, any>> = {}, q = {...selector[type.value]};  // deep-copy
   if (q.accounts !== undefined) q.accounts = [q.accounts, ];
+  if (type.value === "openai") delete q['mode'];
   data[type.value] = q;
   axios.post('/api/save/ai', data)
     .then(() => {
@@ -124,13 +125,13 @@ function submit() {
       </el-form-item>
       <template v-if='openai.mode == "web"'>
         <el-form-item label='Token'><el-input placeholder='ey********' v-model='openai.accounts.access_token' /></el-form-item>
-        <el-form-item label='接入点'><el-input placeholder='网页版 ChatGPT 接入点 (如https://chatgpt-proxy.lss233.com/api/)' v-model='openai.browserless_endpoint' /></el-form-item>
+        <el-form-item label='接入点'><el-input placeholder='网页版 ChatGPT 接入点' v-model='openai.browserless_endpoint' /></el-form-item>
         <el-form-item label='会话标题'><el-input placeholder='qq-{session_id}' v-model='openai.accounts.title_pattern' /></el-form-item>
         <el-form-item label='对话记录自动删除'><el-switch v-model='openai.accounts.auto_remove_old_conversations' /></el-form-item>
       </template>
       <template v-else>
         <el-form-item label='API Key'><el-input placeholder='sk-*****' v-model='openai.accounts.api_key' /></el-form-item>
-        <el-form-item label='接入点'><el-input placeholder='API版 ChatGPT 接入点 (如https://api.openai.com/v1)' v-model='openai.api_endpoint' /></el-form-item>
+        <el-form-item label='接入点'><el-input placeholder='API版 ChatGPT 接入点' v-model='openai.api_endpoint' /></el-form-item>
       </template>
       <el-form-item label='Proxy'><el-input placeholder='可选, 留空默认系统设置' v-model='openai.accounts.proxy' /></el-form-item>
       <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/jie-ru-ai-ping-tai/jie-ru-openai-de-chatgpt' target='_blank'>
@@ -167,8 +168,8 @@ function submit() {
     </el-form>
     <el-form :model='chatglm' v-else-if='type == "chatglm"'>
       <el-form-item label='接入点'><el-input placeholder='ChatGLM 接口地址' v-model='chatglm.accounts.api_endpoint' /></el-form-item>
-      <el-form-item label='单会话最大轮数'><el-input placeholder='最大记忆的对话轮数 (ContextWindow大小)' v-model='chatglm.accounts.max_turns' /></el-form-item>
-      <el-form-item label='请求超时时间 (s)'><el-input placeholder='可选' v-model='chatglm.accounts.timeout' /></el-form-item>
+      <el-form-item label='单会话最大轮数'><el-input-number placeholder='最大记忆的对话轮数 (ContextWindow大小)' v-model='chatglm.accounts.max_turns' /></el-form-item>
+      <el-form-item label='请求超时时间 (s)'><el-input-number placeholder='可选' v-model='chatglm.accounts.timeout' /></el-form-item>
       <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/jie-ru-ai-ping-tai/jie-ru-chatglm' target='_blank'>
         <el-link type='primary'>ChatGLM 文档</el-link>
       </a>

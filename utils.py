@@ -57,7 +57,7 @@ def save_conf(filename: str, data: dict, override=True) -> str:
     path = os.path.join(CONFIG_FOLDER, filename)
     if filename in [*PART_CONFIGS, GLOBAL_CONFIG]:
         with open(path, "w") as fp:
-            toml.dump(data, fp)
+            toml.dump(clean_config(data), fp)
         if override is True:
             save_global_conf()
     return path

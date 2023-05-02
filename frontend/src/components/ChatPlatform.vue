@@ -98,20 +98,20 @@ function submit() {
  <br>
  <div>
    <el-form :model='onebot' v-if='type == "onebot"'>
-     <el-form-item label='机器人QQ号'><el-input placeholder='请修改为你机器人的QQ号' v-model='onebot.qq' /></el-form-item>
-     <el-form-item label='管理员QQ号'><el-input placeholder='请修改为机器人管理员的QQ号' v-model='onebot.manager_qq' /></el-form-item>
+     <el-form-item label='机器人QQ号'><el-input-number placeholder='请修改为你机器人的QQ号' v-model='onebot.qq' /></el-form-item>
+     <el-form-item label='管理员QQ号'><el-input-number placeholder='请修改为机器人管理员的QQ号' v-model='onebot.manager_qq' /></el-form-item>
      <el-form-item label='CQHttp 主机'><el-input v-model='onebot.reverse_ws_host' /></el-form-item>
-     <el-form-item label='CQHttp 端口'><el-input v-model='onebot.reverse_ws_port' /></el-form-item>
+     <el-form-item label='CQHttp 端口'><el-input-number v-model='onebot.reverse_ws_port' /></el-form-item>
      <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/dui-jie-liao-tian-ping-tai/dui-jie-onebot-gocqhttp' target='_blank'>
        <el-link type='primary'>OneBot 文档</el-link>
      </a>
    </el-form>
    <el-form :model='mirai' v-else-if='type == "mirai"'>
-     <el-form-item label='机器人QQ号'><el-input placeholder='请修改为你机器人的QQ号' v-model='mirai.qq' /></el-form-item>
-     <el-form-item label='管理员QQ号'><el-input placeholder='请修改为机器人管理员的QQ号' v-model='mirai.manager_qq' /></el-form-item>
+     <el-form-item label='机器人QQ号'><el-input-number placeholder='请修改为你机器人的QQ号' v-model='mirai.qq' /></el-form-item>
+     <el-form-item label='管理员QQ号'><el-input-number placeholder='请修改为机器人管理员的QQ号' v-model='mirai.manager_qq' /></el-form-item>
      <el-form-item label='Mirai API Key'><el-input placeholder='verifyKey' v-model='mirai.key' /></el-form-item>
      <el-form-item label='Mirai 主机'><el-input v-model='mirai.reverse_ws_host' /></el-form-item>
-     <el-form-item label='Mirai 端口'><el-input v-model='mirai.reverse_ws_port' /></el-form-item>
+     <el-form-item label='Mirai 端口'><el-input-number v-model='mirai.reverse_ws_port' /></el-form-item>
      <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/dui-jie-liao-tian-ping-tai/dui-jie-mirai' target='_blank'>
        <el-link type='primary'>Mirai 文档</el-link>
      </a>
@@ -119,7 +119,7 @@ function submit() {
    <el-form :model='telegram' v-else-if='type == "telegram"'>
      <el-form-item label='Bot Token'><el-input placeholder='你的 Bot token' v-model='telegram.bot_token' /></el-form-item>
      <el-form-item label='Proxy'><el-input placeholder='可选, 留空默认系统设置' v-model='telegram.proxy' /></el-form-item>
-     <el-form-item label='Chat ID'><el-input placeholder='管理员的 chat id' v-model='telegram.manager_chat' /></el-form-item>
+     <el-form-item label='Chat ID'><el-input-number placeholder='管理员的 chat id' v-model='telegram.manager_chat' /></el-form-item>
      <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/dui-jie-liao-tian-ping-tai/dui-jie-telegram' target='_blank'>
        <el-link type='primary'>Telegram 文档</el-link>
      </a>
@@ -131,8 +131,8 @@ function submit() {
      </a>
    </el-form>
    <el-form :model='http' v-else-if='type == "http"'>
-     <el-form-item label='主机名'><el-input placeholder='服务端开放的主机名' v-model='http.host' /></el-form-item>
-     <el-form-item label='端口'><el-input placeholder='服务端开放的端口' v-model='http.port' /></el-form-item>
+     <el-form-item label='主机名'><el-input-number placeholder='服务端开放的主机名' v-model='http.host' /></el-form-item>
+     <el-form-item label='端口'><el-input-number placeholder='服务端开放的端口' v-model='http.port' /></el-form-item>
      <el-form-item label='开启调试'><el-switch v-model='http.debug' /></el-form-item>
      <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/dui-jie-liao-tian-ping-tai/dui-jie-ge-ren-wei-xin' target='_blank'>
        <el-link type='primary'>微信 文档</el-link>
@@ -140,10 +140,10 @@ function submit() {
    </el-form>
    <el-form :model='wecom' v-else-if='type == "wecom"'>
      <el-form-item label='主机名'><el-input placeholder='服务端开放的主机名, 企业微信的回调地址, 需要能够被公网访问' v-model='wecom.host' /></el-form-item>
-     <el-form-item label='端口'><el-input placeholder='服务端开放的端口' v-model='wecom.port' /></el-form-item>
+     <el-form-item label='端口'><el-input-number placeholder='服务端开放的端口' v-model='wecom.port' /></el-form-item>
      <el-form-item label='开启调试'><el-switch v-model='wecom.debug' /></el-form-item>
      <el-form-item label='企业 ID'><el-input placeholder='ww****' v-model='wecom.corp_id' /></el-form-item>
-     <el-form-item label='Agent ID'><el-input placeholder='1000001' v-model='wecom.agent_id' /></el-form-item>
+     <el-form-item label='Agent ID'><el-input-number placeholder='1000001' v-model='wecom.agent_id' /></el-form-item>
      <el-form-item label='Secret'><el-input placeholder='abc***' v-model='wecom.secret' /></el-form-item>
      <el-form-item label='Token'><el-input placeholder='abc***' v-model='wecom.token' /></el-form-item>
      <el-form-item label='Encoding AES Key'><el-input placeholder='abc***' v-model='wecom.encoding_aes_key' /></el-form-item>

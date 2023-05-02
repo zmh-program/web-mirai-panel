@@ -26,6 +26,11 @@ except errors.DockerException:
     logging.error("不支持的系统！请使用类Unix系统！")
 
 
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+
 @app.route('/api/command', methods=['POST'])
 def handle_command_input():
     """处理命令"""
@@ -37,11 +42,6 @@ def handle_command_input():
 def handle_command_input_socket(command):
     for output in execute_command(command):
         emit('command_output', output)
-
-
-@app.route('/')
-def index():
-    return render_template('index.html')
 
 
 @app.route('/api/upload', methods=['POST'])
@@ -62,30 +62,27 @@ def load_config():
 @app.route("/api/save/chat", methods=["POST"])
 def save_chat():
     """保存 chat 配置"""
-    path = save_conf("chat.bak.cfg", clean_config(request.json))
+    save_conf("chat.bak.cfg", request.json)
     return jsonify({
         "status": True,
-        "download_url": url_for("static", filename=path),
     })
 
 
 @app.route("/api/save/ai", methods=["POST"])
 def save_ai():
     """保存 ai 配置"""
-    path = save_conf("ai.bak.cfg", clean_config(request.json))
+    save_conf("ai.bak.cfg", request.json)
     return jsonify({
         "status": True,
-        "download_url": url_for("static", filename=path),
     })
 
 
 @app.route("/api/save/other", methods=["POST"])
 def save_other():
     """保存其他配置"""
-    path = save_conf("other.bak.cfg", clean_config(request.json))
+    save_conf("other.bak.cfg", request.json)
     return jsonify({
         "status": True,
-        "download_url": url_for("static", filename=path),
     })
 
 
