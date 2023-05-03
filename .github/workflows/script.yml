@@ -12,7 +12,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Get the latest release name
+      - name: Override Latest Release
         run: |
           import requests
           token = '${{ secrets.TOKEN }}'
@@ -23,7 +23,12 @@ jobs:
             'Accept': 'application/vnd.github.v3+json'
           }
           response = requests.get(url, headers=headers)
-          data = response.json()
-          release_name = data['name']
-          print(f'The latest release name is {release_name}')
+          name = response.json().get('name')
+          
+          with open('.github/temp.sh', 'r', encoding='utf-8') as fp:
+              data = fp.read().replace('{{version}}', name)
+              with open('.github/temp.sh', 'w', encoding='utf-8') as _fp:
+                  _fp.write(data)
+                  print(data)
+
         shell: python
