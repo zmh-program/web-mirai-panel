@@ -12,10 +12,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Get release name
+      - name: Get the latest release name
         run: |
-          const core = require('@actions/core');
-          const releaseName = core.getInput('release_name') || github.event.release.name;
-          console.log(`The release name is ${releaseName}`);
-        env:
-          release_name: ${{ github.event.inputs.release_name }}
+          import requests
+          token = '${{ secrets.TOKEN }}'
+          repo = '${{ github.repository }}'
+          url = f'https://api.github.com/repos/{repo}/releases/latest'
+          headers = {
+            'Authorization': f'token {token}',
+            'Accept': 'application/vnd.github.v3+json'
+          }
+          response = requests.get(url, headers=headers)
+          data = response.json()
+          release_name = data['name']
+          print(f'The latest release name is {release_name}')
+        shell: python
