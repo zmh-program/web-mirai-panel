@@ -36,5 +36,6 @@ declare module '@vue/runtime-core' {
     OtherConfig: typeof import('./src/components/OtherConfig.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    ShellCommand: typeof import('./src/components/ShellCommand.vue')['default']
   }
 }
