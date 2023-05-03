@@ -29,6 +29,15 @@ jobs:
               data = fp.read().replace('{{version}}', name)
               with open('.github/temp.sh', 'w', encoding='utf-8') as _fp:
                   _fp.write(data)
-                  print(data)
 
         shell: python
+
+      - name: Upload Script
+        uses: actions/upload-release-asset@v1.0.2
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./.github/temp.sh
+          asset_name: install.sh
+          asset_content_type: application/x-sh
+        env:
+            GITHUB_TOKEN: ${{ secrets.TOKEN }}
