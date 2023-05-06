@@ -14,7 +14,7 @@ install_package() {
     package=$1
     if ! command -v $package &> /dev/null; then
         echo "$package 未找到，正在安装..."
-        if [[ $OS == "Ubuntu" ]] || [[ $OS == "Debian" ]]; then
+        if [[ $OS == "Ubuntu" ]] || [[ $OS == "Debian" ]] || [[ $OS == "Debian GNU/Linux" ]]; then
             sudo apt-get update
             sudo apt-get install -y $package
         elif [[ $OS == "CentOS Linux" ]]; then
