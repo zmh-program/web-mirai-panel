@@ -43,6 +43,5 @@ pip3 install -r web-chatgpt/requirements.txt
 # 在后台运行 Flask 应用
 cd web-chatgpt
 nohup python3 app.py >/dev/null 2>&1 &
-ip_address=$(hostname -I | awk '{print $1}')
 current_dir=$(pwd)
 echo -e "Flask 应用正在后台运行\n请前往\e[34mip:5000\e[0m进行访问\n请自行开放\e[33m5000\e[0m端口\n生成的配置在${current_dir}/config/config.cfg"
