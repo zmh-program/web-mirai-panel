@@ -4,13 +4,7 @@ import logging
 from geventwebsocket.handler import WebSocketHandler
 from flask import Flask, request, jsonify, render_template
 from flask_socketio import SocketIO, emit
-from utils import (
-    GLOBAL_CONFIG,
-    execute_command,
-    handle_upload,
-    read_conf,
-    save_conf,
-)
+import utils
 from docker import DockerClient, errors
 
 
@@ -87,20 +81,29 @@ def save_other():
     })
 
 
-@app.route('/api/status', methods=['POST'])
-def get_container_status():
-    """获取容器运行状态"""
-    return jsonify({
-        'status': True,
-        'data': [
-            {
-                'id': container.short_id,
-                'name': container.name,
-                'status': container.status,
-            } for container in client.containers.list(all=True)
-        ]
-    })
+@app.route('/api/info', methods=['GET'])
+def get_system():
+    '''获取系统状态'''
+    system_info = get_system_info()
+    return jsonify(system_info)
 
+@app.route('/api/status', methods=['GET'])
+def get_status():
+    '''获取部分系统状态'''
+    status_info = get_status_info()
+    return jsonify(status_info)
+
+@app.route('/api/checkerror', methods=['GET'])
+def check_error():
+    '''检查chatgpt是否有报错'''
+    container = client.containers.get(chatgpt-qq-chatgpt-1)
+    logs = container.logs(stdout=True, stderr=True, tail=200).decode('utf-8')
+
+    if 'ERROR' in logs:
+        url = upload_to_pastebin(logs)
+        return jsonify(status=False, url=url)
+
+    return jsonify(status=True)
 
 if __name__ == '__main__':
     server = WSGIServer(('0.0.0.0', 5000), app, handler_class=WebSocketHandler)
