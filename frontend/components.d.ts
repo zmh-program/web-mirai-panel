@@ -9,8 +9,9 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    AIPlatform: typeof import('./src/components/AIPlatform.vue')['default']
-    ChatPlatform: typeof import('./src/components/ChatPlatform.vue')['default']
+    AIPlatform: typeof import('./src/components/ConfigComponents/AIPlatform.vue')['default']
+    ChatPlatform: typeof import('./src/components/ConfigComponents/ChatPlatform.vue')['default']
+    Config: typeof import('./src/components/Config.vue')['default']
     ElAlert: typeof import('element-plus/es')['ElAlert']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCard: typeof import('element-plus/es')['ElCard']
@@ -36,7 +37,7 @@ declare module '@vue/runtime-core' {
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
     ElUpload: typeof import('element-plus/es')['ElUpload']
     FileUpload: typeof import('./src/components/FileUpload.vue')['default']
-    OtherConfig: typeof import('./src/components/OtherConfig.vue')['default']
+    OtherConfig: typeof import('./src/components/ConfigComponents/OtherConfig.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     ShellCommand: typeof import('./src/components/ShellCommand.vue')['default']
