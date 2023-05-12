@@ -5,7 +5,8 @@ import re
 import os
 import toml
 import psutil
-from typing import Generator ,Dict, Union
+import docker
+from typing import Generator, Dict, Union
 from copy import deepcopy
 from subprocess import Popen, PIPE, STDOUT
 
@@ -17,6 +18,7 @@ PART_CONFIGS = [
     "ai.bak.cfg",
     "chat.bak.cfg",
     "other.bak.cfg",
+    "response.bak.cfg"
 ]
 
 
@@ -83,6 +85,7 @@ def handle_upload(file) -> None:
         os.makedirs(UPLOADS_FOLDER)
     file.save(os.path.join(UPLOADS_FOLDER, file.filename))
 
+
 def upload_to_pastebin(text: str) -> str:
     # 使用request把文本上传到paste bin
     resp = requests.post('https://pastebin.mozilla.org/api/', data={
@@ -93,6 +96,7 @@ def upload_to_pastebin(text: str) -> str:
     })
     return resp.text if resp.status_code == 200 else f"上传失败：{resp.status_code}"
 
+
 def get_nickname(qq_number: int) -> str:
     # 使用request获取QQ昵称返回值
     response = requests.get(f"http://users.qzone.qq.com/fcg-bin/cgi_get_portrait.fcg?uins={qq_number}")
@@ -101,38 +105,39 @@ def get_nickname(qq_number: int) -> str:
     nickname = data[str(qq_number)][6]
     return nickname.encode('utf-8').decode('unicode_escape')
 
+
 def get_system_info() -> dict:
-    cpu_count = psutil.cpu_count()    #cpu核心
-    memory = psutil.virtual_memory()    #内存
-    total_memory = round(memory.total / BYTE_TO_GB, 2)    #总内存
-    disk = psutil.disk_usage('/')
-    total_disk = round(disk.total / BYTE_TO_GB, 2)    #总磁盘
-    system, release, version, host = platform.system(), platform.release(), platform.version(), platform.node()    #杂项
+    """获取系统信息 (常量)"""
+    cpu_count = psutil.cpu_count()  # CPU 核心
+    memory = round(psutil.virtual_memory().total / BYTE_TO_GB, 2)  # 内存
+    disk = round(psutil.disk_usage('/').total / BYTE_TO_GB, 2)  # 磁盘容量
+    system, release, version, host = platform.system(), platform.release(), platform.version(), platform.node()  # 杂项
 
-    with open('config.cfg', 'r') as file:    #读取config.cfg中的manage_qq
+    with open('config.cfg', 'r') as file:  # 读取config.cfg中的manager_qq
         config = toml.load(file)
-        qq = config.get('mirai', {}).get('manager_qq') or config.get('onebot', {}).get('manager_qq')
+        qq = (config.get('onebot', {}) or config.get('mirai', {})).get('manager_qq')
 
-    with open('gocqhttp/device.json', 'r') as file:    #读取gocqhttp的设备代号
-        config = json.load(file)
-        protocol = config.get('protocol')
-    
-    nickname = get_nickname(qq)    #昵称
+    with open('gocqhttp/device.json', 'r') as file:  # 读取gocqhttp的设备代号
+        protocol = json.load(file).get('protocol')
+
+    nickname = get_nickname(qq)  # QQ 昵称
     return {
         'cpu_count': cpu_count,
-        'total_memory': total_memory,
-        'total_disk': total_disk,
+        'memory': memory,
+        'disk': disk,
         'system': system,
         'release': release,
         'version': version,
         'host': host,
-        'nickname': nickname,
         'qq': qq,
-        'device': protocol
+        'nickname': nickname,
+        'device': protocol,
     }
 
+
 def get_status_info() -> dict:
-    # CPU使用量
+    """获取系统状态 (动态)"""
+    # CPU使用率
     cpu_percent = psutil.cpu_percent()
 
     # 磁盘容量
@@ -146,7 +151,10 @@ def get_status_info() -> dict:
     # Docker
     docker_client = docker.from_env()
     containers = docker_client.containers.list()
-    desired_container_names = ['chatgpt-qq-mirai-1', 'chatgpt-qq-gocqhttp-1', 'chatgpt-qq-watchtower-1', 'chatgpt-qq-chatgpt-1']
+    desired_container_names = [
+        'chatgpt-qq-mirai-1', 'chatgpt-qq-gocqhttp-1',
+        'chatgpt-qq-watchtower-1', 'chatgpt-qq-chatgpt-1',
+    ]
 
     status_info = {
         'cpu_percent': cpu_percent,

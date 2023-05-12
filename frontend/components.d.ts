@@ -38,6 +38,7 @@ declare module '@vue/runtime-core' {
     ElUpload: typeof import('element-plus/es')['ElUpload']
     FileUpload: typeof import('./src/components/FileUpload.vue')['default']
     OtherConfig: typeof import('./src/components/ConfigComponents/OtherConfig.vue')['default']
+    Response: typeof import('./src/components/ConfigComponents/Response.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     ShellCommand: typeof import('./src/components/ShellCommand.vue')['default']

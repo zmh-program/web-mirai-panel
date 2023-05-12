@@ -4,9 +4,8 @@ import logging
 from geventwebsocket.handler import WebSocketHandler
 from flask import Flask, request, jsonify, render_template
 from flask_socketio import SocketIO, emit
-import utils
+from utils import *
 from docker import DockerClient, errors
-
 
 logging.basicConfig(format='[%(asctime)s %(levelname)s]: %(message)s')
 
@@ -83,20 +82,18 @@ def save_other():
 
 @app.route('/api/info', methods=['GET'])
 def get_system():
-    '''获取系统状态'''
-    system_info = get_system_info()
-    return jsonify(system_info)
+    return jsonify(get_system_info())
+
 
 @app.route('/api/status', methods=['GET'])
 def get_status():
-    '''获取部分系统状态'''
-    status_info = get_status_info()
-    return jsonify(status_info)
+    return jsonify(get_status_info())
 
-@app.route('/api/checkerror', methods=['GET'])
+
+@app.route('/api/check', methods=['GET'])
 def check_error():
-    '''检查chatgpt是否有报错'''
-    container = client.containers.get(chatgpt-qq-chatgpt-1)
+    """检查chatgpt是否有报错"""
+    container = client.containers.get("chatgpt-qq-chatgpt-1")
     logs = container.logs(stdout=True, stderr=True, tail=200).decode('utf-8')
 
     if 'ERROR' in logs:
@@ -104,6 +101,7 @@ def check_error():
         return jsonify(status=False, url=url)
 
     return jsonify(status=True)
+
 
 if __name__ == '__main__':
     server = WSGIServer(('0.0.0.0', 5000), app, handler_class=WebSocketHandler)
