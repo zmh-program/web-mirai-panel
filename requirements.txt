@@ -1,7 +1,5 @@
 Flask==2.0.3
 Flask-SocketIO==5.3.3
-gevent==21.12.0
-gevent-websocket==0.10.1
 docker==5.0.3
 toml==0.10.2
 psutil==5.9.0

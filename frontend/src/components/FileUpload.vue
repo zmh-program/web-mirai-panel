@@ -16,7 +16,7 @@ const notification = function() {
 
 <template>
   <el-upload drag action="/api/upload" multiple v-model:file-list='files' :on-error='notification' method='POST'>
-    <img src='https://cdn.bootcdn.net/ajax/libs/boxicons/2.1.4/svg/solid/bxs-cloud-upload.svg' alt='Upload' width='64' height='64'>
+    <img src='@/assets/icons/upload.svg' alt='Upload' width='64' height='64'>
     <div class="el-upload__text">
       拖拽文件到此处 或者 <em>点击这里上传</em>
     </div>

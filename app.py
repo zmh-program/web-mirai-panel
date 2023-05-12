@@ -1,18 +1,14 @@
-from gevent.pywsgi import WSGIServer
-from gevent import monkey
 import logging
-from geventwebsocket.handler import WebSocketHandler
 from flask import Flask, request, jsonify, render_template
 from flask_socketio import SocketIO, emit
 from utils import *
 from docker import DockerClient, errors
 
+
 logging.basicConfig(format='[%(asctime)s %(levelname)s]: %(message)s')
 
-monkey.patch_all()
-
 app = Flask(__name__, template_folder='dist', static_folder='dist', static_url_path='')
-socketio = SocketIO(app, async_mode='gevent')
+socketio = SocketIO(app)
 
 try:
     client = DockerClient(base_url='unix://var/run/docker.sock')
@@ -104,5 +100,4 @@ def check_error():
 
 
 if __name__ == '__main__':
-    server = WSGIServer(('0.0.0.0', 5000), app, handler_class=WebSocketHandler)
-    server.serve_forever()
+    socketio.run(app)
