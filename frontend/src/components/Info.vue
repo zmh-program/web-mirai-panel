@@ -5,14 +5,14 @@ import type { Ref } from 'vue'
 
 const status: Ref<Record<string, number>> = ref({
   cpu: 0,
-  ram: 0,
-  rom: 0,
+  memory: 0,
+  disk: 0,
 })
 
 const info: Ref<Record<string, string | number | boolean | null>> = ref({
-  cpu_count: NaN,
-  disk: NaN,
-  memory: NaN,
+  cpu_count: 0,
+  disk: 0,
+  memory: 0,
   host: "未知",
   system: "未知",
   device: "暂无",
@@ -26,15 +26,15 @@ const info: Ref<Record<string, string | number | boolean | null>> = ref({
   <div class='progress-container'>
     <ProgressBar :percent='status.cpu'>
       <template v-slot:header><i class="fa fa-solid fa-microchip" /> CPU </template>
-      <template v-slot:footer>{{ info.cpu_count || "?" }} 核心</template>
+      <template v-slot:footer>{{ info.cpu_count }} 核心</template>
     </ProgressBar>
-    <ProgressBar :percent='status.ram' >
+    <ProgressBar :percent='status.memory' >
       <template v-slot:header><i class="fa fa-solid fa-memory" /> RAM </template>
-      <template v-slot:footer>2.3 / {{ info.memory || "?" }}G</template>
+      <template v-slot:footer>{{ status.memory }} / {{ info.memory }}G</template>
     </ProgressBar>
-    <ProgressBar :percent='status.rom' >
+    <ProgressBar :percent='status.disk' >
       <template v-slot:header><i class="fa fa-solid fa-hard-drive" /> ROM </template>
-      <template v-slot:footer>12 / {{ info.disk || "?" }}G</template>
+      <template v-slot:footer>{{ status.disk }} / {{ info.disk }}G</template>
     </ProgressBar>
     <el-card class='info'>
       <header><h3><i class="fa fa-solid fa-circle-info" /> 其他信息</h3></header>

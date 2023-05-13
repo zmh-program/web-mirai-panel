@@ -14,6 +14,12 @@ UPLOADS_FOLDER = 'uploads'
 CONFIG_FOLDER = 'config'
 GLOBAL_CONFIG = 'config.cfg'
 BYTE_TO_GB = 1024 ** 3
+DESIRED_CONTAINERS = [
+    'chatgpt-qq-mirai-1',
+    'chatgpt-qq-gocqhttp-1',
+    'chatgpt-qq-watchtower-1',
+    'chatgpt-qq-chatgpt-1',
+]
 PART_CONFIGS = [
     "ai.bak.cfg",
     "chat.bak.cfg",
@@ -140,37 +146,30 @@ def get_system_info() -> dict:
     }
 
 
+def convert(size: int) -> float:
+    return round(size / BYTE_TO_GB, 2)
+
+
 def get_status_info() -> dict:
     """获取系统状态 (动态)"""
-    # CPU使用率
-    cpu_percent = psutil.cpu_percent()
 
-    # 磁盘容量
-    disk = psutil.disk_usage('/')
-    used_disk, available_disk = round(disk.used / BYTE_TO_GB, 2), round(disk.free / BYTE_TO_GB, 2)
-
-    # 内存容量
-    memory = psutil.virtual_memory()
-    used_memory, available_memory = round(memory.used / BYTE_TO_GB, 2), round(memory.available / BYTE_TO_GB, 2)
+    cpu_percent = psutil.cpu_percent()  # CPU使用率
+    disk = convert(psutil.disk_usage('/').used)  # 占用磁盘容量
+    memory = convert(psutil.virtual_memory().used)  # 占用内存容量
 
     # Docker
     docker_client = docker.from_env()
     containers = docker_client.containers.list()
-    desired_container_names = [
-        'chatgpt-qq-mirai-1', 'chatgpt-qq-gocqhttp-1',
-        'chatgpt-qq-watchtower-1', 'chatgpt-qq-chatgpt-1',
-    ]
 
     status_info = {
-        'cpu_percent': cpu_percent,
-        'used_memory': used_memory,
-        'available_memory': available_memory,
-        'used_disk': used_disk,
-        'available_disk': available_disk,
+        'cpu': cpu_percent,
+        'memory': memory,
+        'disk': disk,
         'containers': [
             {'name': container.name, 'status': container.status}
-            for container in containers
-            if container.name in desired_container_names
+            for container in filter(
+                lambda container: container in DESIRED_CONTAINERS, containers,
+            )
         ],
     }
 
