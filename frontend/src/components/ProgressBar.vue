@@ -1,17 +1,40 @@
 <script setup lang='ts'>
+import { ref, watch } from 'vue'
 
+const props = defineProps<{
+  percent: number,
+}>();
+
+const colors: { level: number, color: string }[] = [
+  { level: 80, color: "rgb(240, 40, 40)" },
+  { level: 60, color: "rgb(240,100,40)" },
+  { level: 40, color: "rgb(247,223,30)" },
+  { level: 20, color: "rgb(58,178,18)" },
+  { level: 0, color: "rgb(100,100,100)" },
+];
+
+function getColor(percent: number): string {
+  for (const key of colors) {
+    const { level, color } = key;
+    if (percent >= level) return color;
+  }
+  return "rgb(100,100,100)";
+}
+
+let style = ref({});
+watch(props, () => {
+  style.value = {
+    stroke: getColor(props.percent),
+    strokeDashoffset: `calc(440px - (440px * ${props.percent} / 100))`,
+  }
+})
 </script>
 
 <template>
   <div class="percent">
-    <svg>
-      <circle class="percent-chart" stroke="transparent" cx="70" cy="70" r="70" shape-rendering="geometricPrecision" style="stroke: rgb(240, 40, 40); stroke-dashoffset: calc(57px);"></circle>
-    </svg>
+    <svg><circle class="percent-chart" stroke="transparent" cx="70" cy="70" r="70" shape-rendering="geometricPrecision" :style='style'></circle></svg>
     <div class="number">
-      <h2>
-        <span class="percent-value">87</span>
-        <span>%</span>
-      </h2>
+      <h2><span class="percent-value">{{ props.percent }}</span><span>%</span></h2>
     </div>
   </div>
 </template>
