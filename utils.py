@@ -113,14 +113,21 @@ def get_system_info() -> dict:
     disk = round(psutil.disk_usage('/').total / BYTE_TO_GB, 2)  # 磁盘容量
     system, release, version, host = platform.system(), platform.release(), platform.version(), platform.node()  # 杂项
 
-    with open('config.cfg', 'r') as file:  # 读取config.cfg中的manager_qq
-        config = toml.load(file)
-        qq = (config.get('onebot', {}) or config.get('mirai', {})).get('manager_qq')
+    try:
+        with open('config.cfg', 'r') as file:  # 读取config.cfg中的manager_qq
+            config = toml.load(file)
+            qq = (config.get('onebot', {}) or config.get('mirai', {})).get('manager_qq')
+            nickname = get_nickname(qq)  # QQ 昵称
+    except FileNotFoundError:
+        qq = None
+        nickname = "未知"
 
-    with open('gocqhttp/device.json', 'r') as file:  # 读取gocqhttp的设备代号
-        protocol = json.load(file).get('protocol')
+    try:
+        with open('gocqhttp/device.json', 'r') as file:  # 读取gocqhttp的设备代号
+            protocol = json.load(file).get('protocol')
+    except FileNotFoundError:
+        protocol = None
 
-    nickname = get_nickname(qq)  # QQ 昵称
     return {
         'cpu_count': cpu_count,
         'memory': memory,
