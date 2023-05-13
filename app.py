@@ -4,7 +4,6 @@ from flask_socketio import SocketIO, emit
 from utils import *
 from docker import DockerClient, errors
 
-
 logging.basicConfig(format='[%(asctime)s %(levelname)s]: %(message)s')
 
 app = Flask(__name__, template_folder='dist', static_folder='dist', static_url_path='')
@@ -13,7 +12,12 @@ socketio = SocketIO(app)
 try:
     client = DockerClient(base_url='unix://var/run/docker.sock')
 except errors.DockerException:
-    logging.error("不支持的系统！请使用类Unix系统！")
+    logging.error(
+        "\n无法连接 Docker！请排查以下错误: "
+        "\n\t- 是否使用类 Unix 系统 (Linux, MacOS等)"
+        "\n\t- Docker 是否已经安装且正在运行"
+        "\n\t- 使用过时的 Docker 引擎版本导致兼容问题"
+    )
 
 
 @app.route('/')
