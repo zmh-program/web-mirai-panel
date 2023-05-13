@@ -22,24 +22,41 @@ function getColor(percent: number): string {
 }
 
 let style = ref({});
-watch(props, () => {
+const refresh = () => {
   style.value = {
     stroke: getColor(props.percent),
     strokeDashoffset: `calc(440px - (440px * ${props.percent} / 100))`,
   }
-})
+};
+watch(props, refresh);
+refresh();
 </script>
 
 <template>
-  <div class="percent">
-    <svg><circle class="percent-chart" stroke="transparent" cx="70" cy="70" r="70" shape-rendering="geometricPrecision" :style='style'></circle></svg>
-    <div class="number">
-      <h2><span class="percent-value">{{ props.percent }}</span><span>%</span></h2>
+  <el-card class='progress-card'>
+    <header><h3><slot name='header' /></h3></header>
+    <div class="percent">
+      <svg>
+        <circle class="percent-chart" stroke="transparent" cx="70" cy="70" r="70" shape-rendering="geometricPrecision" :style='style'></circle>
+      </svg>
+      <div class='text'>
+        <h2><span class="percent-value">{{ props.percent }}</span>%</h2>
+        <footer><h3><slot name='footer' /></h3></footer>
+      </div>
     </div>
-  </div>
+  </el-card>
 </template>
 
 <style scoped>
+.progress-card {
+    width: max-content;
+    padding: 4px;
+}
+header h3 {
+    font-weight: bold;
+    font-family: Poppins, sans-serif;
+    text-align: center;
+}
 .percent {
     position: relative;
     left: 50%;
@@ -48,8 +65,13 @@ watch(props, () => {
     height: 150px;
     border-radius: 50%;
     margin-bottom: 20px;
+    margin-top: 6px;
 }
-.percent .number {
+.percent footer h3 {
+    top: -12px;
+    font-family: Poppins, sans-serif;
+}
+.percent .text {
     position: absolute;
     top: 0;
     left: 0;
@@ -58,16 +80,17 @@ watch(props, () => {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 }
-.percent .number h2 {
+.percent .text h2 {
     color: #1f1c2e;
     font-weight: 700;
     font-family: Poppins, sans-serif;
 }
-.percent .number h2 span.percent-value {
+.percent .text h2 span.percent-value {
     font-size: 50px;
 }
-.percent .number h2 span {
+.percent .text h2 span {
     font-size: 25px;
 }
 .percent svg {
