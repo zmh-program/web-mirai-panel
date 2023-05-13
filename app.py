@@ -21,13 +21,6 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/api/command', methods=['POST'])
-def handle_command_input():
-    """处理命令"""
-    socketio.emit('command_input', request.json.get('command'))
-    return jsonify({'status': True})
-
-
 @socketio.on('command_input')
 def handle_command_input_socket(command):
     for output in execute_command(command):

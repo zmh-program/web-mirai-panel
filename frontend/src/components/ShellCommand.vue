@@ -2,7 +2,9 @@
 import { socket } from '@/assets/script/socket'
 import { ref } from 'vue'
 import type { Ref } from 'vue'
+import Convert from 'ansi-to-html'
 
+const convert = new Convert();
 const buffer: Ref<string[]> = ref([]);
 const input: Ref<string> = ref("");
 const stamp: Ref<number | undefined> = ref(undefined);
@@ -17,25 +19,31 @@ function listener(ev: KeyboardEvent): void {
 
 function submit() {
   const data: string = input.value;
-  if (data) socket.emit("command_input", data);
-  input.value = "";
+  if (data) {
+    socket.emit("command_input", data);
+    receive(`> ${data}`);
+    input.value = "";
+  }
 }
 
-socket.on("command_output", function(data: string) {
+
+function receive(data: string) {
   const current: number = (new Date()).getTime();
   const delay: number = stamp.value === undefined ? 0 : absolute(100 - (current - stamp.value));
   stamp.value = current;
   setTimeout(() => {
     if (buffer.value.length > 25) buffer.value.shift();
-    return buffer.value.push(data);
+    return buffer.value.push(convert.toHtml(data));
   }, delay);
-})
+}
+
+socket.on("command_output", receive);
 
 </script>
 
 <template>
   <div class='console'>
-    <span v-for='(data, idx) in buffer' :key='idx'>{{ data }}</span>
+    <span v-for='(data, idx) in buffer' :key='idx' v-html='data' />
   </div><br>
   <el-form :inline='true'>
     <el-form-item style='width: calc(100% - 72px); margin-right: 12px'><el-input v-model='input' /></el-form-item>
