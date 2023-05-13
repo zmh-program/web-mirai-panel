@@ -6,7 +6,7 @@ import os
 import toml
 import psutil
 import docker
-from typing import Generator, Dict, Union
+from typing import Generator
 from copy import deepcopy
 from subprocess import Popen, PIPE, STDOUT
 
@@ -112,11 +112,15 @@ def get_nickname(qq_number: int) -> str:
     return nickname.encode('utf-8').decode('unicode_escape')
 
 
+def convert(size: int, fixed: int = 1) -> float:
+    return round(size / BYTE_TO_GB, fixed)
+
+
 def get_system_info() -> dict:
     """获取系统信息 (常量)"""
     cpu_count = psutil.cpu_count()  # CPU 核心
-    memory = round(psutil.virtual_memory().total / BYTE_TO_GB, 2)  # 内存
-    disk = round(psutil.disk_usage('/').total / BYTE_TO_GB, 2)  # 磁盘容量
+    memory = convert(psutil.virtual_memory().total)  # 内存
+    disk = convert(psutil.disk_usage('/').total, 0)  # 磁盘容量
     system, release, version, host = platform.system(), platform.release(), platform.version(), platform.node()  # 杂项
 
     try:
@@ -146,20 +150,19 @@ def get_system_info() -> dict:
     }
 
 
-def convert(size: int) -> float:
-    return round(size / BYTE_TO_GB, 2)
-
-
 def get_status_info() -> dict:
     """获取系统状态 (动态)"""
 
     cpu_percent = psutil.cpu_percent()  # CPU使用率
-    disk = convert(psutil.disk_usage('/').used)  # 占用磁盘容量
+    disk = convert(psutil.disk_usage('/').used, 0)  # 占用磁盘容量
     memory = convert(psutil.virtual_memory().used)  # 占用内存容量
 
     # Docker
-    docker_client = docker.from_env()
-    containers = docker_client.containers.list()
+    try:
+        docker_client = docker.from_env()
+        containers = docker_client.containers.list()
+    except docker.errors.DockerException:
+        containers = []
 
     status_info = {
         'cpu': cpu_percent,

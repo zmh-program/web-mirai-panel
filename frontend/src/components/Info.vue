@@ -1,15 +1,19 @@
 <script setup lang='ts'>
 import ProgressBar from '@/components/ProgressBar.vue'
 import { ref } from 'vue'
-import type { Ref } from 'vue'
+import axios from 'axios'
+import { message } from '@/assets/script/utils'
+import { socket } from '@/assets/script/socket'
 
-const status: Ref<Record<string, number>> = ref({
+const status = ref({
   cpu: 0,
   memory: 0,
+  memory_percent: 0,
   disk: 0,
+  disk_percent: 0,
 })
 
-const info: Ref<Record<string, string | number | boolean | null>> = ref({
+const info = ref({
   cpu_count: 0,
   disk: 0,
   memory: 0,
@@ -20,6 +24,27 @@ const info: Ref<Record<string, string | number | boolean | null>> = ref({
   nickname: "未知",
 })
 
+axios.get('/api/info')
+.then(res => {
+  info.value = res.data;
+})
+.catch(() => {
+  message({
+    type: 'error',
+    message: `系统信息请求失败！`,
+  });
+})
+
+socket.on("status_output", (data: Record<string, number>) => {
+  const { cpu, memory, disk } = data;
+  const memory_percent = (memory / info.value.memory) * 100, disk_percent = (disk / info.value.disk) * 100;
+  status.value = {
+    cpu,
+    memory, memory_percent,
+    disk, disk_percent,
+  }
+});
+setInterval(() => socket.emit("status_input"), 500);
 </script>
 
 <template>
@@ -28,11 +53,11 @@ const info: Ref<Record<string, string | number | boolean | null>> = ref({
       <template v-slot:header><i class="fa fa-solid fa-microchip" /> CPU </template>
       <template v-slot:footer>{{ info.cpu_count }} 核心</template>
     </ProgressBar>
-    <ProgressBar :percent='status.memory' >
+    <ProgressBar :percent='status.memory_percent' >
       <template v-slot:header><i class="fa fa-solid fa-memory" /> RAM </template>
       <template v-slot:footer>{{ status.memory }} / {{ info.memory }}G</template>
     </ProgressBar>
-    <ProgressBar :percent='status.disk' >
+    <ProgressBar :percent='status.disk_percent' >
       <template v-slot:header><i class="fa fa-solid fa-hard-drive" /> ROM </template>
       <template v-slot:footer>{{ status.disk }} / {{ info.disk }}G</template>
     </ProgressBar>

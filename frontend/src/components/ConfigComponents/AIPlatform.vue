@@ -2,6 +2,7 @@
 import { reactive, ref } from 'vue'
 import type { Ref } from 'vue'
 import axios from 'axios'
+import { message } from '@/assets/script/utils'
 
 const type: Ref<string> = ref('openai');
 
@@ -84,18 +85,14 @@ function submit() {
   axios.post('/api/save/ai', data)
     .then(() => {
       loader.value = false;
-      // @ts-ignore
-      // eslint-disable-next-line no-undef
-      ElMessage({
+      message({
         type: 'success',
         message: `保存成功！`,
       });
     })
     .catch(() => {
       loader.value = false;
-      // @ts-ignore
-      // eslint-disable-next-line no-undef
-      ElMessage({
+      message({
         type: 'error',
         message: `保存时出错！`,
       });

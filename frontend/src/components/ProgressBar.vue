@@ -40,7 +40,7 @@ refresh();
         <circle class="percent-chart" stroke="transparent" cx="70" cy="70" r="70" shape-rendering="geometricPrecision" :style='style'></circle>
       </svg>
       <div class='text'>
-        <h2><span class="percent-value">{{ props.percent }}</span>%</h2>
+        <h2><span class="percent-value">{{ props.percent.toFixed() }}</span>%</h2>
         <footer><h3><slot name='footer' /></h3></footer>
       </div>
     </div>
