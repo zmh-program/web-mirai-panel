@@ -16,9 +16,9 @@ install_package() {
         echo "$package 未找到，正在安装..."
         if [[ $OS == "Ubuntu" ]] || [[ $OS == "Debian" ]] || [[ $OS == "Debian GNU/Linux" ]]; then
             sudo apt-get update
-            sudo apt-get install -y $package
-        elif [[ $OS == "CentOS Linux" ]]; then
-            sudo yum install -y $package
+            sudo apt-get install -y "$package"
+        elif [[ $OS == "CentOS Linux" ]] || [[ $OS == "CentOS Stream" ]]; then
+            sudo yum install -y "$package"
         else
             echo "不支持的操作系统：$OS"
             exit 1
