@@ -25,6 +25,11 @@ def index():
     return render_template('index.html')
 
 
+@app.errorhandler(404)
+def error(_err):
+    return render_template('index.html'), 200
+
+
 @socketio.on('command_input')
 def handle_command_input_socket(command):
     for output in execute_command(command):
@@ -78,9 +83,9 @@ def get_system():
     return jsonify(get_system_info())
 
 
-@app.route('/api/status', methods=['GET'])
+@socketio.on('status_input')
 def get_status():
-    return jsonify(get_status_info())
+    emit('status_output', get_status_info())
 
 
 @app.route('/api/check', methods=['GET'])

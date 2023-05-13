@@ -13,7 +13,13 @@ import { RouterView } from 'vue-router'
       </el-menu>
     </el-header>
     <el-container>
-      <el-main><RouterView /></el-main>
+      <el-main>
+        <router-view v-slot="{ Component }">
+          <transition name="fade">
+            <component :is="Component" />
+          </transition>
+        </router-view>
+      </el-main>
     </el-container>
   </el-container>
 </template>
@@ -22,5 +28,19 @@ import { RouterView } from 'vue-router'
 .container {
     max-width: 864px;
     margin: 0 auto;
+}
+.fade-enter-active,
+.fade-leave-active {
+    transition: 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+    filter: blur(10px);
+}
+
+.fade-leave-to {
+    display: none;
 }
 </style>
