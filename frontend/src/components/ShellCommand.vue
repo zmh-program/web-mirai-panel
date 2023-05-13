@@ -50,6 +50,8 @@ socket.on("command_output", function(data: string) {
 }
 
 .console {
+    display: flex;
+    flex-direction: column;
     height: max-content;
     min-height: 240px;
     width: 100%;
@@ -59,7 +61,6 @@ socket.on("command_output", function(data: string) {
     font-size: 12px;
     font-family: 'Open Sans', sans-serif;
     letter-spacing: 0.01cm;
-    display: grid;
 }
 
 .console span {
