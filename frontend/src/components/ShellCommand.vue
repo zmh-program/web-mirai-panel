@@ -5,11 +5,16 @@ import type { Ref } from 'vue'
 
 const buffer: Ref<string[]> = ref([]);
 const input: Ref<string> = ref("");
+const stamp: Ref<number | undefined> = ref(undefined);
 
+function absolute(n: number): number {
+  return n <= 0 ? 0 : n;
+}
 
 function listener(ev: KeyboardEvent): void {
   if (ev.key === "Enter") submit();
 }
+
 function submit() {
   const data: string = input.value;
   if (data) socket.emit("command_input", data);
@@ -17,8 +22,13 @@ function submit() {
 }
 
 socket.on("command_output", function(data: string) {
-  if (buffer.value.length > 25) buffer.value.shift();
-  return buffer.value.push(data);
+  const current: number = (new Date()).getTime();
+  const delay: number = stamp.value === undefined ? 0 : absolute(100 - (current - stamp.value));
+  stamp.value = current;
+  setTimeout(() => {
+    if (buffer.value.length > 25) buffer.value.shift();
+    return buffer.value.push(data);
+  }, delay);
 })
 
 </script>
@@ -49,6 +59,7 @@ socket.on("command_output", function(data: string) {
     font-size: 12px;
     font-family: 'Open Sans', sans-serif;
     letter-spacing: 0.01cm;
+    display: grid;
 }
 
 .console span {
