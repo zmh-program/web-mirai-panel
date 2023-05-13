@@ -119,14 +119,14 @@ def get_system_info() -> dict:
             qq = (config.get('onebot', {}) or config.get('mirai', {})).get('manager_qq')
             nickname = get_nickname(qq)  # QQ 昵称
     except FileNotFoundError:
-        qq = None
+        qq = "未知"
         nickname = "未知"
 
     try:
         with open('gocqhttp/device.json', 'r') as file:  # 读取gocqhttp的设备代号
-            protocol = json.load(file).get('protocol')
+            protocol = str(json.load(file).get('protocol'))
     except FileNotFoundError:
-        protocol = None
+        protocol = "暂无"
 
     return {
         'cpu_count': cpu_count,
@@ -134,7 +134,7 @@ def get_system_info() -> dict:
         'disk': disk,
         'system': f"{system} {release}",
         'host': host,
-        'qq': qq,
+        'qq': str(qq),
         'nickname': nickname,
         'device': protocol,
     }
