@@ -26,7 +26,7 @@ import { RouterView } from 'vue-router'
 
 <style scoped>
 .container {
-    max-width: 864px;
+    max-width: 1012px;
     margin: 0 auto;
 }
 .fade-enter-active,
