@@ -15,14 +15,14 @@ CONFIG_FOLDER = 'config'
 GLOBAL_CONFIG = 'config.cfg'
 BYTE_TO_GB = 1024 ** 3
 DESIRED_CONTAINERS = [
-    'chatgpt-qq-mirai-1',
-    'chatgpt-qq-gocqhttp-1',
-    'chatgpt-qq-watchtower-1',
-    'chatgpt-qq-chatgpt-1',
+    'mirai',
+    'gocqhttp',
+    'watchtower',
+    'chatgpt',
 ]
 CONTAINER_STATUS = {
-    "created": "#6C757D",
-    "paused": "#6C757D",
+    "created": "#828282",
+    "paused": "#828282",
     "running": "#28A745",
     "restarting": "#FFC107",
     "removing": "#DC3545",
@@ -159,6 +159,12 @@ def get_system_info() -> dict:
     }
 
 
+def filter_container(container) -> bool:
+    return any(
+        [desired in container.name for desired in DESIRED_CONTAINERS]
+    )
+
+
 def get_status_info() -> dict:
     """获取系统状态 (动态)"""
 
@@ -182,10 +188,12 @@ def get_status_info() -> dict:
         'sent': sent,
         'recv': recv,
         'containers': [
-            {'name': container.name, 'status': container.status}
-            for container in filter(
-                lambda container: container.name in DESIRED_CONTAINERS, containers,
-            )
+            {
+                'name': container.name,
+                'status': container.status,
+                'color': CONTAINER_STATUS.get(str(container.status).lower(), "#6C757D"),
+            }
+            for container in filter(filter_container, containers)
         ],
     }
 

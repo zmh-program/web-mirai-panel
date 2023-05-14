@@ -6,7 +6,7 @@ import axios from 'axios'
 import { message } from '@/assets/script/utils'
 import { socket } from '@/assets/script/socket'
 
-const container: Ref<{status: string, name: string, color: string}[]> = ref([])
+const container: Ref<{status: string, name: string, color: string}[]> = ref([]);
 
 const status = ref({
   cpu: 0,
@@ -84,7 +84,11 @@ setInterval(() => socket.emit("status_input"), 500);
       <table>
         <template v-if='container.length'>
           <tr v-for='(obj, idx) in container' :key='idx'>
-            <td>{{ obj.name }}</td><td>{{ obj.status }}</td>
+            <td class='status'>
+              <div class='circle' :style='{ "background": obj.color }' />
+              <span :style='{ "color": obj.color }' >{{ obj.status }}</span>
+            </td>
+            <td style='text-align: inherit'>{{ obj.name }}</td>
           </tr>
         </template>
         <tr v-else><td style='padding: 20px'>暂无</td></tr>
@@ -125,5 +129,23 @@ header h3 {
 
 .info table {
     margin: 0 auto;
+}
+
+.status {
+    display: flex;
+    flex-direction: row;
+    text-align: inherit;
+}
+.status .circle {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+    position: absolute;
+}
+
+.status span {
+    margin-left: 16px;
 }
 </style>
