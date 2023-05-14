@@ -20,7 +20,7 @@ import { RouterView } from 'vue-router'
             <div class='circle' style='background: rgb(255,204,0)' />
             <div class='circle' style='background: rgb(76,217,100)' />
           </div>
-          <el-divider style='margin-top: 12px' />
+          <el-divider style='margin-top: 20px' />
           <el-menu default-active="1" style='border-right: none; font-family: Poppins, sans-serif'>
             <el-menu-item index="1">🧨 监控 Monitor</el-menu-item>
             <el-menu-item index="2">📂 上传 Upload</el-menu-item>

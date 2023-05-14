@@ -14,6 +14,21 @@ const router = createRouter({
       path: '/404',
       name: 'error',
       component: NotFoundView
+    },
+    {
+      path: '/',
+      name: 'home',
+      component: () => import("../views/HomeView.vue")
+    },
+    {
+      path: '/config',
+      name: 'config',
+      component: () => import("../views/ConfigView.vue")
+    },
+    {
+      path: '/term',
+      name: 'term',
+      component: () => import("../views/TermView.vue")
     }
   ]
 })
@@ -21,5 +36,6 @@ const router = createRouter({
 router.beforeEach((to, from, next) => (
   to.matched.length === 0 ? next('/404') : next()
 ));
+
 
 export default router

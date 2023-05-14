@@ -41,16 +41,21 @@ socket.on("command_output", receive);
 </script>
 
 <template>
-  <div class='console'>
-    <span v-for='(data, idx) in buffer' :key='idx' v-html='data' />
-  </div><br>
-  <el-form :inline='true' @submit.prevent='ignore'>
-    <el-form-item style='width: calc(100% - 72px); margin-right: 12px'><el-input v-model='input' @keyup.enter='submit' /></el-form-item>
-    <el-form-item style='width: 60px; margin-right: 0'><el-button type='primary' @click='submit'>发送</el-button></el-form-item>
-  </el-form>
+  <el-card class='card'>
+    <h1>👩‍💻 终端</h1>
+    <el-divider />
+    <div class='console'>
+      <span v-for='(data, idx) in buffer' :key='idx' v-html='data' />
+    </div><br>
+    <el-form :inline='true' @submit.prevent='ignore'>
+      <el-form-item style='width: calc(100% - 72px); margin-right: 12px'><el-input v-model='input' @keyup.enter='submit' /></el-form-item>
+      <el-form-item style='width: 60px; margin-right: 0'><el-button type='primary' @click='submit'>发送</el-button></el-form-item>
+    </el-form>
+  </el-card>
 </template>
 
 <style scoped>
+@import "@/assets/style/main.css";
 @keyframes fadeInAnimation {
     0% { opacity: 0 }
     100% { opacity: 1 }
