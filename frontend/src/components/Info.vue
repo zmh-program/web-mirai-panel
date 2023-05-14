@@ -1,11 +1,12 @@
 <script setup lang='ts'>
 import ProgressBar from '@/components/ProgressBar.vue'
 import { ref } from 'vue'
+import type { Ref } from 'vue'
 import axios from 'axios'
 import { message } from '@/assets/script/utils'
 import { socket } from '@/assets/script/socket'
 
-const container = ref([])
+const container: Ref<{status: string, name: string, color: string}[]> = ref([])
 
 const status = ref({
   cpu: 0,

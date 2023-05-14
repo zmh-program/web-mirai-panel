@@ -21,8 +21,8 @@ DESIRED_CONTAINERS = [
     'chatgpt-qq-chatgpt-1',
 ]
 CONTAINER_STATUS = {
-    "created": "",
-    "paused": "",
+    "created": "#6C757D",
+    "paused": "#6C757D",
     "running": "#28A745",
     "restarting": "#FFC107",
     "removing": "#DC3545",
