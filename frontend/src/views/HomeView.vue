@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Config from '@/components/Config.vue'
+import Config from '@/views/ConfigView.vue'
 import ShellCommand from '@/components/ShellCommand.vue'
 import FileUpload from '@/components/FileUpload.vue'
 import Info from '@/components/Info.vue'

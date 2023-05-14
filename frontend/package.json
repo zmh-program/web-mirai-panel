@@ -2,6 +2,8 @@
   "name": "web-chatgpt-qq-bot",
   "version": "0.0.0",
   "private": true,
+  "author": "zmh-program",
+  "description": "web 图形化界面一键配置 ChatGPT Mirai QQ Bot 聊天机器人",
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check build-only",
@@ -10,7 +12,8 @@
     "release": "vite build --emptyOutDir --outDir ../dist",
     "type-check": "vue-tsc --noEmit",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "format": "prettier --write src/"
+    "format": "prettier --write src/",
+    "dist": "electron-builder"
   },
   "dependencies": {
     "ansi-to-html": "^0.7.2",
@@ -20,6 +23,16 @@
     "vue": "^3.2.47",
     "vue-router": "^4.1.6"
   },
+  "build": {
+    "appId": "com.mirai-bot.web",
+    "productName": "Web ChatGPT QQ Bot",
+    "publish": [
+      {
+        "provider": "github",
+        "releaseType": "draft"
+      }
+    ]
+  },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.2.0",
     "@types/node": "^18.14.2",
@@ -27,6 +40,7 @@
     "@vue/eslint-config-prettier": "^7.1.0",
     "@vue/eslint-config-typescript": "^11.0.2",
     "@vue/tsconfig": "^0.1.3",
+    "electron-builder": "^23.6.0",
     "eslint": "^8.34.0",
     "eslint-plugin-vue": "^9.9.0",
     "npm-run-all": "^4.1.5",
