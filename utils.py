@@ -156,6 +156,8 @@ def get_status_info() -> dict:
     cpu_percent = psutil.cpu_percent()  # CPU使用率
     disk = convert(psutil.disk_usage('/').used, 0)  # 占用磁盘容量
     memory = convert(psutil.virtual_memory().used)  # 占用内存容量
+    net = psutil.net_io_counters()
+    sent, recv = convert(net.bytes_sent, 2), convert(net.bytes_recv, 2)
 
     # Docker
     try:
@@ -168,6 +170,8 @@ def get_status_info() -> dict:
         'cpu': cpu_percent,
         'memory': memory,
         'disk': disk,
+        'sent': sent,
+        'recv': recv,
         'containers': [
             {'name': container.name, 'status': container.status}
             for container in filter(

@@ -11,6 +11,8 @@ const status = ref({
   memory_percent: 0,
   disk: 0,
   disk_percent: 0,
+  recv: "",
+  sent: ""
 })
 
 const info = ref({
@@ -35,11 +37,11 @@ axios.get('/api/info')
   });
 })
 
-socket.on("status_output", (data: Record<string, number>) => {
-  const { cpu, memory, disk } = data;
+socket.on("status_output", (data: Record<string, any>) => {
+  const { cpu, memory, disk, recv, sent } = data;
   const memory_percent = (memory / info.value.memory) * 100, disk_percent = (disk / info.value.disk) * 100;
   status.value = {
-    cpu,
+    cpu, recv, sent,
     memory, memory_percent,
     disk, disk_percent,
   }
@@ -66,9 +68,11 @@ setInterval(() => socket.emit("status_input"), 500);
       <table>
         <tr><td>系统</td><td>{{ info.system }}</td></tr>
         <tr><td>主机名</td><td>{{ info.host }}</td></tr>
+        <tr><td>上行流量</td><td>{{ status.sent }}G</td></tr>
+        <tr><td>下行流量</td><td>{{ status.recv }}G</td></tr>
+        <tr><td>CQHttp 设备代号</td><td>{{ info.device }}</td></tr>
         <tr><td>QQ</td><td>{{ info.qq }}</td></tr>
         <tr><td>昵称</td><td>{{ info.nickname }}</td></tr>
-        <tr><td>CQHttp 设备代号</td><td>{{ info.device }}</td></tr>
       </table>
     </el-card>
   </div>

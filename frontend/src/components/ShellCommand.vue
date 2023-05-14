@@ -7,14 +7,10 @@ import Convert from 'ansi-to-html'
 const convert = new Convert();
 const buffer: Ref<string[]> = ref([]);
 const input: Ref<string> = ref("");
-const stamp: Ref<number | undefined> = ref(undefined);
+const stamp: Ref<number> = ref((new Date()).getTime());
 
 function absolute(n: number): number {
   return n <= 0 ? 0 : n;
-}
-
-function listener(ev: KeyboardEvent): void {
-  if (ev.key === "Enter") submit();
 }
 
 function submit() {
@@ -26,13 +22,16 @@ function submit() {
   }
 }
 
+function ignore(ev: FormDataEvent): void {
+  return ev.preventDefault();
+}
 
 function receive(data: string) {
   const current: number = (new Date()).getTime();
-  const delay: number = stamp.value === undefined ? 0 : absolute(100 - (current - stamp.value));
+  const delay: number = absolute(100 - (current - stamp.value));
   stamp.value = current;
   setTimeout(() => {
-    if (buffer.value.length > 25) buffer.value.shift();
+    if (buffer.value.length > 20) buffer.value.shift();
     return buffer.value.push(convert.toHtml(data));
   }, delay);
 }
@@ -45,9 +44,9 @@ socket.on("command_output", receive);
   <div class='console'>
     <span v-for='(data, idx) in buffer' :key='idx' v-html='data' />
   </div><br>
-  <el-form :inline='true'>
-    <el-form-item style='width: calc(100% - 72px); margin-right: 12px'><el-input v-model='input' /></el-form-item>
-    <el-form-item style='width: 60px; margin-right: 0'><el-button type='primary' @click='submit' @keyup='listener'>发送</el-button></el-form-item>
+  <el-form :inline='true' @submit.prevent='ignore'>
+    <el-form-item style='width: calc(100% - 72px); margin-right: 12px'><el-input v-model='input' @keyup.enter='submit' /></el-form-item>
+    <el-form-item style='width: 60px; margin-right: 0'><el-button type='primary' @click='submit'>发送</el-button></el-form-item>
   </el-form>
 </template>
 
@@ -61,7 +60,7 @@ socket.on("command_output", receive);
     display: flex;
     flex-direction: column;
     height: max-content;
-    min-height: 240px;
+    min-height: 416px;
     width: 100%;
     color: #fff;
     background: #181818;
