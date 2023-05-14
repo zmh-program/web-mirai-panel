@@ -97,7 +97,6 @@ def check_error():
     if 'ERROR' in logs:
         url = upload_to_pastebin(logs)
         return jsonify(status=False, url=url)
-
     return jsonify(status=True)
 
 

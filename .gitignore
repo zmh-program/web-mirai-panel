@@ -3,8 +3,8 @@
 .idea
 .vs
 .vscode
-uploads/*
-!uploads/.gitkeep
+upload/*
+!upload/.gitkeep
 config/*
 !config/.gitkeep
 dist

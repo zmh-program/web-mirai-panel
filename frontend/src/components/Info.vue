@@ -5,14 +5,16 @@ import axios from 'axios'
 import { message } from '@/assets/script/utils'
 import { socket } from '@/assets/script/socket'
 
+const container = ref({})
+
 const status = ref({
   cpu: 0,
   memory: 0,
   memory_percent: 0,
   disk: 0,
   disk_percent: 0,
-  recv: "",
-  sent: ""
+  recv: 0,
+  sent: 0,
 })
 
 const info = ref({
@@ -38,13 +40,14 @@ axios.get('/api/info')
 })
 
 socket.on("status_output", (data: Record<string, any>) => {
-  const { cpu, memory, disk, recv, sent } = data;
+  const { cpu, memory, disk, recv, sent, containers } = data;
   const memory_percent = (memory / info.value.memory) * 100, disk_percent = (disk / info.value.disk) * 100;
   status.value = {
     cpu, recv, sent,
     memory, memory_percent,
     disk, disk_percent,
-  }
+  };
+  container.value = containers;
 });
 setInterval(() => socket.emit("status_input"), 500);
 </script>
@@ -73,6 +76,17 @@ setInterval(() => socket.emit("status_input"), 500);
         <tr><td>CQHttp 设备代号</td><td>{{ info.device }}</td></tr>
         <tr><td>QQ</td><td>{{ info.qq }}</td></tr>
         <tr><td>昵称</td><td>{{ info.nickname }}</td></tr>
+      </table>
+    </el-card>
+    <el-card class='info'>
+      <header><h3><i class="fa-brands fa-docker"></i> 容器状态</h3></header>
+      <table>
+        <template v-if='container.length'>
+          <tr v-for='(obj, idx) in container' :key='idx'>
+            <td>{{ obj.name }}</td><td>{{ obj.status }}</td>
+          </tr>
+        </template>
+        <tr v-else><td style='padding: 20px'>暂无</td></tr>
       </table>
     </el-card>
   </div>

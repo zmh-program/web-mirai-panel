@@ -10,7 +10,7 @@ from typing import Generator
 from copy import deepcopy
 from subprocess import Popen, PIPE, STDOUT
 
-UPLOADS_FOLDER = 'uploads'
+UPLOAD_FOLDER = 'upload'
 CONFIG_FOLDER = 'config'
 GLOBAL_CONFIG = 'config.cfg'
 BYTE_TO_GB = 1024 ** 3
@@ -87,9 +87,9 @@ def save_global_conf() -> str:
 
 
 def handle_upload(file) -> None:
-    if not os.path.exists(UPLOADS_FOLDER):
-        os.makedirs(UPLOADS_FOLDER)
-    file.save(os.path.join(UPLOADS_FOLDER, file.filename))
+    if not os.path.exists(UPLOAD_FOLDER):
+        os.makedirs(UPLOAD_FOLDER)
+    file.save(os.path.join(UPLOAD_FOLDER, file.filename))
 
 
 def upload_to_pastebin(text: str) -> str:
