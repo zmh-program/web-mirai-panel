@@ -3,7 +3,8 @@ import { RouterView } from 'vue-router'
 import router from '@/router'
 
 function route(path: string) {
-  router.push(path === "monitor" ? "" : path);
+  console.log(path)
+  router.push("/" + (path === "monitor" ? "" : path));
 }
 </script>
 
@@ -26,7 +27,7 @@ function route(path: string) {
             <div class='circle' style='background: rgb(76,217,100)' />
           </div>
           <el-divider style='margin-top: 20px' />
-          <el-menu @open="route" default-active="1" style='border-right: none; font-family: Poppins, sans-serif'>
+          <el-menu @select="route" default-active="monitor" style='border-right: none; font-family: Poppins, sans-serif'>
             <el-menu-item index="monitor">🧨 监控 Monitor</el-menu-item>
             <el-menu-item index="upload">📂 上传 Upload</el-menu-item>
             <el-menu-item index="term">👩‍💻 终端 Terminal</el-menu-item>
