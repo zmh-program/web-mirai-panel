@@ -5,7 +5,7 @@ import axios from 'axios'
 import { message } from '@/assets/script/utils'
 import { socket } from '@/assets/script/socket'
 
-const container = ref({})
+const container = ref([])
 
 const status = ref({
   cpu: 0,

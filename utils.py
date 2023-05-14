@@ -20,6 +20,15 @@ DESIRED_CONTAINERS = [
     'chatgpt-qq-watchtower-1',
     'chatgpt-qq-chatgpt-1',
 ]
+CONTAINER_STATUS = {
+    "created": "",
+    "paused": "",
+    "running": "#28A745",
+    "restarting": "#FFC107",
+    "removing": "#DC3545",
+    "dead": "#DC3545"
+}
+
 PART_CONFIGS = [
     "ai.bak.cfg",
     "chat.bak.cfg",
@@ -175,7 +184,7 @@ def get_status_info() -> dict:
         'containers': [
             {'name': container.name, 'status': container.status}
             for container in filter(
-                lambda container: container in DESIRED_CONTAINERS, containers,
+                lambda container: container.name in DESIRED_CONTAINERS, containers,
             )
         ],
     }
