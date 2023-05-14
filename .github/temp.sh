@@ -13,8 +13,9 @@ echo "正在检测安装 Python, pip, wget 和 unzip"
 
 install_package() {
     package=$1
-    if ! command -v $package &> /dev/null; then
-        echo "$package 未找到，正在安装..."
+    name=$( [ "$package" == "python3-pip" ] && echo "pip3" || echo "$package" )
+    if ! command -v "$name" &> /dev/null; then
+        echo "$name 未找到，正在安装..."
         if [[ $OS == "Ubuntu" ]] || [[ $OS == "Debian" ]] || [[ $OS == "Debian GNU/Linux" ]]; then
             sudo apt-get update
             sudo apt-get install -y "$package"
@@ -45,4 +46,4 @@ echo "正在运行项目中..."
 cd web-chatgpt || exit
 nohup python3 app.py >/dev/null 2>&1 &
 current_dir=$(pwd)
-echo -e "Flask 应用正在后台运行\n请前往\e[34mip:5000\e[0m进行访问\n请自行开放\e[33m5000\e[0m端口\n生成的配置在${current_dir}/config/config.cfg"
+echo -e "Flask 应用正在后台运行! \n请自行开放 \e[33m5000\e[0m 端口并前往 \e[34mhttp://ip:5000\e[0m 进行访问\n - 生成的配置在 \e[33m${current_dir}/config/config.cfg\e[0m\n - 上传的文件在 \e[33m${current_dir}/upload/...\e[0m\n"
