@@ -1,5 +1,10 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
+import router from '@/router'
+
+function route(path: string) {
+  router.push(path === "monitor" ? "" : path);
+}
 </script>
 
 <template>
@@ -21,11 +26,11 @@ import { RouterView } from 'vue-router'
             <div class='circle' style='background: rgb(76,217,100)' />
           </div>
           <el-divider style='margin-top: 20px' />
-          <el-menu default-active="1" style='border-right: none; font-family: Poppins, sans-serif'>
-            <el-menu-item index="1">🧨 监控 Monitor</el-menu-item>
-            <el-menu-item index="2">📂 上传 Upload</el-menu-item>
-            <el-menu-item index="3">👩‍💻 终端 Terminal</el-menu-item>
-            <el-menu-item index="4">💻 配置 Configuration</el-menu-item>
+          <el-menu @open="route" default-active="1" style='border-right: none; font-family: Poppins, sans-serif'>
+            <el-menu-item index="monitor">🧨 监控 Monitor</el-menu-item>
+            <el-menu-item index="upload">📂 上传 Upload</el-menu-item>
+            <el-menu-item index="term">👩‍💻 终端 Terminal</el-menu-item>
+            <el-menu-item index="config">💻 配置 Configuration</el-menu-item>
           </el-menu>
         </el-card>
       </el-aside>

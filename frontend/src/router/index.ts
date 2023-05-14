@@ -16,11 +16,6 @@ const router = createRouter({
       component: NotFoundView
     },
     {
-      path: '/',
-      name: 'home',
-      component: () => import("../views/HomeView.vue")
-    },
-    {
       path: '/config',
       name: 'config',
       component: () => import("../views/ConfigView.vue")
@@ -29,6 +24,11 @@ const router = createRouter({
       path: '/term',
       name: 'term',
       component: () => import("../views/TermView.vue")
+    },
+    {
+      path: '/upload',
+      name: 'upload',
+      component: () => import("../views/FileUploadView.vue")
     }
   ]
 })
@@ -36,6 +36,5 @@ const router = createRouter({
 router.beforeEach((to, from, next) => (
   to.matched.length === 0 ? next('/404') : next()
 ));
-
 
 export default router

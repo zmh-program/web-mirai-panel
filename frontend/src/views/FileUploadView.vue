@@ -1,13 +1,11 @@
 <script setup lang='ts'>
 import { ref } from 'vue'
-
+import { message } from '@/assets/script/utils'
 import type { UploadUserFile } from 'element-plus'
 
 const files = ref<UploadUserFile[]>([]);
 const notification = function() {
-  // @ts-ignore
-  // eslint-disable-next-line no-undef
-  ElMessage({
+  message({
     type: 'error',
     message: `上传时出错！`,
   });
