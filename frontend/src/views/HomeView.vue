@@ -54,7 +54,7 @@ setInterval(() => socket.emit("status_input"), 1000);
 </script>
 
 <template>
-  <el-card class='card'>
+  <el-card class='card' style='min-height: calc(60dvh + 2px)'>
     <h1>🧨 监控</h1>
     <el-divider style='padding: 30px 0; transform: translateY(20px)' />
     <div class='progress-container'>
