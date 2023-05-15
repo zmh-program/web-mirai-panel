@@ -43,7 +43,7 @@ socket.on("command_output", receive);
 <template>
   <el-card class='card'>
     <h1>👩‍💻 终端</h1>
-    <el-divider />
+    <el-divider style='padding: 30px 0; transform: translateY(20px)'/>
     <div class='console'>
       <span v-for='(data, idx) in buffer' :key='idx' v-html='data' />
     </div><br>
@@ -65,7 +65,7 @@ socket.on("command_output", receive);
     display: flex;
     flex-direction: column;
     height: max-content;
-    min-height: 416px;
+    min-height: max(416px, 60vh);
     width: 100%;
     color: #fff;
     background: #181818;

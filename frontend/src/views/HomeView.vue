@@ -55,7 +55,8 @@ setInterval(() => socket.emit("status_input"), 1000);
 
 <template>
   <el-card class='card'>
-    <h1>🧨 监控</h1><el-divider />
+    <h1>🧨 监控</h1>
+    <el-divider style='padding: 30px 0; transform: translateY(20px)' />
     <div class='progress-container'>
       <ProgressBar :percent='status.cpu'>
         <template v-slot:header><i class="fa fa-solid fa-microchip" /> CPU </template>

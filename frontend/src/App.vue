@@ -3,7 +3,6 @@ import { RouterView } from 'vue-router'
 import router from '@/router'
 
 function route(path: string) {
-  console.log(path)
   router.push("/" + (path === "monitor" ? "" : path));
 }
 </script>
@@ -20,7 +19,7 @@ function route(path: string) {
     </el-header>
     <el-container class='main-container'>
       <el-aside id='aside'>
-        <el-card class='card'>
+        <el-card class='card sidebar'>
           <div class='circle-group'>
             <div class='circle' style='background: rgb(245,49,38)' />
             <div class='circle' style='background: rgb(255,204,0)' />
@@ -73,6 +72,9 @@ function route(path: string) {
     .container {
         width: calc(100% - 16px);
         margin: 0 8px;
+    }
+    .sidebar {
+        min-height: max(426px, calc(60vh + 2px))
     }
 }
 .circle-group {
