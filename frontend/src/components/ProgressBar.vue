@@ -52,6 +52,11 @@ refresh();
     width: max-content;
     padding: 4px;
 }
+@media (max-width: 600px) {
+    .progress-card {
+        width: 100%;
+    }
+}
 header h3 {
     font-weight: bold;
     font-family: Poppins, sans-serif;

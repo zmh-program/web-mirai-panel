@@ -107,6 +107,11 @@ setInterval(() => socket.emit("status_input"), 1000);
 .fa::before {
     font-weight: inherit;
 }
+@media (max-width: 600px) {
+    .info {
+        width: 100%;
+    }
+}
 
 td {
     padding: 0 4px;
