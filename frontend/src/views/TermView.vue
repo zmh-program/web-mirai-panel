@@ -28,8 +28,9 @@ function ignore(ev: FormDataEvent): void {
 
 function receive(data: string) {
   const current: number = (new Date()).getTime();
-  const delay: number = absolute(100 - (current - stamp.value));
-  stamp.value = current;
+  const delay: number = absolute(500 - (current - stamp.value));
+  stamp.value = current + 100;
+  console.log(stamp.value ,delay)
   setTimeout(() => {
     if (buffer.value.length > 20) buffer.value.shift();
     return buffer.value.push(convert.toHtml(data));

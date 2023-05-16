@@ -30,7 +30,12 @@ function route(path: string) {
             <el-menu-item index="monitor">🧨 监控 Monitor</el-menu-item>
             <el-menu-item index="upload">📂 上传 Upload</el-menu-item>
             <el-menu-item index="term">👩‍💻 终端 Terminal</el-menu-item>
-            <el-menu-item index="config">💻 配置 Configuration</el-menu-item>
+            <el-sub-menu index="config">
+              <template #title>💻 配置 Configuration</template>
+              <el-menu-item index="config#chat">📫 接入聊天平台</el-menu-item>
+              <el-menu-item index="config#ai">✨ 接入AI平台</el-menu-item>
+              <el-menu-item index="config#other">🎃 其他功能</el-menu-item>
+            </el-sub-menu>
           </el-menu>
         </el-card>
       </el-aside>

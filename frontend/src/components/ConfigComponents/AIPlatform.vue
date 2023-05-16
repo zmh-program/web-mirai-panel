@@ -136,7 +136,7 @@ function submit() {
       </a>
     </el-form>
     <el-form :model='bing' v-else-if='type == "bing"'>
-      <el-form-item label='Cookie'><el-input placeholder='[{"domain": ".bing.com", ...}]' v-model='bing.accounts.cookie_content' /></el-form-item>
+      <el-form-item label='Cookie'><el-input type='textarea' placeholder='[{"domain": ".bing.com", ...}]' :autosize="{ minRows: 6, maxRows: 14 }" v-model='bing.accounts.cookie_content' /></el-form-item>
       <el-form-item label='Proxy'><el-input placeholder='可选, 留空默认系统设置或者使用接入点' v-model='bing.accounts.proxy' /></el-form-item>
       <el-form-item label='WebSocket 接入点'><el-input placeholder='https://' v-model='bing.wss_link' /></el-form-item>
       <el-form-item label='会话创建接入点'><el-input placeholder='wss://' v-model='bing.bing_endpoint' /></el-form-item>

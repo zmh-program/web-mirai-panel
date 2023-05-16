@@ -30,7 +30,11 @@ const router = createRouter({
       name: 'upload',
       component: () => import("../views/FileUploadView.vue")
     }
-  ]
+  ],
+  scrollBehavior(to) {
+    console.log(to)
+    return to.hash ? { selector: to.hash } : { left: 0, right: 0 };
+  }
 })
 
 router.beforeEach((to, from, next) => (

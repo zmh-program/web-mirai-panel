@@ -1,7 +1,8 @@
 import { io } from 'socket.io-client';
 import { notify } from '@/assets/script/utils'
 
-export const socket = io(`ws://${location.host}`, {
+const enableSecurity: boolean = location.protocol === "https:";
+export const socket = io(`${enableSecurity ? "wss" : "ws"}://${location.host}`, {
   reconnectionDelayMax: 10000,
 })
 
