@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 import router from '@/router'
+import { collapse } from '@/assets/script/config'
 
-function route(path: string) {
-  router.push("/" + (path === "monitor" ? "" : path));
+function route(current: string, path: string[]) {
+  const [name, hash] = path;
+  if (name === "config") collapse.value = [hash, ];
+  router.push("/" + (name === "monitor" ? "" : name));
 }
 </script>
 
@@ -32,9 +35,9 @@ function route(path: string) {
             <el-menu-item index="term">👩‍💻 终端 Terminal</el-menu-item>
             <el-sub-menu index="config">
               <template #title>💻 配置 Configuration</template>
-              <el-menu-item index="config#chat">📫 接入聊天平台</el-menu-item>
-              <el-menu-item index="config#ai">✨ 接入AI平台</el-menu-item>
-              <el-menu-item index="config#other">🎃 其他功能</el-menu-item>
+              <el-menu-item index="chat">📫 接入聊天平台</el-menu-item>
+              <el-menu-item index="ai">✨ 接入AI平台</el-menu-item>
+              <el-menu-item index="other">🎃 其他功能</el-menu-item>
             </el-sub-menu>
           </el-menu>
         </el-card>

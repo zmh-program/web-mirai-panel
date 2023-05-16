@@ -32,7 +32,6 @@ const router = createRouter({
     }
   ],
   scrollBehavior(to) {
-    console.log(to)
     return to.hash ? { selector: to.hash } : { left: 0, right: 0 };
   }
 })

@@ -1,11 +1,8 @@
 <script setup lang='ts'>
-import { ref } from 'vue'
-import type { Ref } from 'vue'
+import { collapse } from '@/assets/script/config'
 import ChatPlatform from '@/components/ConfigComponents/ChatPlatform.vue'
 import OtherConfig from '@/components/ConfigComponents/OtherConfig.vue'
 import AIPlatform from '@/components/ConfigComponents/AIPlatform.vue'
-
-const collapse: Ref<string[]> = ref(['chat', 'ai']);
 </script>
 
 <template>
