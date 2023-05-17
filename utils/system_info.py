@@ -3,16 +3,10 @@ import platform
 import json
 import re
 import os
-import toml
 import psutil
 import docker
-from typing import Generator
-from copy import deepcopy
-from subprocess import Popen, PIPE, STDOUT
+import toml
 
-UPLOAD_FOLDER = 'upload'
-CONFIG_FOLDER = 'config'
-GLOBAL_CONFIG = 'config.cfg'
 BYTE_TO_GB = 1024 ** 3
 DESIRED_CONTAINERS = [
     'mirai',
@@ -29,78 +23,6 @@ CONTAINER_STATUS = {
     "dead": "#DC3545"
 }
 
-PART_CONFIGS = [
-    "ai.bak.cfg",
-    "chat.bak.cfg",
-    "other.bak.cfg",
-    "response.bak.cfg"
-]
-
-
-def empty_field(value) -> bool:
-    return not (value.strip() if isinstance(value, str) else (True if isinstance(value, bool) else value))
-
-
-def clean_config(data: dict) -> dict:
-    for key, value in deepcopy(data).items():
-        if isinstance(value, dict):
-            data[key] = clean_config(value)
-        if isinstance(value, (list, tuple, set)):
-            data[key] = [clean_config(element) if isinstance(element, dict) else element for element in value]
-        elif empty_field(value):
-            del data[key]
-    return data
-
-
-def execute_command(command: str) -> Generator[str, None, None]:
-    process = Popen(command, stdout=PIPE, stderr=STDOUT, shell=True, text=True, bufsize=1)
-    for line in process.stdout:
-        yield line
-    process.stdout.close()
-    process.wait()
-
-
-def read_conf(filename: str) -> dict:
-    path = os.path.join(CONFIG_FOLDER, filename)
-    if os.path.isfile(path):
-        with open(path, "r") as fp:
-            return toml.load(fp)
-    return {}
-
-
-def save_conf(filename: str, data: dict, override=True) -> str:
-    """
-    保存配置文件
-    :param filename: 配置文件名
-    :param data: 内容
-    :param override: 是否覆盖全局配置 config.cfg
-    :return: 配置文件路径
-    """
-
-    path = os.path.join(CONFIG_FOLDER, filename)
-    if filename in [*PART_CONFIGS, GLOBAL_CONFIG]:
-        with open(path, "w") as fp:
-            toml.dump(clean_config(data), fp)
-        if override is True:
-            save_global_conf()
-    return path
-
-
-def save_global_conf() -> str:
-    """拼接文件并写入 config.cfg"""
-    return save_conf(
-        GLOBAL_CONFIG,
-        {k: v for conf in PART_CONFIGS for k, v in read_conf(conf).items()},
-        override=False,  # 防止递归
-    )
-
-
-def handle_upload(file) -> None:
-    if not os.path.exists(UPLOAD_FOLDER):
-        os.makedirs(UPLOAD_FOLDER)
-    file.save(os.path.join(UPLOAD_FOLDER, file.filename))
-
-
 def upload_to_pastebin(text: str) -> str:
     # 使用request把文本上传到paste bin
     resp = requests.post('https://pastebin.mozilla.org/api/', data={
@@ -111,6 +33,8 @@ def upload_to_pastebin(text: str) -> str:
     })
     return resp.text if resp.status_code == 200 else f"上传失败：{resp.status_code}"
 
+def convert(size: int, fixed: int = 1) -> float:
+    return round(size / BYTE_TO_GB, fixed)
 
 def get_nickname(qq_number: int) -> str:
     # 使用request获取QQ昵称返回值
@@ -119,11 +43,6 @@ def get_nickname(qq_number: int) -> str:
     data = json.loads(json_str)
     nickname = data[str(qq_number)][6]
     return nickname.encode('utf-8').decode('unicode_escape')
-
-
-def convert(size: int, fixed: int = 1) -> float:
-    return round(size / BYTE_TO_GB, fixed)
-
 
 def get_system_info() -> dict:
     """获取系统信息 (常量)"""
@@ -157,7 +76,6 @@ def get_system_info() -> dict:
         'nickname': nickname,
         'device': protocol,
     }
-
 
 def filter_container(container) -> bool:
     return any(
@@ -198,3 +116,4 @@ def get_status_info() -> dict:
     }
 
     return status_info
+

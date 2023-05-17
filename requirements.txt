@@ -4,3 +4,4 @@ docker==5.0.3
 toml==0.10.2
 psutil==5.9.0
 requests==2.27.1
+PyYAML==6.0
