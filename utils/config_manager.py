@@ -33,20 +33,26 @@ def read_conf(filename: str) -> dict:
             return toml.load(fp)
     return {}
 
-def save_conf(filename: str, data: dict, override=True) -> str:
-    path = os.path.join(os.getcwd(), filename)
-    if filename in [*PART_CONFIGS, GLOBAL_CONFIG]:
-        with open(path, "w") as fp:
-            toml.dump(clean_config(data), fp)
-        if override is True:
+def save_conf(filename: str, data: dict, override=True) -> str: 
+    path = os.path.join(os.getcwd(), filename) 
+    if filename in [*PART_CONFIGS, GLOBAL_CONFIG]: 
+        with open(path, "w") as fp: 
+            toml.dump(clean_config(data), fp) 
+        if override is True: 
             save_global_conf()
-            try:
-                with open('gocqhttp/config.yml', 'r') as file:
-                    config = yaml.safe_load(file)
-                    uin = config.get('account', {}).get('uin')
-                    if uin == '{QQ_ACCOUNT}':
-                        replace_qq_number()
+            '''
+            暂时作废
+            try: 
+                with open('gocqhttp/config.yml', 'r') as file: 
+                    config = yaml.safe_load(file) 
+                    uin = config.get('account', {}).get('uin') 
+                    if uin == '{QQ_ACCOUNT}': 
+                        replace_qq_number() 
+            except Exception as e: 
+                print(f"Error: {e}")
+            '''
     return path
+
 
 def save_global_conf() -> str:
     return save_conf(
@@ -55,6 +61,8 @@ def save_global_conf() -> str:
         override=False,
     )
 
+'''
+暂时作废
 def replace_qq_number():
     config_data = read_conf('config.cfg')
     qq_number = config_data.get('onebot', {}).get('qq')
@@ -67,3 +75,4 @@ def replace_qq_number():
 
     with open(config_file, 'w') as fp:
         fp.write(updated_content)
+'''

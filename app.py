@@ -5,7 +5,7 @@ from docker import DockerClient, errors
 from utils.config_manager import read_conf, save_conf
 from utils.command_executor import CommandExecutor
 from utils.system_info import get_system_info, get_status_info, upload_to_pastebin
-from utils.upload_file import handle_uploaded_file
+from utils.upload_file import handle_upload
 logging.basicConfig(format='[%(asctime)s %(levelname)s]: %(message)s')
 
 app = Flask(__name__, template_folder='dist', static_folder='dist', static_url_path='')
@@ -30,12 +30,13 @@ def index():
 def error(_err):
     return render_template('index.html'), 200
 
-@socketio.on('command_input')
-def handle_command_input_socket(command):
+@socketio.on('command_input') 
+def handle_command_input_socket(command): 
     '''处理命令'''
-    executor.command = command
-    for output in executor.start():
+    executor = CommandExecutor(command)
+    for output in executor.start(): 
         emit('command_output', output)
+
 
 @socketio.on('reset_command')
 def handle_reset_command_socket():
