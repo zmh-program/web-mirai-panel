@@ -1,0 +1,35 @@
+name: Make Electron App
+on:
+  push:
+    branches:
+      - main
+jobs:
+  release:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        node-version: [ 18.x ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Build
+        run: |
+          cd frontend/electron
+          npm install
+          npm run make
+
+      - name: Upload Package
+        uses: actions/upload-release-asset@v1.0.2
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./package.zip
+          asset_name: package.zip
+          asset_content_type: application/zip
+        env:
+            GITHUB_TOKEN: ${{ secrets.TOKEN }}
