@@ -2,6 +2,7 @@ import os
 import re
 import toml
 import yaml
+from .file import path_safe
 from copy import deepcopy
 
 CONFIG_FOLDER = 'config'
@@ -31,7 +32,7 @@ def clean_config(data: dict) -> dict:
 
 
 def read_conf(filename: str) -> dict:
-    path = filename if filename == GLOBAL_CONFIG else os.path.join(CONFIG_FOLDER, filename)
+    path = filename if filename == GLOBAL_CONFIG else os.path.join(path_safe(CONFIG_FOLDER), filename)
     if os.path.isfile(path):
         with open(path, "r", encoding="utf-8") as fp:
             return toml.load(fp)
@@ -40,7 +41,7 @@ def read_conf(filename: str) -> dict:
 
 def save_conf(filename: str, data: dict) -> bool:
     if filename in PART_CONFIGS:
-        with open(os.path.join(CONFIG_FOLDER, filename), "w", encoding="utf-8") as fp:
+        with open(os.path.join(path_safe(CONFIG_FOLDER), filename), "w", encoding="utf-8") as fp:
             toml.dump(clean_config(data), fp)
         save_global_conf()
     elif filename == GLOBAL_CONFIG:

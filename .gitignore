@@ -3,9 +3,7 @@
 .idea
 .vs
 .vscode
-upload/*
-!upload/.gitkeep
-config/*
-!config/.gitkeep
-config.cfg
+upload
+config
 dist
+config.cfg
