@@ -7,6 +7,7 @@ const features = reactive({
   text_to_image: false,
   text_to_speech: false,
   sdwebui: false,
+  baiducloud: false,
 })
 const text_to_speech = reactive({
   engine: "azure",
@@ -41,6 +42,13 @@ const text_to_image = reactive({
   offset_y: 50
 })
 
+const baiducloud = reactive({
+  check: false,
+  baidu_api_key: "",
+  baidu_secret_key: "",
+  prompt_message: "[百度云]请珍惜机器人，当前返回内容不合规"
+})
+
 
 
 const loader = ref(false);
@@ -56,6 +64,7 @@ function submit() {
       case 'vits': data['vits'] = vits; break;
     }
   }
+  if (features.baiducloud) data['baiducloud'] = baiducloud;
 
 
   axios.post('/api/save/other', data)
@@ -152,6 +161,20 @@ function submit() {
       <el-form-item label='Filter NSFW'><el-switch v-model='sdwebui.filter_nsfw' /></el-form-item>
       <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/ai-hua-tu' target='_blank'>
         <el-link type='primary'>AI 画图 文档</el-link>
+      </a><br>
+      <el-button type='primary' plain class='save-button' @click='submit' :disabled='loader'>保存</el-button>
+    </el-form>
+  </el-card><br>
+  <el-card>
+    <h3><el-checkbox v-model='features.baiducloud ' />&nbsp;&nbsp;🔍 百度云回复审核</h3><br>
+    <el-alert type='info' :closable='false' show-icon>如果你担心机器人发送的消息存在敏感内容导致封号，可以配置百度云审核。</el-alert><br>
+    <el-form :model='baiducloud' :disabled='!features.baiducloud'>
+      <el-form-item label='启用审核'><el-switch v-model='baiducloud.check' /></el-form-item>
+      <el-form-item label='API Key'><el-input placeholder='百度云API_KEY (24位英文数字字符串)' v-model='baiducloud.baidu_api_key' /></el-form-item>
+      <el-form-item label='Secret Key'><el-input placeholder='百度云SECRET_KEY (32位的英文数字字符串)' v-model='baiducloud.baidu_secret_key' /></el-form-item>
+      <el-form-item label='不合规消息回复'><el-input placeholder='不合规消息自定义返回' v-model='baiducloud.prompt_message' /></el-form-item>
+      <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/hui-fu-nei-rong/bai-du-yun-hui-fu-shen-he' target='_blank'>
+        <el-link type='primary'>百度云回复审核 文档</el-link>
       </a><br>
       <el-button type='primary' plain class='save-button' @click='submit' :disabled='loader'>保存</el-button>
     </el-form>

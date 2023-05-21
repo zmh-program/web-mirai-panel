@@ -138,15 +138,15 @@ function submit() {
       <el-form-item label='超时提醒'><el-input v-model='response.cancel_wait_too_long' /></el-form-item>
       <el-divider />
       <el-text class='title'>其他消息提示</el-text><br><br>
-      <el-form-item label='匹配指令成功但没有对话内容时发送的消息'><el-input v-model='response.placeholder' /></el-form-item>
-      <el-form-item label="发生错误时要发送的消息"><el-input v-model="response.error_format" /></el-form-item>
-      <el-form-item label="发生网络错误时发送的消息"><el-input v-model="response.error_network_failure" /></el-form-item>
-      <el-form-item label="OpenAI 账号登录失效时的提示"><el-input v-model="response.error_session_authenciate_failed" /></el-form-item>
-      <el-form-item label="OpenAI 提示 Too many requests（太多请求）时的提示"><el-input v-model="response.error_request_too_many" /></el-form-item>
-      <el-form-item label="服务器提示 Server overloaded(过载)时的提示"><el-input v-model="response.error_server_overloaded" /></el-form-item>
+      <el-form-item label='回复为空时发送的消息'><el-input v-model='response.placeholder' /></el-form-item>
+      <el-form-item label="发生错误时发送的消息"><el-input v-model="response.error_format" /></el-form-item>
+      <el-form-item label="发生网络异常时发送的消息"><el-input v-model="response.error_network_failure" /></el-form-item>
       <el-form-item label="重置会话时发送的消息"><el-input v-model="response.reset" /></el-form-item>
       <el-form-item label="回滚成功时发送的消息"><el-input v-model="response.rollback_success" /></el-form-item>
       <el-form-item label="回滚失败时发送的消息"><el-input v-model="response.rollback_fail" /></el-form-item>
+      <el-form-item label="服务器提示负载过高时的提示"><el-input v-model="response.error_server_overloaded" /></el-form-item>
+      <el-form-item label="OpenAI 账号登录失效时的提示"><el-input v-model="response.error_session_authenciate_failed" /></el-form-item>
+      <el-form-item label="OpenAI 提示太多请求时的提示"><el-input v-model="response.error_request_too_many" /></el-form-item>
 
       <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/hui-fu-nei-rong' target='_blank'>
         <el-link type='primary'>回复内容 文档</el-link>
