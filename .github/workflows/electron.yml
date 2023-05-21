@@ -23,6 +23,8 @@ jobs:
           cd frontend/electron
           npm install
           npm run make
+          cd D:\a\web-chatgpt-qq-bot\web-chatgpt-qq-bot\frontend\electron\out\make\zip\win32\x64
+          ls
 
       - name: Upload Package
         uses: actions/upload-release-asset@v1.0.2
