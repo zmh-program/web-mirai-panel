@@ -22,16 +22,6 @@ jobs:
         run: |
           cd frontend/electron
           npm install
-          npm run make
-          cd D:\a\web-chatgpt-qq-bot\web-chatgpt-qq-bot\frontend\electron\out\make\zip\win32\x64
-          ls
-
-      - name: Upload Package
-        uses: actions/upload-release-asset@v1.0.2
-        with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./package.zip
-          asset_name: package.zip
-          asset_content_type: application/zip
+          npm run publish
         env:
             GITHUB_TOKEN: ${{ secrets.TOKEN }}
