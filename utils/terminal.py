@@ -1,6 +1,7 @@
 from subprocess import Popen, PIPE, STDOUT
 from typing import Generator
 
+
 class CommandExecutor:
     def __init__(self, command: str):
         self.command = command
@@ -23,5 +24,6 @@ class CommandExecutor:
             self.process.terminate()
             self.process.wait()
             self.process = None
+
 
 executor = CommandExecutor('')

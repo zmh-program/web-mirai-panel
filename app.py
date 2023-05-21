@@ -2,10 +2,10 @@ import logging
 from flask import Flask, request, jsonify, render_template
 from flask_socketio import SocketIO, emit
 from docker import DockerClient, errors
-from utils.config_manager import read_conf, save_conf
-from utils.command_executor import CommandExecutor
-from utils.system_info import get_system_info, get_status_info, upload_to_pastebin
-from utils.upload_file import handle_upload
+from utils.config import read_conf, auto_save_conf, GLOBAL_CONFIG
+from utils.terminal import CommandExecutor
+from utils.monitor import get_system_info, get_status_info, upload_to_pastebin
+from utils.file import upload
 
 logging.basicConfig(format='[%(asctime)s %(levelname)s]: %(message)s')
 
@@ -34,7 +34,7 @@ def error(_err):
 
 
 @socketio.on('command_input')
-def handle_command_input_socket(command):
+def term_command(command):
     """处理命令"""
     executor = CommandExecutor(command)
     for output in executor.start():
@@ -42,17 +42,17 @@ def handle_command_input_socket(command):
 
 
 @socketio.on('reset_command')
-def handle_reset_command_socket():
+def reset_command():
     """如果遇到意外情况，重置命令"""
     executor.reset()
 
 
 @app.route('/api/upload', methods=['POST'])
-def handle_uploaded_file():
+def upload_file():
     """上传文件"""
-    file = request.files['file']
-    handle_upload(file)
-    return jsonify({'status': True})
+    return jsonify({
+        'status': upload(request.files['file']),
+    })
 
 
 @app.route('/api/load', methods=['GET'])
@@ -62,30 +62,11 @@ def load_config():
     return jsonify({'status': True, 'data': data} if data else {'status': False})
 
 
-@app.route("/api/save/chat", methods=["POST"])
-def save_chat():
-    """保存 chat 配置"""
-    save_conf("chat.bak.cfg", request.json)
+@app.route("/api/save/<name>", methods=["POST"])
+def save_config(name: str):
+    """保存配置"""
     return jsonify({
-        "status": True,
-    })
-
-
-@app.route("/api/save/ai", methods=["POST"])
-def save_ai():
-    """保存 ai 配置"""
-    save_conf("ai.bak.cfg", request.json)
-    return jsonify({
-        "status": True,
-    })
-
-
-@app.route("/api/save/other", methods=["POST"])
-def save_other():
-    """保存其他配置"""
-    save_conf("other.bak.cfg", request.json)
-    return jsonify({
-        "status": True,
+        "status": auto_save_conf(name, request.json),
     })
 
 

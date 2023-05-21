@@ -7,4 +7,5 @@ upload/*
 !upload/.gitkeep
 config/*
 !config/.gitkeep
+config.cfg
 dist

@@ -6,6 +6,7 @@ from copy import deepcopy
 
 CONFIG_FOLDER = 'config'
 GLOBAL_CONFIG = 'config.cfg'
+PART_CONFIG_TYPES = ["ai", "chat", "other", "response"]
 PART_CONFIGS = [
     "ai.bak.cfg",
     "chat.bak.cfg",
@@ -13,8 +14,10 @@ PART_CONFIGS = [
     "response.bak.cfg"
 ]
 
+
 def empty_field(value) -> bool:
     return not (value.strip() if isinstance(value, str) else (True if isinstance(value, bool) else value))
+
 
 def clean_config(data: dict) -> dict:
     for key, value in deepcopy(data).items():
@@ -26,20 +29,23 @@ def clean_config(data: dict) -> dict:
             del data[key]
     return data
 
+
 def read_conf(filename: str) -> dict:
-    path = os.path.join(CONFIG_FOLDER, filename)
+    path = filename if filename == GLOBAL_CONFIG else os.path.join(CONFIG_FOLDER, filename)
     if os.path.isfile(path):
-        with open(path, "r") as fp:
+        with open(path, "r", encoding="utf-8") as fp:
             return toml.load(fp)
     return {}
 
-def save_conf(filename: str, data: dict, override=True) -> str: 
-    path = os.path.join(os.getcwd(), filename) 
-    if filename in [*PART_CONFIGS, GLOBAL_CONFIG]: 
-        with open(path, "w") as fp: 
-            toml.dump(clean_config(data), fp) 
-        if override is True: 
-            save_global_conf()
+
+def save_conf(filename: str, data: dict) -> bool:
+    if filename in PART_CONFIGS:
+        with open(os.path.join(CONFIG_FOLDER, filename), "w", encoding="utf-8") as fp:
+            toml.dump(clean_config(data), fp)
+        save_global_conf()
+    elif filename == GLOBAL_CONFIG:
+        with open(filename, "w", encoding="utf-8") as fp:
+            toml.dump(clean_config(data), fp)
             '''
             暂时作废
             try: 
@@ -51,15 +57,23 @@ def save_conf(filename: str, data: dict, override=True) -> str:
             except Exception as e: 
                 print(f"Error: {e}")
             '''
-    return path
+    else:
+        return False
+    return True
 
 
-def save_global_conf() -> str:
+def auto_save_conf(name: str, data: any) -> bool:
+    if name in PART_CONFIG_TYPES:
+        return save_conf(f"{name}.bak.cfg", data)
+    return False
+
+
+def save_global_conf() -> bool:
     return save_conf(
         GLOBAL_CONFIG,
         {k: v for conf in PART_CONFIGS for k, v in read_conf(conf).items()},
-        override=False,
     )
+
 
 '''
 暂时作废

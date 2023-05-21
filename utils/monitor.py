@@ -2,7 +2,6 @@ import requests
 import platform
 import json
 import re
-import os
 import psutil
 import docker
 import toml
@@ -23,6 +22,7 @@ CONTAINER_STATUS = {
     "dead": "#DC3545"
 }
 
+
 def upload_to_pastebin(text: str) -> str:
     # 使用request把文本上传到paste bin
     resp = requests.post('https://pastebin.mozilla.org/api/', data={
@@ -33,8 +33,10 @@ def upload_to_pastebin(text: str) -> str:
     })
     return resp.text if resp.status_code == 200 else f"上传失败：{resp.status_code}"
 
+
 def convert(size: int, fixed: int = 1) -> float:
     return round(size / BYTE_TO_GB, fixed)
+
 
 def get_nickname(qq_number: int) -> str:
     # 使用request获取QQ昵称返回值
@@ -43,6 +45,7 @@ def get_nickname(qq_number: int) -> str:
     data = json.loads(json_str)
     nickname = data[str(qq_number)][6]
     return nickname.encode('utf-8').decode('unicode_escape')
+
 
 def get_system_info() -> dict:
     """获取系统信息 (常量)"""
@@ -76,6 +79,7 @@ def get_system_info() -> dict:
         'nickname': nickname,
         'device': protocol,
     }
+
 
 def filter_container(container) -> bool:
     return any(
@@ -116,4 +120,3 @@ def get_status_info() -> dict:
     }
 
     return status_info
-

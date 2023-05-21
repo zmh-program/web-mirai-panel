@@ -30,7 +30,7 @@ const response = reactive({
 const loader = ref(false);
 function submit() {
   loader.value = true;
-  axios.post('/api/save/response', response)
+  axios.post('/api/save/response', { response })
     .then(() => {
       loader.value = false;
       message({
