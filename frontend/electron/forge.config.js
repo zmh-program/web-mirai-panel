@@ -1,12 +1,13 @@
 module.exports = {
   packagerConfig: {},
-  icon: '../public/icon.ico',
+  icon: '../public/favicon.ico',
   makers: [{
     name: '@electron-forge/maker-squirrel',
     platforms: ['win32'],
   }],
   publishers: [
     {
+      tagPrefix: "",
       name: '@electron-forge/publisher-github',
       config: {
         repository: {
