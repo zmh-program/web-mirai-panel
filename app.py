@@ -6,6 +6,7 @@ from utils.config_manager import read_conf, save_conf
 from utils.command_executor import CommandExecutor
 from utils.system_info import get_system_info, get_status_info, upload_to_pastebin
 from utils.upload_file import handle_upload
+
 logging.basicConfig(format='[%(asctime)s %(levelname)s]: %(message)s')
 
 app = Flask(__name__, template_folder='dist', static_folder='dist', static_url_path='')
@@ -21,6 +22,7 @@ except errors.DockerException:
         "\n\t- 使用过时的 Docker 引擎版本导致兼容问题"
     )
 
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -30,17 +32,18 @@ def index():
 def error(_err):
     return render_template('index.html'), 200
 
-@socketio.on('command_input') 
-def handle_command_input_socket(command): 
-    '''处理命令'''
+
+@socketio.on('command_input')
+def handle_command_input_socket(command):
+    """处理命令"""
     executor = CommandExecutor(command)
-    for output in executor.start(): 
+    for output in executor.start():
         emit('command_output', output)
 
 
 @socketio.on('reset_command')
 def handle_reset_command_socket():
-    '''如果遇到意外情况，重置命令'''
+    """如果遇到意外情况，重置命令"""
     executor.reset()
 
 

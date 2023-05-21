@@ -102,7 +102,7 @@ function submit() {
 
 <template>
   <el-radio-group v-model='type'>
-    <el-radio label='openai'>chatGPT</el-radio>
+    <el-radio label='openai'>ChatGPT</el-radio>
     <el-radio label='bing'>New Bing</el-radio>
     <el-radio label='bard'>Google Bard</el-radio>
     <el-radio label='yiyan'>文心一言</el-radio>
@@ -132,7 +132,7 @@ function submit() {
       </template>
       <el-form-item label='Proxy'><el-input placeholder='可选, 留空默认系统设置' v-model='openai.accounts.proxy' /></el-form-item>
       <a href='https://chatgpt-qq.lss233.com/pei-zhi-wen-jian-jiao-cheng/jie-ru-ai-ping-tai/jie-ru-openai-de-chatgpt' target='_blank'>
-        <el-link type='primary'>chatGPT 文档</el-link>
+        <el-link type='primary'>ChatGPT 文档</el-link>
       </a>
     </el-form>
     <el-form :model='bing' v-else-if='type == "bing"'>

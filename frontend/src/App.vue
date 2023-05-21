@@ -37,6 +37,7 @@ function route(current: string, path: string[]) {
               <template #title>💻 配置 Configuration</template>
               <el-menu-item index="chat">📫 接入聊天平台</el-menu-item>
               <el-menu-item index="ai">✨ 接入AI平台</el-menu-item>
+              <el-menu-item index="response">🔔 回复内容</el-menu-item>
               <el-menu-item index="other">🎃 其他功能</el-menu-item>
             </el-sub-menu>
           </el-menu>
