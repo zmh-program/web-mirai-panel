@@ -1,5 +1,6 @@
 import { reactive, ref } from 'vue'
 import type { Ref } from 'vue'
+import axios from 'axios'
 
 
 export const collapse: Ref<string[]> = ref(['chat', 'ai']);

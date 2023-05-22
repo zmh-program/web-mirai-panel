@@ -2,6 +2,7 @@
 import { RouterView } from 'vue-router'
 import router from '@/router'
 import { collapse, settings } from '@/assets/script/config'
+import AuthDialog from '@/components/AuthDialog.vue'
 
 function route(current: string, path: string[]) {
   const [name, hash] = path;
@@ -12,6 +13,7 @@ function route(current: string, path: string[]) {
 
 <template>
   <img :src='settings.background' class='background' v-if='settings.background' alt='' />
+  <AuthDialog />
   <el-container class='container'>
     <el-header>
       <el-menu mode='horizontal'>
