@@ -52,12 +52,6 @@ axios.get("/api/load/response")
     const data = res.data.data.response;  //@ts-ignore
     for (let key in data) response[key] = data[key];
   })
-  .catch(() => {
-    message({
-      type: 'error',
-      message: `获取回复内容配置失败！`,
-    });
-  })
 </script>
 
 <template>
@@ -81,7 +75,7 @@ axios.get("/api/load/response")
         <template v-if='response.mode === "image"'>
           在这个模式下，机器人的消息会渲染成图片再发送。
         </template>
-        <el-divider />
+        <el-divider border-style='dashed' />
       </el-text>
       <el-form-item label='分段发送延时'><el-input-number :min='0' v-model='response.buffer_delay' /></el-form-item>
       <el-text>
@@ -89,7 +83,7 @@ axios.get("/api/load/response")
         这个功能会每隔一段时间将 AI 生成的内容发送给用户，参数的单位为秒。<br>
         如果你要开启这个功能，建议把参数设置为 <el-text type='primary'>15</el-text> 或以上，以免出现 BUG 和刷屏。<br>
         如果你把参数设置成 <el-text type='primary'>0</el-text>，即表示关闭分段发送功能，消息会等待 AI 全部生成完毕以后再回复。
-        <el-divider />
+        <el-divider border-style='dashed' />
       </el-text>
       <el-form-item label='默认语言模型'>
         <el-select v-model='response.default_ai'>
@@ -111,12 +105,12 @@ axios.get("/api/load/response")
       </el-form-item>
       <el-text>
         默认情况下，程序会根据已经接入的语言模型设置，自动选择语言模型（不要钱的优先）。
-        <el-divider />
+        <el-divider border-style='dashed' />
       </el-text>
       <el-form-item label='引用发送的消息'><el-switch v-model='response.quote' /></el-form-item>
       <el-text>
         你可以设置机器人在回复时引用发送的消息，方便定位上下文。
-        <el-divider />
+        <el-divider border-style='dashed' />
       </el-text>
       <el-text class='title'>
         消息排队
@@ -140,7 +134,7 @@ axios.get("/api/load/response")
       <el-form-item label='进入列队通知'><el-input v-model='response.queued_notice' /></el-form-item>
       <el-text>
         新消息进入队列时，发送的通知。 <el-text type='primary'>queue_size</el-text> 是当前排队的消息数
-        <el-divider />
+        <el-divider border-style='dashed' />
       </el-text>
       <el-text class='title'>消息等待</el-text><br><br>
       <el-text>如果语言模型太久没有响应，机器人可以发送一段消息安抚用户。</el-text><br><br>
@@ -148,7 +142,7 @@ axios.get("/api/load/response")
       <el-form-item label='等待提醒'><el-input v-model='response.timeout_format' /></el-form-item>
       <el-form-item label='超时时间'><el-input-number :min='0' v-model='response.max_timeout' /></el-form-item>
       <el-form-item label='超时提醒'><el-input v-model='response.cancel_wait_too_long' /></el-form-item>
-      <el-divider />
+      <el-divider border-style='dashed' />
       <el-text class='title'>其他消息提示</el-text><br><br>
       <el-form-item label='回复为空时发送的消息'><el-input v-model='response.placeholder' /></el-form-item>
       <el-form-item label="发生错误时发送的消息"><el-input v-model="response.error_format" /></el-form-item>

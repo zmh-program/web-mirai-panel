@@ -83,12 +83,6 @@ axios.get('api/load/chat')
       type.value = query;
     }
   })
-  .catch(() => {
-    message({
-      type: 'error',
-      message: `获取聊天平台配置失败！`,
-    });
-  })
 </script>
 
 <template>

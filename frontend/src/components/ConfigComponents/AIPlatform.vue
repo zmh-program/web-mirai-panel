@@ -109,12 +109,6 @@ axios.get('api/load/ai')
       type.value = query;
     }
   })
-  .catch(() => {
-    message({
-      type: 'error',
-      message: `获取AI平台配置失败！`,
-    });
-  })
 </script>
 
 <template>

@@ -101,12 +101,6 @@ axios.get('api/load/other')
       for (let key in conf) obj[key] = conf[key];
     }
   })
-  .catch(() => {
-    message({
-      type: 'error',
-      message: `获取其他配置失败！`,
-    });
-  })
 </script>
 
 <template>
