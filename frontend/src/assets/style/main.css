@@ -44,3 +44,8 @@
   right: 50%;
   transform: translateX(-50%);
 }
+
+@keyframes fadeInAnimation {
+  0% { opacity: 0 }
+  100% { opacity: 1 }
+}

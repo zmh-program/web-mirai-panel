@@ -56,10 +56,6 @@ socket.on("command_output", receive);
 
 <style scoped>
 @import "@/assets/style/main.css";
-@keyframes fadeInAnimation {
-    0% { opacity: 0 }
-    100% { opacity: 1 }
-}
 
 .console {
     display: flex;
