@@ -29,6 +29,11 @@ const router = createRouter({
       path: '/upload',
       name: 'upload',
       component: () => import("../views/FileUploadView.vue")
+    },
+    {
+      path: '/setting',
+      name: 'setting',
+      component: () => import("../views/SettingView.vue")
     }
   ],
   scrollBehavior(to) {

@@ -40,6 +40,7 @@ function route(current: string, path: string[]) {
               <el-menu-item index="response">🔔 回复内容</el-menu-item>
               <el-menu-item index="other">🎃 其他功能</el-menu-item>
             </el-sub-menu>
+            <el-menu-item index="setting">🔧 设置 Settings</el-menu-item>
           </el-menu>
         </el-card>
       </el-aside>

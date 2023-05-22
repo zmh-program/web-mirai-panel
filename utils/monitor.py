@@ -4,7 +4,7 @@ import json
 import re
 import psutil
 import docker
-import toml
+from .config import read_conf
 
 BYTE_TO_GB = 1024 ** 3
 DESIRED_CONTAINERS = [
@@ -55,11 +55,12 @@ def get_system_info() -> dict:
     system, release, version, host = platform.system(), platform.release(), platform.version(), platform.node()  # 杂项
 
     try:
-        with open('config.cfg', 'r') as file:  # 读取config.cfg中的manager_qq
-            config = toml.load(file)
-            qq = (config.get('onebot', {}) or config.get('mirai', {})).get('manager_qq')
-            nickname = get_nickname(qq)  # QQ 昵称
-    except FileNotFoundError:
+        conf = read_conf("config.cfg")
+        qq = (conf.get('onebot', {}) or conf.get('mirai', {})) \
+            .get('manager_qq')
+        assert qq
+        nickname = get_nickname(qq)  # QQ 昵称
+    except (FileNotFoundError, AssertionError):
         qq = "未知"
         nickname = "未知"
 
