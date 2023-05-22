@@ -3,7 +3,7 @@ from flask import Flask, request, jsonify, render_template
 from flask_socketio import SocketIO, emit
 from docker import DockerClient, errors
 from utils.config import auto_read_conf, auto_save_conf
-from utils.terminal import CommandExecutor
+from utils.terminal import executor
 from utils.monitor import get_system_info, get_status_info, upload_to_pastebin
 from utils.file import upload
 
@@ -34,14 +34,13 @@ def error(_err):
 
 
 @socketio.on('command_input')
-def term_command(command):
+def term_command(command: str):
     """处理命令"""
-    executor = CommandExecutor(command)
-    for output in executor.start():
+    for output in executor.start(command):
         emit('command_output', output)
 
 
-@socketio.on('reset_command')
+@socketio.on('command_reset')
 def reset_command():
     """如果遇到意外情况，重置命令"""
     executor.reset()

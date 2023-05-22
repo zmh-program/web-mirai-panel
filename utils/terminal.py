@@ -3,12 +3,11 @@ from typing import Generator
 
 
 class CommandExecutor:
-    def __init__(self, command: str):
-        self.command = command
+    def __init__(self):
         self.process = None
 
-    def start(self) -> Generator[str, None, None]:
-        self.process = Popen(self.command, stdout=PIPE, stderr=STDOUT, shell=True, text=True, bufsize=1)
+    def start(self, command: str) -> Generator[str, None, None]:
+        self.process = Popen(command, stdout=PIPE, stderr=STDOUT, shell=True, text=True, bufsize=1)
         for output in self._execute():
             yield output
 
@@ -26,4 +25,4 @@ class CommandExecutor:
             self.process = None
 
 
-executor = CommandExecutor('')
+executor = CommandExecutor()
