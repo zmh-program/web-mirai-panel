@@ -1,4 +1,4 @@
-from flask import request, abort
+import re
 import json
 import base64
 import hashlib
@@ -8,8 +8,10 @@ from .file import path_safe
 
 SETTING_PATH = os.path.join(path_safe(CONFIG_FOLDER), "settings.data")
 
+urls = []
 
-def read() -> dict:
+
+def read_setting() -> dict:
     try:
         with open(SETTING_PATH, "rb") as fp:
             content = base64.b64decode(fp.read()).decode('utf-8')
@@ -18,7 +20,14 @@ def read() -> dict:
         return {}
 
 
-def write(data: dict) -> None:
+def read_setting_safe() -> dict:
+    resp = read_setting()
+    if 'password' in resp:
+        del resp['password']
+    return resp
+
+
+def write_setting(data: dict) -> None:
     global password
     data['password'] = password = hashlib.md5(data['password'].encode('utf-8')).hexdigest()
     content = base64.b64encode(json.dumps(data).encode('utf-8'))
@@ -27,20 +36,20 @@ def write(data: dict) -> None:
 
 
 def validate(key: str):
-    return hashlib.md5(key.encode('utf-8')).hexdigest() == password
+    return (hashlib.md5(key.encode('utf-8')).hexdigest() == password) if password else True
 
 
-def authenticated(func):
-    assert callable(func)
-
-    def wrapper(*args, **kwargs) -> any:
-        global password
-        key = request.headers.get("auth", "")
-        if validate(key):
-            return func(*args, **kwargs)
-        abort(401)
-
-    return wrapper
+def register(url: str) -> str:
+    global urls
+    urls.append(re.sub('<[^>]+>', '', url))
+    return url
 
 
-password = read()['password']
+def conform(path: str) -> bool:
+    for url in urls:
+        if path.startswith(url):
+            return True
+    return False
+
+
+password = read_setting().get('password', '')

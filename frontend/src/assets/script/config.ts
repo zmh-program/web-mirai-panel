@@ -9,7 +9,8 @@ export const settings = reactive({
   background: "https://s1.ax1x.com/2023/05/22/p9okyfs.jpg",
 })
 
+axios.defaults.headers.common['auth'] = settings.password;
+
 watch(settings, () => {
-  console.log(settings.password)
   axios.defaults.headers.common['auth'] = settings.password;
 })

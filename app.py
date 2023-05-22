@@ -1,12 +1,12 @@
 import logging
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, abort
 from flask_socketio import SocketIO, emit
 from docker import DockerClient, errors
 from utils.config import auto_read_conf, auto_save_conf
 from utils.terminal import executor
 from utils.monitor import get_system_info, get_status_info, upload_to_pastebin
 from utils.file import upload
-from utils.auth import authenticated, validate
+from utils.auth import register, conform, validate, write_setting, read_setting_safe
 
 logging.basicConfig(format='[%(asctime)s %(levelname)s]: %(message)s')
 
@@ -54,7 +54,27 @@ def check_auth():
     })
 
 
-@app.route('/api/upload', methods=['POST'])
+@app.before_request
+def wrapper():
+    condition = conform(request.path)
+    if condition and not validate(request.headers.get("auth", "")):
+        abort(401)
+
+
+@app.route(register('/api/setting'), methods=['GET', 'POST'])
+def settings():
+    if request.method == "POST":
+        write_setting(request.json)
+        return jsonify({
+            "status": True,
+        })
+    return jsonify({
+        "data": read_setting_safe(),
+        "status": True,
+    })
+
+
+@app.route(register('/api/upload'), methods=['POST'])
 def upload_file():
     """上传文件"""
     return jsonify({
@@ -62,7 +82,7 @@ def upload_file():
     })
 
 
-@app.route('/api/load/<name>', methods=['GET'])
+@app.route(register('/api/load/<name>'), methods=['GET'])
 def load_config(name: str):
     """读取配置并返回数据"""
     status, data = auto_read_conf(name)
@@ -72,7 +92,7 @@ def load_config(name: str):
     })
 
 
-@app.route("/api/save/<name>", methods=["POST"])
+@app.route(register("/api/save/<name>"), methods=["POST"])
 def save_config(name: str):
     """保存配置"""
     return jsonify({

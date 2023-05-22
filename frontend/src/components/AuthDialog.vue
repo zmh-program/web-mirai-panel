@@ -20,6 +20,11 @@ function validate(notify=true) {
         type: 'success',
         message: `授权成功！`,
       });
+      axios.get("/api/setting")
+        .then((res) => {
+          const data = res.data.data;  //@ts-ignore
+          for (let key in data) settings[key] = data[key];
+        })
       settings.password = password.value;
       localStorage.setItem('auth', password.value);
     }
@@ -30,7 +35,7 @@ validate(false);
 </script>
 
 <template>
-  <el-dialog title="授权" v-model='visible'>
+  <el-dialog title="授权" v-model='visible' :show-close='false' :close-on-click-modal='false' :close-on-press-escape='false'>
     <el-form>
       <el-form-item label="密码">
         <el-input v-model='password' type='password' placeholder='请输入密码' required />

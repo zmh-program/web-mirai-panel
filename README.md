@@ -7,7 +7,7 @@
 
 [» 主项目地址 »](https://github.com/lss233/chatgpt-mirai-qq-bot)
 
-[![zmh-program/web-chatgpt-qq-bot's Github Stats](https://stats.deeptrain.net/repo/zmh-program/web-chatgpt-qq-bot)](https://github.com/zmh-program/code-statistic)
+[![Github Stats](https://stats.deeptrain.net/repo/zmh-program/web-chatgpt-qq-bot)](https://github.com/zmh-program/code-statistic)
 </div>
 
 
@@ -18,6 +18,7 @@
 - 🔥 **Web 终端**
 - 🍒 **Docker 容器监控**
 - 🎍 **Electron App**
+- 🍏 **自定义设置** 
 
 ## 简介
 **Web ChatGPT QQ Bot** 一键配置脚本的方便之处在于它可以快速帮助用户配置的对接，省去了手动修改配置文件的繁琐过程。使用该脚本可以大大提高用户的工作效率，让用户更加专注于聊天机器人的设计和应用。
