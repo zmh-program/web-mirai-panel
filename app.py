@@ -2,7 +2,7 @@ import logging
 from flask import Flask, request, jsonify, render_template
 from flask_socketio import SocketIO, emit
 from docker import DockerClient, errors
-from utils.config import read_conf, auto_save_conf, GLOBAL_CONFIG
+from utils.config import auto_read_conf, auto_save_conf
 from utils.terminal import CommandExecutor
 from utils.monitor import get_system_info, get_status_info, upload_to_pastebin
 from utils.file import upload
@@ -55,11 +55,14 @@ def upload_file():
     })
 
 
-@app.route('/api/load', methods=['GET'])
-def load_config():
-    """读取全局配置并加载toml数据"""
-    data = read_conf(GLOBAL_CONFIG)
-    return jsonify({'status': True, 'data': data} if data else {'status': False})
+@app.route('/api/load/<name>', methods=['GET'])
+def load_config(name: str):
+    """读取配置并返回数据"""
+    status, data = auto_read_conf(name)
+    return jsonify({
+        'data': data,
+        'status': status,
+    })
 
 
 @app.route("/api/save/<name>", methods=["POST"])

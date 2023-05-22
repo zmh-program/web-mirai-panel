@@ -98,6 +98,23 @@ function submit() {
       });
     })
 }
+
+axios.get('api/load/ai')
+  .then(res => {
+    const data = res.data.data;
+    for (const query in data) {
+      const obj = selector[query], conf = data[query];
+      conf.accounts = conf.accounts[0];
+      for (let key in conf) obj[key] = conf[key];
+      type.value = query;
+    }
+  })
+  .catch(() => {
+    message({
+      type: 'error',
+      message: `获取AI平台配置失败！`,
+    });
+  })
 </script>
 
 <template>

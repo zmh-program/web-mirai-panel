@@ -4,7 +4,7 @@ import axios from 'axios'
 import { message } from '@/assets/script/utils'
 
 
-const response = reactive({
+let response = reactive({
   mode: "mixed",
   buffer_delay: 15,
   default_ai: "chatgpt-web",
@@ -46,6 +46,18 @@ function submit() {
       });
     })
 }
+
+axios.get("/api/load/response")
+  .then((res) => {
+    const data = res.data.data.response;  //@ts-ignore
+    for (let key in data) response[key] = data[key];
+  })
+  .catch(() => {
+    message({
+      type: 'error',
+      message: `获取回复内容配置失败！`,
+    });
+  })
 </script>
 
 <template>

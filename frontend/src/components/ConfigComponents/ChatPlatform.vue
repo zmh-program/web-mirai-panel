@@ -73,6 +73,22 @@ function submit() {
       });
     })
 }
+
+axios.get('api/load/chat')
+  .then(res => {
+    const data = res.data.data;
+    for (const query in data) {
+      const obj = selector[query], conf = data[query];
+      for (let key in conf) obj[key] = conf[key];
+      type.value = query;
+    }
+  })
+  .catch(() => {
+    message({
+      type: 'error',
+      message: `获取聊天平台配置失败！`,
+    });
+  })
 </script>
 
 <template>

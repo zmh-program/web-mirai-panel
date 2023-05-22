@@ -49,6 +49,14 @@ const baiducloud = reactive({
   prompt_message: "[百度云]请珍惜机器人，当前返回内容不合规"
 })
 
+const selector: Record<string, Record<string, string | number | boolean>> = {
+  text_to_image,
+  text_to_speech,
+  sdwebui,
+  baiducloud,
+  azure,
+  vits,
+}
 
 
 const loader = ref(false);
@@ -83,6 +91,22 @@ function submit() {
       });
     })
 }
+
+axios.get('api/load/other')
+  .then(res => {
+    const data = res.data.data;
+    for (const query in data) { //@ts-ignore
+      features[query] = true;
+      const obj = selector[query], conf = data[query];
+      for (let key in conf) obj[key] = conf[key];
+    }
+  })
+  .catch(() => {
+    message({
+      type: 'error',
+      message: `获取其他配置失败！`,
+    });
+  })
 </script>
 
 <template>

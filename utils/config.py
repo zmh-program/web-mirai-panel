@@ -1,5 +1,7 @@
 import os
 import re
+from typing import Tuple
+
 import toml
 import yaml
 from .file import path_safe
@@ -37,6 +39,12 @@ def read_conf(filename: str) -> dict:
         with open(path, "r", encoding="utf-8") as fp:
             return toml.load(fp)
     return {}
+
+
+def auto_read_conf(name: str) -> Tuple[bool, dict]:
+    if name in PART_CONFIG_TYPES:
+        return True, read_conf(f"{name}.bak.cfg")
+    return False, {}
 
 
 def save_conf(filename: str, data: dict) -> bool:
