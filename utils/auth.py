@@ -1,4 +1,4 @@
-from flask import request, jsonify, abort
+from flask import request, abort
 import json
 import base64
 import hashlib
@@ -7,8 +7,6 @@ from .config import CONFIG_FOLDER
 from .file import path_safe
 
 SETTING_PATH = os.path.join(path_safe(CONFIG_FOLDER), "settings.data")
-
-password = ""
 
 
 def read() -> dict:
@@ -28,15 +26,21 @@ def write(data: dict) -> None:
         fp.write(content)
 
 
+def validate(key: str):
+    return hashlib.md5(key.encode('utf-8')).hexdigest() == password
+
+
 def authenticated(func):
     assert callable(func)
 
     def wrapper(*args, **kwargs) -> any:
         global password
         key = request.headers.get("auth", "")
-        if hashlib.md5(key.encode('utf-8')).hexdigest() == password:
+        if validate(key):
             return func(*args, **kwargs)
         abort(401)
 
     return wrapper
 
+
+password = read()['password']

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 import router from '@/router'
-import { collapse, background } from '@/assets/script/config'
+import { collapse, settings } from '@/assets/script/config'
 
 function route(current: string, path: string[]) {
   const [name, hash] = path;
@@ -11,7 +11,7 @@ function route(current: string, path: string[]) {
 </script>
 
 <template>
-  <img :src='background' class='background' v-if='background' alt='' />
+  <img :src='settings.background' class='background' v-if='settings.background' alt='' />
   <el-container class='container'>
     <el-header>
       <el-menu mode='horizontal'>
@@ -72,7 +72,7 @@ function route(current: string, path: string[]) {
     height: 100%;
     object-fit: cover;
     z-index: -1;
-    filter: blur(10px);
+    filter: blur(2px);
     animation: fadeInAnimation ease 2s;
 }
 .main-container {

@@ -6,6 +6,7 @@ from utils.config import auto_read_conf, auto_save_conf
 from utils.terminal import executor
 from utils.monitor import get_system_info, get_status_info, upload_to_pastebin
 from utils.file import upload
+from utils.auth import authenticated, validate
 
 logging.basicConfig(format='[%(asctime)s %(levelname)s]: %(message)s')
 
@@ -44,6 +45,13 @@ def term_command(command: str):
 def reset_command():
     """如果遇到意外情况，重置命令"""
     executor.reset()
+
+
+@app.route('/api/auth', methods=['GET'])
+def check_auth():
+    return jsonify({
+        "status": validate(request.headers.get("auth", ""))
+    })
 
 
 @app.route('/api/upload', methods=['POST'])
