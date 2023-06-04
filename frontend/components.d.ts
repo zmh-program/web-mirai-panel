@@ -41,10 +41,12 @@ declare module '@vue/runtime-core' {
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
     ElText: typeof import('element-plus/es')['ElText']
     ElUpload: typeof import('element-plus/es')['ElUpload']
+    Lock: typeof import('./src/components/icons/Lock.vue')['default']
     OtherConfig: typeof import('./src/components/ConfigComponents/OtherConfig.vue')['default']
     ProgressBar: typeof import('./src/components/ProgressBar.vue')['default']
     ResponseConfig: typeof import('./src/components/ConfigComponents/ResponseConfig.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Upload: typeof import('./src/components/icons/Upload.vue')['default']
   }
 }

@@ -3,6 +3,7 @@ import axios from 'axios'
 import { ref } from 'vue'
 import { settings } from '@/assets/script/config'
 import { message } from '@/assets/script/utils'
+import Lock from '@/components/icons/Lock.vue'
 
 const visible = ref(false);
 const password = ref(settings.password);
@@ -39,8 +40,9 @@ function validate() {
         <img src='/favicon.ico' alt=''>
         <h1>ChatGPT for QQ</h1>
       </div>
+      <p class='text'>登录</p>
       <el-form-item class='input-box'>
-        <el-input v-model='password' type='password' placeholder='请输入密码' show-password />
+        <el-input v-model='password' type='password' placeholder='请输入密码' show-password :prefix-icon='Lock' />
       </el-form-item>
       <el-form-item class='button'>
         <el-button class='login' type='primary' @click='validate'>登录</el-button>
@@ -55,6 +57,7 @@ function validate() {
 .card {
   height: 480px;
   background: rgba(255,255,255,.8);
+  backdrop-filter: blur(1px);
   max-width: 640px;
   margin: 40px auto;
 }
@@ -80,16 +83,23 @@ function validate() {
   font-family: "Open Sans", sans-serif;
 }
 
+.text {
+  font-size: 22px;
+  font-family: "Open Sans", sans-serif;
+  text-align: center;
+  transform: translateY(-56px);
+}
+
 .input-box {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  margin-top: 20px;
+  margin-top: 50px;
   width: 300px;
 }
 
 .button {
-  margin-top: 160px;
+  margin-top: 130px;
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
