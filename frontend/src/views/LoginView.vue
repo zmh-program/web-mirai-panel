@@ -1,35 +1,34 @@
 <script setup lang='ts'>
 import axios from 'axios'
 import { ref } from 'vue'
-import { settings } from '@/assets/script/config'
-import { message } from '@/assets/script/utils'
+import { isAuthenticated, settings } from '@/assets/script/config'
+import { authenticated, message } from '@/assets/script/utils'
 import Lock from '@/components/icons/Lock.vue'
+import router from '@/router'
 
-const visible = ref(false);
+
 const password = ref(settings.password);
-function validate() {
-  axios.get("api/auth", {headers: { auth: password.value }}).then(res => {
-    const auth = ! res.data.status;
-    visible.value = auth;
-    if (auth) {
-      message({
-        type: 'error',
-        message: `授权出错！请输入密码！`,
-      });
-    } else {
-      message({
-        type: 'success',
-        message: `授权成功！`,
-      });
-      axios.get("/api/setting")
-        .then((res) => {
-          const data = res.data.data;  //@ts-ignore
-          for (let key in data) settings[key] = data[key];
-        })
-      settings.password = password.value;
-      localStorage.setItem('auth', password.value);
-    }
-  })
+
+async function validate() {
+  const auth: boolean = await authenticated(password.value);
+  if (!auth) {
+    return message({
+      type: 'error',
+      message: `授权出错！请输入密码！`,
+    });
+  }
+  message({
+    type: 'success',
+    message: `授权成功！`,
+  });
+
+  const data = (await axios.get("/api/setting")).data.data;
+  for (let key in data) settings[key] = data[key];
+
+  settings.password = password.value;
+  localStorage.setItem('auth', password.value);
+  isAuthenticated.value = true;
+  await router.push("/");
 }
 </script>
 

@@ -50,6 +50,11 @@ router.beforeEach((to, from, next) => {
   if (!["login", "error"].includes(<string>to.name) && !isAuthenticated.value) {
     next({ name: "login" });
     return
+  } else {
+    if (to.name === "login" && isAuthenticated.value) {
+      next({ name: "home" });
+      return
+    }
   }
   if (to.matched.length === 0) {
     next('/404');
