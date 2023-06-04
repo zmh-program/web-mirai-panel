@@ -22,11 +22,12 @@ async function validate() {
     message: `授权成功！`,
   });
 
-  const data = (await axios.get("/api/setting")).data.data;
-  for (let key in data) settings[key] = data[key];
-
   settings.password = password.value;
   localStorage.setItem('auth', password.value);
+
+  const data = (await axios.get("/api/setting")).data.data;
+  for (let key in data) settings[key] = data[key];
+  
   isAuthenticated.value = true;
   await router.push("/");
 }
