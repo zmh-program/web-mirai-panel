@@ -1,5 +1,4 @@
 import os
-import re
 from typing import Tuple
 
 import toml
@@ -9,13 +8,8 @@ from copy import deepcopy
 
 CONFIG_FOLDER = 'config'
 GLOBAL_CONFIG = 'config.cfg'
-PART_CONFIG_TYPES = ["ai", "chat", "other", "response"]
-PART_CONFIGS = [
-    "ai.bak.cfg",
-    "chat.bak.cfg",
-    "other.bak.cfg",
-    "response.bak.cfg"
-]
+PART_CONFIG_TYPES = ["ai", "chat", "other", "response", "command"]
+PART_CONFIGS = [".".join(("name", "bak", "cfg")) for name in PART_CONFIG_TYPES]
 
 
 def empty_field(value) -> bool:
