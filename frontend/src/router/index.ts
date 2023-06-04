@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import NotFoundView from '@/views/NotFoundView.vue'
+import { isAuthenticated } from '@/assets/script/config'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -11,9 +11,14 @@ const router = createRouter({
       component: HomeView
     },
     {
+      path: '/login',
+      name: 'login',
+      component: () => import("../views/LoginView.vue")
+    },
+    {
       path: '/404',
       name: 'error',
-      component: NotFoundView
+      component: () => import("../views/NotFoundView.vue")
     },
     {
       path: '/config',
@@ -41,8 +46,16 @@ const router = createRouter({
   }
 })
 
-router.beforeEach((to, from, next) => (
-  to.matched.length === 0 ? next('/404') : next()
-));
+router.beforeEach((to, from, next) => {
+  if (!["login", "error"].includes(<string>to.name) && !isAuthenticated.value) {
+    next({ name: "login" });
+    return
+  }
+  if (to.matched.length === 0) {
+    next('/404');
+    return
+  }
+  next();
+});
 
 export default router

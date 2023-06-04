@@ -10,7 +10,7 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     AIPlatform: typeof import('./src/components/ConfigComponents/AIPlatform.vue')['default']
-    AuthDialog: typeof import('./src/components/AuthDialog.vue')['default']
+    AuthDialog: typeof import('./src/views/LoginView.vue')['default']
     ChatPlatform: typeof import('./src/components/ConfigComponents/ChatPlatform.vue')['default']
     ElAlert: typeof import('element-plus/es')['ElAlert']
     ElAside: typeof import('element-plus/es')['ElAside']

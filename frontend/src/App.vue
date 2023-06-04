@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 import router from '@/router'
-import { collapse, settings } from '@/assets/script/config'
-import AuthDialog from '@/components/AuthDialog.vue'
+import { collapse, isAuthenticated, settings } from '@/assets/script/config'
 
 function route(current: string, path: string[]) {
   const [name, hash] = path;
@@ -13,9 +12,8 @@ function route(current: string, path: string[]) {
 
 <template>
   <img :src='settings.background' class='background' v-if='settings.background' alt='' />
-  <AuthDialog />
   <el-container class='container'>
-    <el-header>
+    <el-header v-if='isAuthenticated'>
       <el-menu mode='horizontal'>
         <el-menu-item><img src='/favicon.ico' alt='' style='width: 24px'>&nbsp;ChatGPT for QQ</el-menu-item>
         <div style='flex-grow: 1'></div>
@@ -24,7 +22,7 @@ function route(current: string, path: string[]) {
       </el-menu>
     </el-header>
     <el-container class='main-container'>
-      <el-aside id='aside'>
+      <el-aside id='aside' v-if='isAuthenticated'>
         <el-card class='card sidebar'>
           <div class='circle-group'>
             <div class='circle' style='background: rgb(245,49,38)' />
