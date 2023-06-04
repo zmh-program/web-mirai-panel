@@ -25,9 +25,9 @@ async function validate() {
   settings.password = password.value;
   localStorage.setItem('auth', password.value);
 
-  const data = (await axios.get("/api/setting")).data.data;
+  const data = (await axios.get("/api/setting", { headers: { auth: password.value } })).data.data;
   for (let key in data) settings[key] = data[key];
-  
+
   isAuthenticated.value = true;
   await router.push("/");
 }
